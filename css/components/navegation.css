@@ -1,0 +1,118 @@
+* a { text-decoration: none; }
+header {
+    height: 8vh;
+    width: 100vw;
+    box-sizing: border-box;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #E0E0E0;
+}
+header .opc-logo { position: absolute; left: 2%; width: 7%; }
+header nav {
+    height: 100%;
+    width: max-content;
+    position: relative;
+    display: flex;
+}
+header nav ul { height: 100%; width: 100%; display: flex; align-items: center; }
+header nav ul li { padding: 0px 8px 0px; }
+header nav ul li a { color: #616161; font-size: 1em;}
+.icons-nav {
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.account-container { right: 2%; }
+.notification-container { right: 5%; }
+.selected { color: #1A73E8; }
+/* Estilos para el contenedor main */
+main {
+    margin-top: 8vh;
+    height: 92vh;
+    width: 100vw;
+    position: absolute;
+    box-sizing: border-box;
+}
+/* Estilos para la ventana de ver perfil */
+#parentDiv_closeProfile {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 900;
+}
+.container-profile {
+    top: 7%;
+    right: 2%;
+    height: 45%;
+    width: 16%;
+    position: absolute;
+    box-sizing: border-box;
+    background: #FAFAFA;
+    border-radius: 5px;
+    border: 2px solid rgba(131, 63, 14, 0.6);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    z-index: 1000;
+    overflow: hidden;
+}
+.container-profile .container-decoration {
+    height: 30%;
+    width: 100%;
+    position: relative;
+    background: rgba(131, 63, 14, 0.55);
+}
+.container-profile div:last-child {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+}
+.container-profile div:last-child span {
+    position: absolute;
+    top: 5%;
+    color: #FAFAFA;
+}
+.container-profile div:last-child .container-imageUser {
+    height: 30%;
+    width: 42.6%;
+    top: 13%;
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid #833F0E;
+    background: #EEEEEE;
+    overflow: hidden;
+}
+.container-profile div:last-child .text-forehead {
+    padding: 20% 0 5% 0;
+    color: #424242;
+    font-size: .8em;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+.container-profile div:last-child .text-nameComplete {
+    padding-bottom: 2%;
+    color: #212121;
+    font-size: .9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+}
+.container-profile div:last-child p:last-child {
+    font-size: .9em;
+    color: #212121;
+}
+.button-action {
+    height: 10%;
+    width: 80%;
+    position: absolute;
+    bottom: 5%;
+}

@@ -1,0 +1,124 @@
+#form-account {
+    height: 77%;
+    width: 95%;
+    position: relative;
+    margin: 0 0 0 5%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#form-account .first-container__account {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+#form-account .first-container__account div {
+    height: 80%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+#form-account .first-container__account div:last-child {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#form-account .first-container__account div:last-child button {
+    height: 40%;
+    width: 25%;
+    font-size: 1em;
+    font-weight: 500;
+}
+#form-account .second-container__account {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    margin-left: -200%;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    background: #FFFFFF;
+    transition: margin-left 1s;
+}
+#form-account .second-container__account div {
+    height: 80%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+#form-account .second-container__account div:last-child {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#form-account .second-container__account div:last-child button {
+    height: 40%;
+    width: 25%;
+    font-size: 1em;
+    font-weight: 500;
+}
+#form-account .second-container__account div #container-inputAccount {
+    height: 10%;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    margin-bottom: 7%;
+}
+#form-account .second-container__account div #container-inputAccount {
+    height: 10%;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    margin-bottom: 7%;
+}
+#form-account .second-container__account div #container-inputAccount input {
+    height: 100%;
+    width: 70%;
+    border: 0;
+    background: none;
+    color: #757575;
+    padding-left: 3%;
+    outline: none;
+}
+#form-account .second-container__account div #container-inputAccount input::placeholder { color: #757575; padding-left: -3%; }
+#form-account .second-container__account div #container-inputAccount input:focus { background: none; color: #757575; }
+#form-account .second-container__account div #container-inputAccount .domain-email {
+    height: 100%;
+    width: 30%;
+    border-left: 2px solid #EEEEEE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #757575;
+}
+#returnSection {
+    top: 3%;
+    right: 200%;
+    height: 5%;
+    width: 6%;
+    background: #F5F5F5;
+    border-radius: 5px;
+    border: 2px solid #EEEEEE;
+    position: absolute;
+    transition: right 1s;
+    z-index: 400;
+}

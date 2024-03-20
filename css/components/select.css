@@ -1,0 +1,9 @@
+select {
+    height: 10.3%;
+    width: 88.9%;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    color: #757575;
+    padding-left: 3%;
+}

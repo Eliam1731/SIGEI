@@ -1,0 +1,4 @@
+#Archivos que no se le darán seguimiento
+server/insert/createAccount.php
+js/records/content-html/test.html
+public.txt

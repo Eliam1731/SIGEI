@@ -1,0 +1,13 @@
+.input-forms {
+    height: 9%;
+    width: 85%;
+    border: 2px solid #EEEEEE;
+    background: #F5F5F5;
+    border-radius: 5px;
+    margin-bottom: 5%;
+    padding-left: 3%;
+    outline: none;
+}
+.input-forms:focus {
+    border: 2px solid #BDBDBD;
+}

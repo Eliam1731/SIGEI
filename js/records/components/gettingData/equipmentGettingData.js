@@ -14,7 +14,7 @@ const inputsIDs = [
     'addressEthernet',
 ];
 
-export const gettingDataInputsEquipment = ( images, invoice ) => {
+export const gettingDataInputsEquipment = async(images, invoice) => {
     const objectDataInputs = inputsIDs.reduce((acc, id) => {
         const input = document.getElementById(id);
         acc[id] = input.value;
@@ -22,6 +22,19 @@ export const gettingDataInputsEquipment = ( images, invoice ) => {
         return acc;
     }, {});
 
-    console.log(objectDataInputs);
-    console.log(images);
+    const formData = new FormData();
+
+    for (let key in objectDataInputs) {
+        formData.append(key, objectDataInputs[key]);
+    }
+
+    for (let image of images.values()) {
+        formData.append('images[]', image);
+    }
+
+    for (let invoiceFile of invoice.values()) {
+        formData.append('invoices[]', invoiceFile);
+    }
+
+    return formData;
 }

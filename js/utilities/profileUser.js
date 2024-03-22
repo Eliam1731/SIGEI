@@ -1,8 +1,5 @@
-const closeProfileWindow = (parentWindowProfile) =>
-  parentWindowProfile.remove();
-const closeSession = () => {
-  window.location.href = "../server/auth/logout.php";
-};
+const closeProfileWindow = (parentWindowProfile) => parentWindowProfile.remove();
+const closeSession = () => window.location.href = "../server/auth/logout.php";
 
 const profileUserWindow = () => {
   const fragment = document.createDocumentFragment();
@@ -36,29 +33,16 @@ const profileUserWindow = () => {
   textEmail.textContent = sessionStorage.getItem("email");
   buttonCloseSession.textContent = "Cerrar sesión";
 
-  containerDataUser.append(
-    textRol,
-    containerImageUser,
-    textForehead,
-    textNameComplete,
-    textEmail,
-    buttonCloseSession
-  );
+  containerDataUser.append( textRol, containerImageUser, textForehead, textNameComplete, textEmail, buttonCloseSession);
   divContainerProfile.append(divDecoration, containerDataUser);
   parentWindowprofile.append(divContainerProfile);
 
   fragment.append(parentWindowprofile);
   document.body.append(fragment);
 
-  divContainerProfile.addEventListener("click", (event) =>
-    event.stopPropagation()
-  );
-  parentWindowprofile.addEventListener("click", () =>
-    closeProfileWindow(parentWindowprofile)
-  );
+  divContainerProfile.addEventListener("click", (event) => event.stopPropagation());
+  parentWindowprofile.addEventListener("click", () => closeProfileWindow(parentWindowprofile));
   buttonCloseSession.addEventListener("click", () => closeSession());
 };
 
-document
-  .querySelector(".account-container")
-  .addEventListener("click", profileUserWindow);
+document.querySelector(".account-container").addEventListener("click", profileUserWindow);

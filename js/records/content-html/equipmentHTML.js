@@ -73,7 +73,7 @@ export const equipmentSystemsHTML = `
             <input id="serviceTag" type="text" placeholder="Ejemplo: 029SN01201J" class="input-forms modify">
 
             <label for="invoiceDevices" class='modify-label'>Subir factura del equipo</label>
-            <input id="invoiceDevices" type="file" accept=".pdf,.xml" class='modify'>
+            <input id="invoiceDevices" type="file" accept=".pdf,.xml" class='modify' multiple>
 
             <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compaq</label>
             <input id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" class="input-forms modify">

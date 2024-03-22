@@ -76,11 +76,7 @@ main {
     position: absolute;
     z-index: 1;
 }
-.container-profile div:last-child span {
-    position: absolute;
-    top: 5%;
-    color: #FAFAFA;
-}
+.container-profile div:last-child span { position: absolute; top: 5%; color: #FAFAFA; }
 .container-profile div:last-child .container-imageUser {
     height: 30%;
     width: 42.6%;
@@ -106,13 +102,5 @@ main {
     text-transform: uppercase;
     text-align: center;
 }
-.container-profile div:last-child p:last-child {
-    font-size: .9em;
-    color: #212121;
-}
-.button-action {
-    height: 10%;
-    width: 80%;
-    position: absolute;
-    bottom: 5%;
-}
+.container-profile div:last-child p:last-child { font-size: .9em; color: #212121; }
+.button-action { height: 10%; width: 80%; position: absolute; bottom: 5%; }

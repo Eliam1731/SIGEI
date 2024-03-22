@@ -1,4 +1,5 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
+import { sendDataServerEquipment } from "../../utilities/sendDataEquipment.js";
 import { setCurrentDateCalendary } from "../../utilities/setCurrentDate.js";
 import { equipmentMachineryHTML, equipmentStoreHTML, equipmentSystemsHTML } from "../content-html/equipmentHTML.js";
 import { gettingDataInputsEquipment } from "./gettingData/equipmentGettingData.js";
@@ -18,6 +19,7 @@ const elementsDOM = {
     buttonReturnSection: 'returnSectionEquipment',
     buttonRegister: 'sendDataDevices',
     inputImage: 'imageDevices',
+    inputFile: 'invoiceDevices',
 }
 
 const functionalitiesRegisterEquipment = async() => {
@@ -31,7 +33,9 @@ const functionalitiesRegisterEquipment = async() => {
     const buttonReturnSection = document.getElementById(elementsDOM.buttonReturnSection);
     const buttonRegisterEquipment = document.getElementById(elementsDOM.buttonRegister);
     const inputImageDevices = document.getElementById(elementsDOM.inputImage);
+    const inputFileEquipment = document.getElementById(elementsDOM.inputFile);  
     let imagesFormData;
+    let fileFormData;
     let imageCount = 0;
 
     for(let key in everyCategories) {
@@ -87,13 +91,25 @@ const functionalitiesRegisterEquipment = async() => {
             imageCount++;
         });
     });
+
+    inputFileEquipment.addEventListener('change', () => {
+        const files = inputFileEquipment.files;
+        fileFormData = new FormData();
     
-    buttonRegisterEquipment.addEventListener('click', () => {
+        Array.from(files).forEach(file => {
+            fileFormData.append('invoices[]', file);
+        });
+    });
+    
+    buttonRegisterEquipment.addEventListener('click', async() => {
         if(imageCount === 0) {
             alert('Tiene que colocar mínimo una imagen del equipo.');
             return;
         }
-        const data = gettingDataInputsEquipment(imagesFormData);
+        const data = await gettingDataInputsEquipment(imagesFormData, fileFormData);
+        console.log(data);
+        const result = await sendDataServerEquipment('../server/insert/equipment.php', data);
+        console.log(result)
     });
 }
 

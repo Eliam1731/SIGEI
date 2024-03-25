@@ -2,7 +2,7 @@ import { getDataServer } from "../../utilities/getDataServer.js";
 import { sendDataServerEquipment } from "../../utilities/sendDataEquipment.js";
 import { setCurrentDateCalendary } from "../../utilities/setCurrentDate.js";
 import { equipmentMachineryHTML, equipmentStoreHTML, equipmentSystemsHTML } from "../content-html/equipmentHTML.js";
-import { gettingDataInputsEquipment } from "./gettingData/equipmentGettingData.js";
+import { cleanInputsForm, generateCodeQR, gettingDataInputsEquipment } from "./gettingData/equipmentGettingData.js";
 
 const formsEquipment = {
     Sistemas: equipmentSystemsHTML,
@@ -20,9 +20,11 @@ const elementsDOM = {
     buttonRegister: 'sendDataDevices',
     inputImage: 'imageDevices',
     inputFile: 'invoiceDevices',
+    imageQR: 'imageCodeQR'
 }
 
 const functionalitiesRegisterEquipment = async() => {
+    const imageQR = document.getElementById('imageCodeQR');
     const selectBrandEquipment = document.getElementById(elementsDOM.selectBrand);
     const everyBrand = await getDataServer('../server/data/brand.php');
     const selectCategories = document.getElementById(elementsDOM.selectCategories);
@@ -107,9 +109,20 @@ const functionalitiesRegisterEquipment = async() => {
             return;
         }
         const data = await gettingDataInputsEquipment(imagesFormData, fileFormData);
-        console.log(data);
         const result = await sendDataServerEquipment('../server/insert/equipment.php', data);
-        console.log(result)
+
+        if(result.status === 'success') {
+            alert(result.message);
+            cleanInputsForm('imageDevices', 'invoiceDevices');
+
+            secondSection.style.left = '-200%';
+            buttonReturnSection.style.right = '200%';
+
+            generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
+
+            return;
+        }
+        console.log(result.status);
     });
 }
 

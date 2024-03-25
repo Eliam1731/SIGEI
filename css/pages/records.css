@@ -86,3 +86,6 @@ main { display: flex; }
     margin: 1% 0 7% 5%;
     background: #833F0E;
 }
+#imageCodeQR {
+    display: none;
+}

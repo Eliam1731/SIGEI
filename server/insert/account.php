@@ -25,14 +25,20 @@
     $password = password_hash($data->newPasswordUser, PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, contraseña, frente_id, rol_id, correo_electronico)  VALUES (?, ?, ?, ?, ?, ?, ?);");
-    $stmt->bind_param("ssssiss", $name, $firstSurname, $secondSurname, $password, $frente,  $rol, $email);
+    $stmt->bindParam(1, $name);
+    $stmt->bindParam(2, $firstSurname);
+    $stmt->bindParam(3, $secondSurname);
+    $stmt->bindParam(4, $password);
+    $stmt->bindParam(5, $frente);
+    $stmt->bindParam(6, $rol);
+    $stmt->bindParam(7, $email);
 
     if ($stmt->execute()) {
       echo json_encode(["success" => true]);
     } else {
-      echo json_encode(["error" => $stmt->error]);
+      echo json_encode(["error" => $stmt->errorInfo()[2]]);
     }
 
-    $stmt->close();
-    $conn->close();
+    $stmt = null;
+    $conn = null;
 ?>

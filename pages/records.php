@@ -81,8 +81,11 @@
         <section id="root-forms">
 
         </section>
+
+        <img src="../images/img_QR.jpg" id="imageCodeQR">
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/records/index.js"></script>
 </body>

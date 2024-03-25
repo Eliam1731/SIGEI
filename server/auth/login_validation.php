@@ -32,12 +32,11 @@
         WHERE 
             usuarios.correo_electronico = ?
     ");
-    $stmt->bind_param("s", $email);
+    $stmt->bindParam(1, $email);
 
     $stmt->execute();
 
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
         if (password_verify($password, $user['contraseña'])) {
@@ -57,6 +56,6 @@
         echo json_encode(["error" => "El correo electrónico no existe."]);
     }
 
-    $stmt->close();
-    $conn->close();
+    $stmt = null;
+    $conn = null;
 ?>

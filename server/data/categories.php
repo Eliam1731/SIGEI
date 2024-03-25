@@ -10,15 +10,15 @@
     ORDER BY t1.Categoria_id
     ";
 
-    $result = $conn->query($sql);
+    $stmt = $conn->query($sql);
 
     $data = [];
-    while($row = $result->fetch_assoc()) {
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $data[$row['Nom_categoria']][] = $row['Nom_subcategoria'];
     }
 
-    $result->close();
-    $conn->close();
+    $stmt = null;
+    $conn = null;
 
     header('Content-Type: application/json');
     echo json_encode($data);

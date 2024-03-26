@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../css/components/label.css">
     <link rel="stylesheet" href="../css/components/inputs.css">
     <link rel="stylesheet" href="../css/components/select.css">
+    <link rel="stylesheet" href="../css/components/forms-employee.css">
     <link rel="stylesheet" href="../css/pages/records.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

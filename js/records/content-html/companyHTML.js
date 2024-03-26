@@ -13,8 +13,8 @@ export const companySystemsHTML = `
             <button class='button-action' type="button" id="buttonCreateCompany">Crear empresa</button>
         </form>
 
-        <form action="" id="formWork">
-            <div>
+        <form id="formWork">
+            <div class='first_div'>
                 <label for="nameWork">Nombre de la obra</label>
                 <input class='input-forms' type="text" id="nameWork" placeholder="Ejemplo: Eléctrica">
 
@@ -28,27 +28,24 @@ export const companySystemsHTML = `
                 <select id="companyBelongsWork">
                     <option>Seleccione una empresa</option>
                 </select>
+
+                <button class='button-action' id="nextForm" type='button'>Siguiente</button>
             </div>
 
-            <div>
-                <label for="foreheadAddWork">Seleccione los frentes</label>
-                <select id="foreheadAddWork">
-                    <option>No se ha seleccionado ningún frente</option>
-                </select>
+            <div class='second_div'>
+                <p>Seleccione los frentes que desea añadir a la obra.</p>
 
                 <div id="groupsForehead">
-                    <p>No se han añadido frentes</p>
+                    
                 </div>
-            </div>
 
-            <div>
                 <button class='button-action' id="buttonCreateWork"type='button'>Crear nueva obra</button>
             </div>
         </form>
 
         <nav>
             <ul>
-                <li class="formCompany">Crear nueva empresa</li>
+                <li class="formCompany li-selected">Crear nueva empresa</li>
                 <li class="formWork">Crear nueva obra</li>
             </ul>
         </nav>

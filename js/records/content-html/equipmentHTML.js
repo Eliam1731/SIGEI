@@ -8,7 +8,7 @@ export const equipmentSystemsHTML = `
             <label for="select__category">Elija la categoría</label>
             <div class="container-category">
                 <select id="select__category">
-                    <option>No se ha seleccionado una categoría</option>
+                    <option value='No se ha seleccionado una categoría'>No se ha seleccionado una categoría</option>
                 </select>
 
                 <button id="addCategory" type="button" title="Agregar nueva categoría">
@@ -19,7 +19,7 @@ export const equipmentSystemsHTML = `
             <label for="brandDevices">Marca</label>
             <div class="container-brand">
                 <select id="brandDevices">
-                    <option>No se ha seleccionado una marca</option>
+                    <option value='No se ha seleccionado una marca'>No se ha seleccionado una marca</option>
                 </select>
 
                 <button id="addBrand" type="button" title="Agregar nueva marca">

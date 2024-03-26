@@ -1,3 +1,5 @@
+import { sendDataServer } from "../../../utilities/sendDataServer.js";
+
 const elementsFormCompany = [
     'nameCompany',
     'shortName',
@@ -29,7 +31,7 @@ const validateData = ( object ) => {
     return true;
 }
 
-export const getDataFormCompany = () => {
+export const getDataFormCompany = async() => {
     const objectValueInputs = elementsFormCompany.reduce((acc, id) => {
         const input = document.getElementById(id);
         acc[id] = input.value.trim();
@@ -40,8 +42,12 @@ export const getDataFormCompany = () => {
     const resultOfValidation = validateData( objectValueInputs );
 
     if(resultOfValidation) {
-        console.log(objectValueInputs);
-        console.log('Se ha enviado la información');
+        try {
+            const response = await sendDataServer('../server/insert/company.php', objectValueInputs);
+            alert(response);
+        } catch(error) {
+            console.error(error);
+        }
 
         cleanValueInputs(objectValueInputs);
     }

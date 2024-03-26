@@ -15,7 +15,7 @@ const inputsIDs = [
 ];
 
 export const generateCodeQR = ( image, equipmentID, nameImage  ) => {
-    image.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${equipmentID}`;
+    image.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${nameImage}`;
 
     image.addEventListener('load', ()=> {
         let pathImg = image.getAttribute('src');
@@ -25,13 +25,6 @@ export const generateCodeQR = ( image, equipmentID, nameImage  ) => {
         .then( response => response.blob())
         .then(blob => saveAs( blob, fileName + '.png' ));
     });
-
-    let pathImg = image.getAttribute('src');
-    let fileName = nameImage;
-
-    fetch(pathImg)
-    .then( response => response.blob())
-    .then(blob => saveAs( blob, fileName + '.png' ));
 }
 
 export const cleanInputsForm = ( inputImage, inputFile ) => {
@@ -39,9 +32,14 @@ export const cleanInputsForm = ( inputImage, inputFile ) => {
     const inputRestoreValue = inputsIDs.concat(inputsFile);
 
     inputRestoreValue.forEach(element => {
-        if(element === 'select__category' || element === 'brandDevices') return;
-
         const input = document.getElementById(element);
+
+        if(element === 'select__category' || element === 'brandDevices') {
+            input.selectedIndex = 0;
+
+            return
+        };
+        
         input.value = '';
     });
 }

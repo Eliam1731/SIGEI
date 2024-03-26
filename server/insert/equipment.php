@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'serviceTag' => $_POST['serviceTag'],
         'referenceCompaq' => $_POST['referenceCompaq'],
         'addressEthernet' => $_POST['addressEthernet'],
-        'status' => '1'
-    ];
+        'status' => '1',
+];
 
     $stmt = $conn->prepare("SELECT Subcategoria_id FROM subcategoria WHERE Nom_subcategoria = :select_category");
     $stmt->bindParam(':select_category', $data['select_category']);
@@ -36,75 +36,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['status'] = 'error';
         $response['message'] = 'El número de serie ya existe. Por favor, introduce otro.';
     } else {
-        $conn->beginTransaction();
+        $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");
+        $stmt->bindParam(':referenceCompaq', $data['referenceCompaq']);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        try {
-            $stmt = $conn->prepare("INSERT INTO equipos_informaticos (
-                Id_subcategoria,
-                Id_marca,
-                Modelo,
-                Num_serie,
-                Especificacion,
-                Fecha_compra,
-                Fecha_garantia,
-                Importe,
-                Direccion_mac_wifi,
-                Direccion_mac_ethernet,
-                Num_ref_compaq,
-                Service_tag,
-                Comentarios,
-                Status_id
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
-            $stmt->execute([
-                $data['subcategoryId'],
-                $data['brandDevices'],
-                $data['modelDevices'],
-                $data['serialNumber'],
-                $data['specificationDevices'],
-                $data['dateBuy'],
-                $data['dateExpiresWarranty'],
-                $data['amountDevices'],
-                $data['addressMacWifi'],
-                $data['addressEthernet'],
-                $data['referenceCompaq'],
-                $data['serviceTag'],
-                $data['detailsExtraDevices'],
-                $data['status']
-            ]);
+        if ($row) {
+            $response['status'] = 'error';
+            $response['message'] = 'El número de referencia de Compaq ya existe. Por favor, introduce otro.';
+        } else {
+            $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
+            $stmt->bindParam(':serviceTag', $data['serviceTag']);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $equipment_id = $conn->lastInsertId();
-            $formatted_equipment_id = 'OPCIC-COM-' . str_pad($equipment_id, 5, '0', STR_PAD_LEFT);
+            if ($row) {
+                $response['status'] = 'error';
+                $response['message'] = 'El Service tag del equipo ya existe. Por favor, introduce otro.';
+            } else {
+                $conn->beginTransaction();
 
-            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-                $imageName = $_FILES['images']['name'][$i];
-                $imageType = $_FILES['images']['type'][$i];
-                $imageData = file_get_contents($_FILES['images']['tmp_name'][$i]);
-            
-                $stmt = $conn->prepare("INSERT INTO imagenes (Nombre, Tipo_mime, Datos_imagen, Equipo_id) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$imageName, $imageType, $imageData, $equipment_id]);
-            }
+                try {
+                    $stmt = $conn->prepare("INSERT INTO equipos_informaticos (
+                        Id_subcategoria,
+                        Id_marca,
+                        Modelo,
+                        Num_serie,
+                        Especificacion,
+                        Fecha_compra,
+                        Fecha_garantia,
+                        Importe,
+                        Direccion_mac_wifi,
+                        Direccion_mac_ethernet,
+                        Num_ref_compaq,
+                        Service_tag,
+                        Comentarios,
+                        Status_id
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
+                    $stmt->execute([
+                        $data['subcategoryId'],
+                        $data['brandDevices'],
+                        $data['modelDevices'],
+                        $data['serialNumber'],
+                        $data['specificationDevices'],
+                        $data['dateBuy'],
+                        $data['dateExpiresWarranty'],
+                        $data['amountDevices'],
+                        $data['addressMacWifi'],
+                        $data['addressEthernet'],
+                        $data['referenceCompaq'],
+                        $data['serviceTag'],
+                        $data['detailsExtraDevices'],
+                        $data['status'],
+                    ]);
+    
+                    $equipment_id = $conn->lastInsertId();
+                    $formatted_equipment_id = 'OPCIC-COM-' . str_pad($equipment_id, 5, '0', STR_PAD_LEFT);
+    
+                    for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                        $imageName = $_FILES['images']['name'][$i];
+                        $imageType = $_FILES['images']['type'][$i];
+                        $imageData = file_get_contents($_FILES['images']['tmp_name'][$i]);
+    
+                        $stmt = $conn->prepare("INSERT INTO imagenes (Nombre, Tipo_mime, Datos_imagen, Equipo_id) VALUES (?, ?, ?, ?)");
+                        $stmt->execute([$imageName, $imageType, $imageData, $equipment_id]);
+                    }
+    
+                    if (isset($_FILES['invoices'])) {
+                        for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
+                            $invoiceContent = file_get_contents($_FILES['invoices']['tmp_name'][$i]);
+    
+                            $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
+                            $stmt->execute([$invoiceContent, $equipment_id]);
+                        }
+                    }
+    
+                    $conn->commit();
+    
+                    $response['status'] = 'success';
+                    $response['message'] = 'El registro se realizó correctamente.';
+                    $response['equipment_id'] = $equipment_id;
+                    $response['formatted_equipment_id'] = $formatted_equipment_id;
+                } catch (Exception $e) {
+                    $conn->rollback();
 
-            if (isset($_FILES['invoices'])) {
-                for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
-                    $invoiceContent = file_get_contents($_FILES['invoices']['tmp_name'][$i]);
-
-                    $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
-                    $stmt->execute([$invoiceContent, $equipment_id]);
+                    $response['status'] = 'error';
+                    $response['message'] = 'Hubo un error al realizar el registro.' . $e->getMessage();
                 }
             }
-
-            $conn->commit();
-
-            $response['status'] = 'success';
-            $response['message'] = 'El registro se realizó correctamente.';
-            $response['equipment_id'] = $equipment_id;
-            $response['formatted_equipment_id'] = $formatted_equipment_id;
-        } catch (Exception $e) {
-            $conn->rollback();
-
-            $response['status'] = 'error';
-            $response['message'] = 'Hubo un error al realizar el registro.' . $e->getMessage();
         }
     }
 }

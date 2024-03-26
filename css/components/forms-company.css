@@ -24,9 +24,46 @@
     height: 100%;
     width: 80%;
     position: relative;
-    display: flex;
+    background: #FFFFFF;
+    display: none;
     flex-direction: column;
 }
+#sectionCompany #formWork .first_div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+#sectionCompany #formWork .first_div label { padding-bottom: 3.5%; }
+#sectionCompany #formWork .first_div input { margin-bottom: 3%; height: 8%; width: 65%; box-sizing: border-box;}
+#sectionCompany #formWork .first_div select {
+    height: 8%;
+    width: 65%;
+}
+#sectionCompany #formWork .first_div button {
+    height: 8%;
+    position: absolute;
+    bottom: 0;
+    width: 65%;
+}
+#sectionCompany #formWork .second_div {
+    height: 100%;
+    width: 100%;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    /* right: 200%; */
+}
+#sectionCompany #formWork .second_div button {
+    height: 9%;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+}
+
+
+
 /* Estilos de la barra de navegaciòn */
 #sectionCompany nav {
     top: 0;

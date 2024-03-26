@@ -122,7 +122,7 @@ const functionalitiesRegisterEquipment = async() => {
 
             return;
         }
-        console.log(result.status);
+        alert(result.message);
     });
 }
 

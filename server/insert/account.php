@@ -22,6 +22,14 @@
     $frente = $data->foreheadUser;
     $email = $data->newEmailUser;
 
+    // Verificar si el correo electrónico ya existe xd 
+    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
+    $stmt->execute([$email]);
+    if($stmt->fetch()) {
+        echo json_encode(["error" => "El correo electrónico ya está en uso. Intenta con otro correo electrónico."]);
+        exit;
+    }
+
     $password = password_hash($data->newPasswordUser, PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, contraseña, frente_id, rol_id, correo_electronico)  VALUES (?, ?, ?, ?, ?, ?, ?);");

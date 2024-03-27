@@ -16,6 +16,24 @@
             "shortName" => $obj->shortName
         ];
 
+        // Verificar si el nombre de la empresa ya existe xd 
+        $stmt = $conn->prepare("SELECT * FROM empresas WHERE Nom_empresa = ?");
+        $stmt->execute([$data["nameCompany"]]);
+        if($stmt->fetch()) {
+            header('Content-Type: application/json');
+            echo json_encode(["error" => "companyExisting", "message" => $messages["companyExisting"]]);
+            exit;
+        }
+
+        // Verificar si el nombre corto de la empresa ya existe xd
+        $stmt = $conn->prepare("SELECT * FROM empresas WHERE Nom_corto = ?");
+        $stmt->execute([$data["shortName"]]);
+        if($stmt->fetch()) {
+            header('Content-Type: application/json');
+            echo json_encode(["error" => "shortNameCompany", "message" => $messages["shortNameCompany"]]);
+            exit;
+        }
+
         try {
             $insertData = $conn->prepare("INSERT INTO empresas (Nom_empresa, Nom_corto) VALUES (?, ?)");
             $insertData->execute([

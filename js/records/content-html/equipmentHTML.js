@@ -27,14 +27,20 @@ export const equipmentSystemsHTML = `
                 </button>
             </div>
 
+            <label for="codeEquipment">Coloque el código solo si el equipo ya cuenta con uno</label>
+            <div class="containe__codeequipment">
+                <div><span>OPCIC-COM-</span></div>
+                <input type="text" placeholder="Ejemplo: 00012" id="codeEquipment">
+            </div>
+
             <label for="modelDevices">Modelo</label>
             <input id="modelDevices" type="text" placeholder="Ejemplo: SNL-002" class="input-forms">
-
-            <label for="serialNumber">Número de serie</label>
-            <input id="serialNumber" type="text" placeholder="Ejemplo: 080145780123" class="input-forms">
         </div>
 
         <div> 
+            <label for="serialNumber">Número de serie</label>
+            <input id="serialNumber" type="text" placeholder="Ejemplo: 080145780123" class="input-forms">
+
             <label for="dateBuy">Fecha de compra</label>
             <input type="date" id="dateBuy" class="input-forms">
 
@@ -43,9 +49,6 @@ export const equipmentSystemsHTML = `
 
             <label for="amountDevices">Importe del equipo</label>
             <input id="amountDevices" type="text" placeholder="Ejemplo: 20,000.00 MXN" class="input-forms">
-
-            <label for="addressMacWifi">Dirección MAC WI-FI</label>
-            <input id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" class="input-forms">
         </div>
 
         <div> 
@@ -78,9 +81,23 @@ export const equipmentSystemsHTML = `
             <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compaq</label>
             <input id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" class="input-forms modify">
 
+            <div id='openWindowAddress' class="container_messageAddress">
+                <span>Agregar direcciones MAC</span>
+                <img src="../images/images-devices/ads_click.svg" alt="">
+            </div>
+        </div>
+
+        <section class="window_address">
             <label for="addressEthernet" class='modify-label'>Dirección MAC Ethernet</label>
             <input id="addressEthernet" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" class="input-forms modify">
-        </div>
+
+            <label for="addressMacWifi">Dirección MAC WI-FI</label>
+            <input id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" class="input-forms">
+
+            <div>
+                <button class='button-action' id="accept_address" type='button'>Aceptar</button>
+            </div>
+        </section>
 
         <div>
             <button id="sendDataDevices" type="button" class="button-action">Registrar equipo</button>

@@ -20,7 +20,10 @@ const elementsDOM = {
     buttonRegister: 'sendDataDevices',
     inputImage: 'imageDevices',
     inputFile: 'invoiceDevices',
-    imageQR: 'imageCodeQR'
+    imageQR: 'imageCodeQR',
+    buttonAddress: 'accept_address',
+    windowAddress: '.window_address',
+    divOpenWindowAddress: 'openWindowAddress'
 }
 
 const functionalitiesRegisterEquipment = async() => {
@@ -36,6 +39,9 @@ const functionalitiesRegisterEquipment = async() => {
     const buttonRegisterEquipment = document.getElementById(elementsDOM.buttonRegister);
     const inputImageDevices = document.getElementById(elementsDOM.inputImage);
     const inputFileEquipment = document.getElementById(elementsDOM.inputFile);  
+    const buttonAddress = document.getElementById( elementsDOM.buttonAddress );
+    const windowAddres = document.querySelector( elementsDOM.windowAddress );
+    const openWindowAddress = document.getElementById( elementsDOM.divOpenWindowAddress );
     let imagesFormData;
     let fileFormData;
     let imageCount = 0;
@@ -124,6 +130,9 @@ const functionalitiesRegisterEquipment = async() => {
         }
         alert(result.message);
     });
+
+    buttonAddress.addEventListener('click', ()=> windowAddres.style.display = 'none');
+    openWindowAddress.addEventListener('click', () => windowAddres.style.display = 'flex');
 }
 
 export const formRegisterEquipment = ( foreheadCurrent ) => {

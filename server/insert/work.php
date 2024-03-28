@@ -15,7 +15,6 @@
     $empresaId = $data->Empresa_id;
     $frenteId = $data->Frente_id;
 
-    // Validar que los valores no se repitan xd
     $stmt = $conn->prepare("SELECT * FROM obras WHERE Nombre_obra = ? OR Nom_corto_obra = ? OR Num_obra = ?");
     $stmt->bindParam(1, $nombreObra);
     $stmt->bindParam(2, $nomCortoObra);

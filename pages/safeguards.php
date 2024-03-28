@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/resources/resetStyle.css">
     <link rel="stylesheet" href="../css/components/navegation.css">
     <link rel="stylesheet" href="../css/components/button.css">
+    <link rel="stylesheet" href="../css/pages/safeguards.css">
     <title>Resguardos</title>
 </head>
 <body>
@@ -34,7 +35,55 @@
     </header>
 
     <main>
-        <h1>Safeguards</h1>
+        <section>
+            <article class="first_article">
+                <div class="first_div">
+                    <label for="">Escriba el código del equipo</label>
+                    
+                    <div class="container__codeEquipment">
+                        <div>
+                            <span>OPCIC-COM-</span>
+                        </div>
+                        <input type="text" placeholder="Ejemplo: 00012" id="codeEquipment">
+                        <div>
+                            <button id="searchEquipment">
+                                <img src="../images/safeguards/search.svg" alt="">
+                            </button>
+                        </div>
+                    </div>
+
+                    <h2>Elegir empleado resguardante</h2>
+
+                    <p>Antes de seleccionar una obra, por favor elija primero una empresa</p>
+
+                    <select id="companyBelongsEmployee">
+                        <option value="">Elija la empresa a la que pertenece el empleado</option>
+                    </select>
+
+                    <select id="workBelongsEmployee" disabled>
+                        <option value="">Elija la obra a la que pertenece el empleado</option>
+                    </select>
+
+                    <select id="forehead_belongs" disabled>
+                        <option value="">Elija el frente a la que pertenece el empleado</option>
+                    </select>
+
+                    <select id="protectiveEmployee" disabled>
+                        <option value="">No se ha seleccionado ningún empleado</option>
+                    </select>
+                </div>
+
+                <div class="second_div">
+
+                </div>
+            </article>
+        </section>
+        <nav>
+            <ul>
+                <li>Autorizar resguardos</li>
+                <li>Devolución resguardos</li>
+            </ul>
+        </nav>
     </main>
 
     <script type="module" src="../js/utilities/profileUser.js"></script>

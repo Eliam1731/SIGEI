@@ -1,0 +1,111 @@
+main { display: flex; }
+main section {
+    height: 100%;
+    width: 85%;
+    position: relative;
+}
+main section .first_article {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+main section .first_article .first_div {
+    height: 100%;
+    width: 40%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+main section .first_article .first_div label {
+    padding: 5%;
+    font-weight: 700;
+    color: #424242;
+    font-size: 1.1em;
+}
+main section .first_article .first_div .container__codeEquipment {
+    height: 7%;
+    width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    margin: 2% 0 10% 5%;
+}
+main section .first_article .first_div .container__codeEquipment div {
+    height: 100%;
+    width: 30%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #424242;
+    border-right: 2px solid #EEEEEE;
+}
+main section .first_article .first_div .container__codeEquipment div span { user-select: none; }
+main section .first_article .first_div .container__codeEquipment input {
+    height: 100%;
+    width: 55%;
+    position: relative;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    outline: none;
+    padding-left: 5%;
+}
+main section .first_article .first_div .container__codeEquipment div:last-child {
+    height: 100%;
+    width: 15%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #424242;
+    border-left: 2px solid #EEEEEE;
+}
+main section .first_article .first_div .container__codeEquipment div:last-child button {
+    height: 100%;
+    width: 100%;
+    border: none;
+    background: none;
+    overflow: hidden;
+}
+main section .first_article .first_div .container__codeEquipment div:last-child button img { width: 45%; }
+main section .first_article .first_div .container__codeEquipment div:last-child button:hover { background: #EEEEEE; }
+h2, p { padding-left: 5%; }
+main section .first_article .first_div select {
+    height: 6%;
+    width: 90%;
+    box-sizing: border-box;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    margin: 5% 0 3% 5%;
+}
+main section .first_article .first_div select option {
+    padding-left: 5%;
+}
+main section .first_article .first_div h2 {
+    font-size: 1.3em;
+    font-weight: 900;
+    color: #212121;
+}
+
+main section .first_article .second_div {
+    height: 100%;
+    width: 60%;
+    position: relative;
+}
+
+
+
+
+main nav {
+    height: 100%;
+    width: 15%;
+    background: blueviolet;
+    position: relative;
+}

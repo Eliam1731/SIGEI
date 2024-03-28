@@ -72,6 +72,41 @@
     margin-bottom: 5%;
     box-sizing: border-box;
 }
+#form-equipment section:first-child .containe__codeequipment {
+    height: 10%;
+    width: 88.9%;
+    margin-bottom: 5%;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 5px;
+}
+#form-equipment section:first-child .containe__codeequipment div {
+    height: 100%;
+    width: 30%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 2px solid #EEEEEE;
+    color: #757575;
+}
+#form-equipment section:first-child .containe__codeequipment div { user-select: none; }
+#form-equipment section:first-child .containe__codeequipment input {
+    height: 100%;
+    width: 70%;
+    padding: 5%;
+    position: relative;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background: none;
+}
 #form-equipment section:first-child .container-brand select {
     height: 100%;
     width: 85.5%;
@@ -137,6 +172,53 @@
 #form-equipment #section-two div:last-child button {
     height: 80%;
     width: 40%;
+}
+#form-equipment #section-two .second-container__section .container_messageAddress {
+    height: 9%;
+    width: 85%;
+    margin-left: 5%;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+}
+#form-equipment #section-two .second-container__section .container_messageAddress span {
+    padding-right: 3%;
+}
+.window_address {
+    height: 60%;
+    width: 50%;
+    position: absolute;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    top: 10%;
+    left: 20%;
+    background: #FFFFFF;
+    border: 2px solid #E0E0E0;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px 0px #424242;
+}
+.window_address label { margin-left: 5%; }
+.window_address input {
+    margin-left: 5%;
+    height: 13%;
+}
+.window_address div {
+    height: 15% !important;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.window_address div #accept_address {
+    height: 100%;
+    width: 50%;
+    position: relative;
 }
 #returnSectionEquipment {
     top: 3%;

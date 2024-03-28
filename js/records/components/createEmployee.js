@@ -1,3 +1,4 @@
+import { getDataServer } from "../../utilities/getDataServer.js";
 import { employeeMachineryHTML, employeeStoreHTML, employeeSystemsHTML } from "../content-html/employeeHTML.js"
 
 const formEmployee = {
@@ -18,8 +19,39 @@ const inputsIDs = [
     'companyBelongs',
     'workBelongs',
     'forehead_belongs',
-    'observationEmployee',
+    'email',
 ];
+
+const insertingDataSelect = async(selectCompany, selectWork, selectForehead) => {
+    const data = await getDataServer('../server/data/business.php')
+
+    data.company.forEach( company => {
+        const option = document.createElement('option');
+
+        option.value = company[0];
+        option.textContent = company[1];
+
+        selectCompany.appendChild(option);
+    });
+
+    data.forehead.forEach( forehead => {
+        const option = document.createElement('option');
+
+        option.value = forehead[0];
+        option.textContent = forehead[1];
+
+        selectForehead.appendChild(option);
+    });
+
+    data.work.forEach ( work => {
+        const option = document.createElement('option');
+
+        option.value = work[0];
+        option.textContent = work[1];
+
+        selectWork.appendChild(option);
+    });
+}
 
 const cleanInputs = () => {
     inputsIDs.forEach( id => {
@@ -30,6 +62,11 @@ const cleanInputs = () => {
 
 const functionalitiesFormSystem = () => {
     const form = document.getElementById( elementsDOM.formEmployee );
+    const selectCompany = document.getElementById('companyBelongs');
+    const selectWork = document.getElementById('workBelongs');
+    const selectForehead = document.getElementById('forehead_belongs');
+
+    insertingDataSelect(selectCompany, selectWork, selectForehead);
 
     form.addEventListener('submit', async(event) => {
         event.preventDefault();
@@ -45,6 +82,7 @@ const functionalitiesFormSystem = () => {
             const data = await response.text();
             if(data) {
                 cleanInputs();
+                console.log(data);
                 alert(data);
 
                 return;
@@ -52,8 +90,6 @@ const functionalitiesFormSystem = () => {
         } catch(error) {
             console.log(error);
         }
-
-
     });
 }
 

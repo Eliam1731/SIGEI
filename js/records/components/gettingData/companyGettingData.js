@@ -44,11 +44,14 @@ export const getDataFormCompany = async() => {
     if(resultOfValidation) {
         try {
             const response = await sendDataServer('../server/insert/company.php', objectValueInputs);
+            if(response.error) {
+                alert(response.message);
+                return
+            }
             alert(response);
+            cleanValueInputs(objectValueInputs);
         } catch(error) {
             console.error(error);
         }
-
-        cleanValueInputs(objectValueInputs);
     }
 }

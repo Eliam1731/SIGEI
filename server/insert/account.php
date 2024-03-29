@@ -1,52 +1,51 @@
 <?php
     include '../config/connection_db.php';
 
-    $json = file_get_contents('php://input');
-    error_log("JSON received: " . $json);
+    $messages = [
+        "emailExisting" => 'El correo electrónico ya está en uso. Intenta con otro correo electrónico.',
+        "succesful" => '¡Felicidades! Tu registro se ha realizado correctamente.',
+        "failed" => 'Ha ocurrido un error al registrar el usuario. Por favor, inténtalo más tarde.'
+    ];
 
-    $data = json_decode($json);
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $json = file_get_contents('php://input');
+        $obj = json_decode($json);
+        $data = [
+            "name" => $obj->name,
+            "firstSurname" => $obj->firstSurname,
+            "secondSurname" => $obj->secondSurname,
+            "password" => $obj->password,
+            "roleId" => $obj->roleId,
+            "email" => $obj->email,
+            "departmentId" => $obj->departmentId,
+        ];
 
-    if ($data === null) {
-        echo json_encode(["error" => "JSON inválido"]);
-        exit;
+        // Verificar si el correo electrónico ya existe
+        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
+        $stmt->execute([$data["email"]]);
+        if($stmt->fetch()) {
+            header('Content-Type: application/json');
+            echo json_encode(["error" => "emailExisting", "message" => $messages["emailExisting"]]);
+            exit;
+        }
+
+        try {
+            $insertData = $conn->prepare("INSERT INTO usuarios (Nombre, Primer_apellido, Segundo_apellido, Contraseña, Rol_id, correo_electronico, departamento_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $insertData->execute([
+                $data["name"],
+                $data["firstSurname"],
+                $data["secondSurname"],
+                $data["password"],
+                $data["roleId"],
+                $data["email"],
+                $data["departmentId"],
+            ]);
+
+            header('Content-Type: application/json');
+            print json_encode($messages["succesful"]);
+        } catch(Exception $error) {
+            header('Content-Type: application/json');
+            print json_encode($messages['failed'], $error->getMessage());
+        }
     }
-
-    $name = $data->firstNameUser;
-    if (isset($data->secondNameUser)) {
-        $name .= " " . $data->secondNameUser;
-    }
-
-    $firstSurname = $data->firstSurnameUser;
-    $secondSurname = $data->secondSurnameUser;
-    $rol = $data->userRol;
-    $frente = $data->foreheadUser;
-    $email = $data->newEmailUser;
-
-    // Verificar si el correo electrónico ya existe xd 
-    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
-    $stmt->execute([$email]);
-    if($stmt->fetch()) {
-        echo json_encode(["error" => "El correo electrónico ya está en uso. Intenta con otro correo electrónico."]);
-        exit;
-    }
-
-    $password = password_hash($data->newPasswordUser, PASSWORD_DEFAULT);
-
-    $stmt = $conn->prepare("INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, contraseña, frente_id, rol_id, correo_electronico)  VALUES (?, ?, ?, ?, ?, ?, ?);");
-    $stmt->bindParam(1, $name);
-    $stmt->bindParam(2, $firstSurname);
-    $stmt->bindParam(3, $secondSurname);
-    $stmt->bindParam(4, $password);
-    $stmt->bindParam(5, $frente);
-    $stmt->bindParam(6, $rol);
-    $stmt->bindParam(7, $email);
-
-    if ($stmt->execute()) {
-      echo json_encode(["success" => true]);
-    } else {
-      echo json_encode(["error" => $stmt->errorInfo()[2]]);
-    }
-
-    $stmt = null;
-    $conn = null;
 ?>

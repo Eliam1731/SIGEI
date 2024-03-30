@@ -11,7 +11,7 @@
         'primer_apellido' => $_SESSION['primer_apellido'],
         'segundo_apellido' => $_SESSION['segundo_apellido'],
         'correo_electronico' => $_SESSION['correo_electronico'],
-        'frente_nombre' => $_SESSION['frente_nombre'],
+        'departamento_nombre' => $_SESSION['departamento_nombre'],
         'rol_nombre' => $_SESSION['rol_nombre'],
     ];
 

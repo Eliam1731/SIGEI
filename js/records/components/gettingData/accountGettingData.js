@@ -5,7 +5,7 @@ const inputAccountIDs = [
   "secondNameUser",
   "firstSurnameUser",
   "secondSurnameUser",
-  "foreheadUser",
+  "departmentId",
   "userRol",
   "newEmailUser",
   "confirmEmailUser",
@@ -13,7 +13,7 @@ const inputAccountIDs = [
   "confirmPasswordUser",
 ];
 
-const excludedKeys = ['newEmailUser', 'confirmEmailUser', 'newPasswordUser', 'confirmPasswordUser', 'foreheadUser', 'userRol'];
+const excludedKeys = ['newEmailUser', 'confirmEmailUser', 'newPasswordUser', 'confirmPasswordUser', 'departmentId', 'userRol'];
 
 const message = {
   notSpecialCharacters: 'Solo los campos de correo electrónico y contraseñas deben tener números y caracteres especiales.',
@@ -61,16 +61,12 @@ const validateData = (objectDataInputs) => {
 const resetInputFields = (inputAccountIDs, objectDataInputs) => {
   inputAccountIDs.forEach((element) => {
     const elementHTML = document.getElementById(element); 
-    if (element === "foreheadUser" || element === "userRol") {
+    if (element === "departmentId" || element === "userRol") {
         elementHTML.firstElementChild.setAttribute('selected', 'selected');
         return;
     }
     elementHTML.value = '';
   });
-
-  if (notStringEmpty.test(objectDataInputs.secondNameUser)) delete objectDataInputs.secondNameUser;
-  delete objectDataInputs.confirmEmailUser;
-  delete objectDataInputs.confirmPasswordUser;
 }
 
 export const gettingDataAccountSystems = async () => {
@@ -83,13 +79,30 @@ export const gettingDataAccountSystems = async () => {
     return acc;
   }, {});
 
+  if (!notStringEmpty.test(objectDataInputs.secondNameUser)) {
+    objectDataInputs.firstNameUser = `${objectDataInputs.firstNameUser} ${objectDataInputs.secondNameUser}`;
+  }
+
   objectDataInputs.newEmailUser = `${objectDataInputs.newEmailUser}${DOMAIN}`;
   objectDataInputs.confirmEmailUser = `${objectDataInputs.confirmEmailUser}${DOMAIN}`;
 
   const resultValidateData = validateData(objectDataInputs);
 
   if (resultValidateData) {
-    if (await sendDataServer(SERVER_PATH, objectDataInputs)) {
+    if (notStringEmpty.test(objectDataInputs.secondNameUser)) delete objectDataInputs.secondNameUser;
+    delete objectDataInputs.confirmEmailUser;
+    delete objectDataInputs.confirmPasswordUser;
+
+    console.log(objectDataInputs);
+    const response = await sendDataServer(SERVER_PATH, objectDataInputs);
+    console.log(response);
+
+    if(response.error === 'emailExisting') {
+      alert(response.message);
+      return;
+    }
+
+    if (response) {
       alert("El registro fue realizado con exito");
       resetInputFields(inputAccountIDs, objectDataInputs);
       secondSectionAccount.style.marginLeft = "-200%";

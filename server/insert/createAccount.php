@@ -42,10 +42,10 @@
             ]);
 
             header('Content-Type: application/json');
-            print json_encode(["message" => $messages["succesful"]]);
+            print json_encode($messages["succesful"]);
         } catch(Exception $error) {
             header('Content-Type: application/json');
-            print json_encode(["error" => $messages['failed'], "message" => $error->getMessage()]);
+            print json_encode($messages['failed'], $error->getMessage());
         }
     }
 ?>

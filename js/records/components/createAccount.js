@@ -1,4 +1,3 @@
-import { embedFrontsInSelect } from "../../utilities/frontsEmbedSelect.js";
 import { accountMachineryHTML, accountStoreHTML, accountSystemsHTML, notPermissionCreateAccount } from "../content-html/accountHTML.js";
 import { gettingDataAccountSystems } from "./gettingData/accountGettingData.js";
 
@@ -25,13 +24,11 @@ const functionalitiesSystemsForm = ( root ) => {
     const secondSectionAccount = document.querySelector('.second-container__account');
     const nextSectionButton = document.getElementById('nextSectionAccount');
     const prevSectionButton = document.getElementById('returnSection');
-    const foreheadUser = document.getElementById('foreheadUser');
     const sendDataAccountButton = document.getElementById('accountSendData');
 
     nextSectionButton.addEventListener('click', () => nextSectionAccount(secondSectionAccount, prevSectionButton ));
     prevSectionButton.addEventListener('click', () => prevSectionAccount( secondSectionAccount, prevSectionButton ));
     sendDataAccountButton.addEventListener('click', () => gettingDataAccountSystems());
-    embedFrontsInSelect(foreheadUser, true);
 }
 
 const functionalitiesStoreForm = ( root ) => {

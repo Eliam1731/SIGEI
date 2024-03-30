@@ -2,7 +2,7 @@
     include '../config/connection_db.php';
 
     $messages = [
-        "employeeExisting" => 'No es posible registrar este empleado porque ya está en uso. Intenta con otro nombre.',
+        "numberSocialExisting" => 'El número de seguro social ya está en uso. Intenta con otro número.',
         "emailExisting" => 'El correo electrónico ya está en uso. Intenta con otro correo electrónico.',
         "succesful" => '¡Felicidades! Tu registro se ha realizado correctamente.',
         "failed" => 'Ha ocurrido un error al registrar el empleado. Por favor, inténtalo más tarde.'
@@ -11,31 +11,31 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $formData = $_POST;
         $data = [
-            "nameEmployee" => $formData['nameEmployee'],
-            "firstSurname" => $formData['firstSurname'],
-            "secondSurname" => $formData['secondSurname'],
-            "numberSocial" => $formData['numberSocial'],
-            "companyBelongs" => $formData['companyBelongs'],
-            "workBelongs" => $formData['workBelongs'],
+            "nameEmployee" => $formData['name'],
+            "firstSurname" => $formData['first_surname'],
+            "secondSurname" => $formData['second_surname'],
+            "numberSocial" => $formData['number_social'],
+            "companyBelongs" => $formData['company_belongs'],
+            "workBelongs" => $formData['work_belongs'],
             "forehead_belongs" => $formData['forehead_belongs'],
             "email" => $formData['email'],
         ];
 
-        // Verificar si el número de seguro social ya existe xd
+        // Verificar si el número de seguro social ya existe
         $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Num_seguro_social = ?");
         $stmt->execute([$data["numberSocial"]]);
         if($stmt->fetch()) {
             header('Content-Type: application/json');
-            echo json_encode(["error" => "employeeExisting", "message" => $messages["employeeExisting"]]);
+            echo json_encode(["error" => "numberSocialExisting", "message" => $messages["numberSocialExisting"]], JSON_UNESCAPED_UNICODE);
             exit;
         }
 
-        // Verificar si el correo electrónico ya existe xd
+        // Verificar si el correo electrónico ya existe
         $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Correo_electronico = ?");
         $stmt->execute([$data["email"]]);
         if($stmt->fetch()) {
             header('Content-Type: application/json');
-            echo json_encode(["error" => "emailExisting", "message" => $messages["emailExisting"]]);
+            echo json_encode(["error" => "emailExisting", "message" => $messages["emailExisting"]], JSON_UNESCAPED_UNICODE);
             exit;
         }
 
@@ -53,10 +53,10 @@
             ]);
 
             header('Content-Type: application/json');
-            print json_encode($messages["succesful"]);
+            print json_encode(["message" => $messages["succesful"]], JSON_UNESCAPED_UNICODE);
         } catch(Exception $error) {
             header('Content-Type: application/json');
-            print json_encode($messages['failed'], $error->getMessage());
+            print json_encode(["error" => $messages['failed'], "message" => $error->getMessage()], JSON_UNESCAPED_UNICODE);
         }
     }
 ?>

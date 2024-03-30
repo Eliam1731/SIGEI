@@ -19,13 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'referenceCompaq' => $_POST['referenceCompaq'],
         'addressEthernet' => $_POST['addressEthernet'],
         'status' => '1',
-        'codigo' => $_POST['codeEquipment'],
+        'codigo' => $_POST['codeEquipment'] ?? null,
     ];
-
-     // Si el código es una cadena vacía, establecerlo en null
-     if ($data['codigo'] === '') {
-        $data['codigo'] = null;
-    }
 
     // Obtener el subcategoryId
     $stmt = $conn->prepare("SELECT Subcategoria_id FROM subcategoria WHERE Nom_subcategoria = :select_category");
@@ -121,14 +116,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         $equipment_id = $conn->lastInsertId();
 
-                        if ($data['codigo'] === null) {
-                            $data['codigo'] = 'OPCIC-COM-' . str_pad($equipment_id, 5, '0', STR_PAD_LEFT);
+                        if ($data['codigo']) {
+                            $stmt = $conn->prepare("UPDATE equipos_informaticos SET miId = ? WHERE Equipo_id = ?");
+                            $stmt->execute([$data['codigo'], $equipment_id]);
                         } else {
-                            $data['codigo'] = 'OPCIC-COM-' . $data['codigo'];
+                            $data['codigo'] = 'OPCIC-COM-' . str_pad($equipment_id, 5, '0', STR_PAD_LEFT);
+                            $stmt = $conn->prepare("UPDATE equipos_informaticos SET miId = ? WHERE Equipo_id = ?");
+                            $stmt->execute([$data['codigo'], $equipment_id]);
                         }
-
-                        $stmt = $conn->prepare("UPDATE equipos_informaticos SET miId = ? WHERE Equipo_id = ?");
-                        $stmt->execute([$data['codigo'], $equipment_id]);
 
                         // Insertar imágenes
                         for ($i = 0; $i < count($_FILES['images']['name']); $i++) {

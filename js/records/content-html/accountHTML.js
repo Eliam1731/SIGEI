@@ -12,7 +12,9 @@ export const accountSystemsHTML = `
                 <input class='input-forms' tabindex='3' type='text' placeholder='Ejemplo: Herrera' id='firstSurnameUser'>
 
                 <label for='forehead-user'>Frente actual del usuario</label>
-                <select id='foreheadUser' disabled></select>
+                <select id='departmentId' disabled>
+                    <option value='1'>Sistemas</option>
+                </select>
             </div>
 
             <div>

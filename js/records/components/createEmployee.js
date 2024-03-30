@@ -79,11 +79,15 @@ const functionalitiesFormSystem = () => {
                 body: formData
             });
 
-            const data = await response.text();
+            const data = await response.json();
+            if(data.error) {
+                alert(data.message);
+                return;
+            }
+
             if(data) {
                 cleanInputs();
-                console.log(data);
-                alert(data);
+                alert(data.message);
 
                 return;
             }

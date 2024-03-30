@@ -27,6 +27,7 @@ const elementsDOM = {
 }
 
 const functionalitiesRegisterEquipment = async() => {
+    const inputCodeEquipment = document.getElementById('codeEquipment');
     const imageQR = document.getElementById('imageCodeQR');
     const selectBrandEquipment = document.getElementById(elementsDOM.selectBrand);
     const everyBrand = await getDataServer('../server/data/brand.php');
@@ -119,12 +120,14 @@ const functionalitiesRegisterEquipment = async() => {
 
         if(result.status === 'success') {
             alert(result.message);
-            cleanInputsForm('imageDevices', 'invoiceDevices');
 
             secondSection.style.left = '-200%';
             buttonReturnSection.style.right = '200%';
 
-            generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
+            if(inputCodeEquipment.value.trim() === '' ) {
+                generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
+            }
+            cleanInputsForm('imageDevices', 'invoiceDevices');
 
             return;
         }

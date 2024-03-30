@@ -1,4 +1,4 @@
-<?php include '../server/auth/session_auth.php'; ?>
+<!-- <?php //include '../server/auth/session_auth.php'; ?> -->
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
@@ -74,7 +74,78 @@
                 </div>
 
                 <div class="second_div">
+                    <table id="tableAuthSafeguards">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Código
+                                </th>
 
+                                <th>
+                                    Equipo
+                                </th>
+
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTableAuthSafeguards">
+                            <tr>
+                                <td>
+                                    OPCIC-COM-00890
+                                </td>
+                                <td>
+                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
+                                </td>
+                                <td>
+                                    <button>Acciones</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    OPCIC-COM-00890
+                                </td>
+                                <td>
+                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
+                                </td>
+                                <td>
+                                    <button>Acciones</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    OPCIC-COM-00890
+                                </td>
+                                <td>
+                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
+                                </td>
+                                <td>
+                                    <button>Acciones</button>
+                                </td>
+                            </tr>
+
+                            
+                            <tr>
+                                <td>
+                                    OPCIC-COM-00890
+                                </td>
+                                <td>
+                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
+                                </td>
+                                <td>
+                                    <button>Acciones</button>
+                                </td>
+                            </tr>   
+                        </tbody>
+                    </table>
+
+                    <div class="container-button__auth">
+                        <button>Cancelar resguardo</button>
+                        <button>Autorizar resguardo</button>
+                    </div>
                 </div>
             </article>
         </section>

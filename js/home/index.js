@@ -9,7 +9,7 @@ const spanUserName = document.getElementById( elementsDOM.span );
 document.addEventListener('DOMContentLoaded', async() => {
     const {
         correo_electronico,
-        frente_nombre,
+        departamento_nombre:frente_nombre,
         nombre,
         primer_apellido,
         rol_nombre,

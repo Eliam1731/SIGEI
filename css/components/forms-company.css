@@ -28,38 +28,83 @@
     display: none;
     flex-direction: column;
 }
-#sectionCompany #formWork .first_div {
+#sectionCompany #formWork .first_div-work {
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
 }
-#sectionCompany #formWork .first_div label { padding-bottom: 3.5%; }
-#sectionCompany #formWork .first_div input { margin-bottom: 3%; height: 8%; width: 65%; box-sizing: border-box;}
-#sectionCompany #formWork .first_div select {
+#sectionCompany #formWork .first_div-work label { padding-bottom: 3.5%; }
+#sectionCompany #formWork .first_div-work input { margin-bottom: 3%; height: 8%; width: 65%; box-sizing: border-box;}
+#sectionCompany #formWork .first_div-work select {
     height: 8%;
     width: 65%;
 }
-#sectionCompany #formWork .first_div button {
+#sectionCompany #formWork .first_div-work button {
     height: 8%;
     position: absolute;
     bottom: 0;
     width: 65%;
 }
-#sectionCompany #formWork .second_div {
+#sectionCompany #formWork .second_div-work {
     height: 100%;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
     background: #FFFFFF;
     position: absolute;
     top: 0;
     right: 200%;
 }
-#sectionCompany #formWork .second_div button {
+#sectionCompany #formWork .second_div-work div {
+    height: 80%;
+    width: 50%;
+    box-sizing: border-box;
+}
+#sectionCompany #formWork .second_div-work button {
     height: 9%;
     width: 50%;
     position: absolute;
     bottom: 0;
+}
+#returnSection-work {
+    top: 3%;
+    right: 200%;
+    height: 5%;
+    width: 6%;
+    background: #F5F5F5;
+    border-radius: 5px;
+    border: 2px solid #EEEEEE;
+    position: absolute;
+    transition: right 1s;
+    z-index: 400;
+}
+#groupsCompany {
+    margin-top: 5%;
+    height: 90% !important;
+    width: 95% !important;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #EEEEEE;
+    background: #F5F5F5;
+    overflow-y: auto;
+}
+#groupsForehead {
+    margin-top: 5%;
+    height: 90% !important;
+    width: 95% !important;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #EEEEEE;
+    background: #F5F5F5;
+    overflow-y: auto;
+}
+.divDivisorForehead {
+    height: min-content !important;
+    width: 100% !important;
+    position: relative;
+    margin-bottom: 5%;
 }
 
 /* Estilos de la barra de navegaciòn */

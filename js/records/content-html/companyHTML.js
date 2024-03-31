@@ -14,7 +14,7 @@ export const companySystemsHTML = `
         </form>
 
         <form id="formWork">
-            <div class='first_div'>
+            <div class='first_div-work'>
                 <label for="nameWork">Nombre de la obra</label>
                 <input class='input-forms' type="text" id="nameWork" placeholder="Ejemplo: Eléctrica">
 
@@ -24,20 +24,25 @@ export const companySystemsHTML = `
                 <label for="numWork">Número de la obra</label>
                 <input class='input-forms' type="text" id="numWork" placeholder="Ejemplo: 1909">
 
-                <label for="companyBelongsWork">Empresa a la que pertenece la obra</label>
-                <select id="companyBelongsWork">
-                    <option>Seleccione una empresa</option>
-                </select>
-
-                <button class='button-action' id="nextForm" type='button'>Siguiente</button>
+                <button class='button-action' id="nextFormWork" type='button'>Siguiente</button>
             </div>
 
-            <div class='second_div'>
-                <p>Seleccione los frentes que desea añadir a la obra.</p>
+            <div class='second_div-work'>
+                <div>
+                    <p>Seleccione las empresas a la que pewrtenece la obra</p>
 
-                <div id="groupsForehead">
+                    <div id='groupsCompany'>
                     
+                    </div>
                 </div>
+
+                <div>
+                    <p>Seleccione los frentes que desea añadir a la obra.</p>
+
+                    <div id='groupsForehead'>
+                    
+                    </div>
+              </div>
 
                 <button class='button-action' id="buttonCreateWork"type='button'>Crear nueva obra</button>
             </div>
@@ -50,6 +55,10 @@ export const companySystemsHTML = `
             </ul>
         </nav>
     </section>
+
+    <button id='returnSection-work'>
+        <img src='../images/images-records/return.svg'>
+    </button>
 `;
 
 export const createCompanyDisabled = `

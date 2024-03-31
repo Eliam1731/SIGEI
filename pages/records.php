@@ -1,4 +1,4 @@
-<?php //include '../server/auth/session_auth.php'; ?>
+<?php include '../server/auth/session_auth.php'; ?>
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>

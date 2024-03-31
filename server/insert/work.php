@@ -21,7 +21,7 @@
         "succesful" => '¡Felicidades! Tu registro se ha realizado correctamente.',
         "failed" => 'Ha ocurrido un error al registrar la obra. Por favor, inténtalo más tarde.'
     ];
-
+    
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
@@ -32,8 +32,8 @@
             "groupCompany" => $obj->groupCompany,
             "groupForeheads" => $obj->groupForeheads
         ];
-
-        // Verificar si el nombre de la obra ya existe ya se me esta haciendo mas easy
+    
+        // Verificar si el nombre de la obra ya existe
         $stmt = $conn->prepare("SELECT * FROM obras WHERE Nombre_obra = ?");
         $stmt->execute([$data["nameWork"]]);
         if($stmt->fetch()) {
@@ -41,7 +41,7 @@
             echo json_encode(["error" => "workExisting", "message" => $messages["workExisting"]]);
             exit;
         }
-
+    
         // Verificar si el nombre corto de la obra ya existe
         $stmt = $conn->prepare("SELECT * FROM obras WHERE Nom_corto_obra = ?");
         $stmt->execute([$data["shortNameWork"]]);
@@ -50,7 +50,7 @@
             echo json_encode(["error" => "shortNameWork", "message" => $messages["shortNameWork"]]);
             exit;
         }
-
+    
         // Verificar si el número de obra ya existe
         $stmt = $conn->prepare("SELECT * FROM obras WHERE Num_obra = ?");
         $stmt->execute([$data["numWork"]]);
@@ -59,22 +59,30 @@
             echo json_encode(["error" => "numWork", "message" => $messages["numWork"]]);
             exit;
         }
-
+    
         try {
             // Insertar datos en la tabla obras
-            $insertData = $conn->prepare("INSERT INTO obras (Nombre_obra, Nom_corto_obra, Num_obra, Empresa_id, Frente_id) VALUES (?, ?, ?, ?, ?)");
+            $insertData = $conn->prepare("INSERT INTO obras (Nombre_obra, Nom_corto_obra, Num_obra) VALUES (?, ?, ?)");
+            $insertData->execute([
+                $data["nameWork"],
+                $data["shortNameWork"],
+                $data["numWork"]
+            ]);
+    
+            $obraId = $conn->lastInsertId();
+    
+            // Insertar en la tabla obra_empresa
+            $insertData = $conn->prepare("INSERT INTO obra_empresa (Obra_id, Empresa_id) VALUES (?, ?)");
             foreach($data["groupCompany"] as $company) {
-                foreach($data["groupForeheads"] as $forehead) {
-                    $insertData->execute([
-                        $data["nameWork"],
-                        $data["shortNameWork"],
-                        $data["numWork"],
-                        $company,
-                        $forehead
-                    ]);
-                }
+                $insertData->execute([$obraId, $company]);
             }
-
+    
+            // Insertar en la tabla obra_frente
+            $insertData = $conn->prepare("INSERT INTO obra_frente (Obra_id, Frente_id) VALUES (?, ?)");
+            foreach($data["groupForeheads"] as $forehead) {
+                $insertData->execute([$obraId, $forehead]);
+            }
+    
             header('Content-Type: application/json');
             print json_encode($messages["succesful"]);
         } catch(Exception $error) {

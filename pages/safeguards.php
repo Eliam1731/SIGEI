@@ -158,5 +158,6 @@
     </main>
 
     <script type="module" src="../js/utilities/profileUser.js"></script>
+    <script type="module" src="../js/safeguards/auth/main.js"></script>
 </body>
 </html>

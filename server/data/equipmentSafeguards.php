@@ -12,7 +12,7 @@ $sql_check = $conn->prepare("SELECT 1 FROM equipos_informaticos WHERE miId = ?")
 $sql_check->execute([$codeEquipment]);
 
 if (!$sql_check->fetchColumn()) {
-    // Si el código del equipo no existe, devolver un JSON con el error jejej
+    // Si el código del equipo no existe, devolver un JSON con el error
     $error_data = ['error' => 'El código del equipo no se encuentra en la base de datos.'];
     $json_response = json_encode($error_data);
     header('Content-Type: application/json');
@@ -68,22 +68,41 @@ foreach ($rows as $row) {
         'comentarios' => $row['comentarios'],
         'status' => $row['status'],
         'codeOpc' => $row['codeOpc'],
-        'statusMessage' => 'El equipo se encuentra ' . $row['status'] // Aqui guardara el estado en el que se encuentra el equipo, espero te sirva
+        'statusMessage' => 'El equipo se encuentra ' . $row['status']
     ];
-     // Obtener las imágenes
+    // Obtener las imágenes
     $sql_images = $conn->prepare("SELECT Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
     $sql_images->execute([$row['idEquipo']]);
     $images = $sql_images->fetchAll(PDO::FETCH_ASSOC);
+
+    // Codificar los datos de la imagen en base64
+    foreach ($images as $key => $image) {
+        $images[$key]['Datos_imagen'] = base64_encode($image['Datos_imagen']);
+    }
+
     $equipment_data['images'] = $images;
 
-     // Obtener las facturas
+    // Obtener las facturas
     $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
     $sql_invoices->execute([$row['idEquipo']]);
     $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
+
+    // Codificar los datos de la factura en base64
+    foreach ($invoices as $key => $invoice) {
+        $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
+    }
+
     $equipment_data['invoices'] = $invoices;
 }
 
 $json_response = json_encode($equipment_data);
 
-header('Content-Type: applicaction/json');
+if ($json_response === false) {
+    // json_encode falló
+    $error = json_last_error_msg(); // Obtén el mensaje de error
+    $json_response = json_encode(['error' => $error]); // Codifica el error en un nuevo JSON
+}
+
+header('Content-Type: application/json');
 print $json_response;
+?>

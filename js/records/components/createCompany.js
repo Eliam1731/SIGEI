@@ -93,8 +93,8 @@ const functionalitiesFormWork = async() => {
         const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
         const checkboxesCompany = document.querySelectorAll('#groupsCompany .divDivisorForehead input[type="checkbox"]');
         const selectedCheckboxesCompnay = Array.from(checkboxesCompany).filter(checkbox => checkbox.checked);
-        const foreheadArr = [];
-        const companyArr = [];
+        let foreheadArr = [];
+        let companyArr = [];
 
         const data = workIDs.reduce((acc, id) => {
             const input = document.getElementById(id);
@@ -138,9 +138,32 @@ const functionalitiesFormWork = async() => {
 
         if(state) {
             const response = await sendDataServer('../server/insert/work.php', data);
-            console.log(response, 'Respuesta del servidor');
-            alert('Se registro correctamente');
+           
+            if(response.error) {
+                alert(response.message);
+                return
+            }
+
+            alert(response);
+
+            secondSectionWork.style.right = '200%';
+            buttonReturnSectionWork.style.right = '200%'
+
+            workIDs.forEach( IDs => {
+                const input = document.getElementById(IDs);
+                input.value = '';
+            });
         }
+
+        selectedCheckboxesCompnay.forEach( input => {
+            input.checked = false;
+            companyArr = [];
+        });
+
+        selectedCheckboxes.forEach( input => {
+            input.checked = false;
+            foreheadArr = [];
+        });
     })
 }
 

@@ -48,7 +48,6 @@ export const cleanInputsForm = ( inputImage, inputFile ) => {
 export const gettingDataInputsEquipment = async(images, invoice) => {
     const objectDataInputs = inputsIDs.reduce((acc, id) => {
         const input = document.getElementById(id);
-        console.log(input.value);
         acc[id] = input.value;
 
         return acc;

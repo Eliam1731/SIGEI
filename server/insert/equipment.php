@@ -75,15 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
                 } else {
                     //Aqui realice la validacion del Codigo OPCIC espero este bien:(
-                    $stmt = $conn->prepare("SELECT miId FROM equipos_informaticos WHERE miId = :codigo");
-                    $stmt->bindParam(':codigo', $data['codigo']);
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($row) {
-                        $response['status'] = 'error';
-                        $response['message'] = 'El código ' . $data['codigo'] . ' ya está en uso. Intenta con otro código.';
-                    } else {
+                        $codigoCompleto = 'OPCIC-COM-' . $data['codigo'];
+                        $stmt = $conn->prepare("SELECT miId FROM equipos_informaticos WHERE miId = :codigo");
+                        $stmt->bindParam(':codigo', $codigoCompleto);
+                        $stmt->execute();
+                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                        
+                        if ($row) {
+                            $response['status'] = 'error';
+                            $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
+                        } else {
 
                     // Si todas las verificaciones son exitosas, entonces insertar los datos
                         $conn->beginTransaction();

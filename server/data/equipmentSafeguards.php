@@ -4,8 +4,7 @@ include '../config/connection_db.php';
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
-// Agregar el prefijo al código que el usuario ingresa Aqui esta la solucion jajaja espero jale 
-$codeEquipment = 'OPCIC-COM-' . $data['code'];
+$codeEquipment = $data['code'];
 $equipment_data = [];
 
 // Verificar si el código del equipo existe

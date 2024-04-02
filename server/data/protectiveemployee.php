@@ -19,8 +19,7 @@ $frente_id = isset($data['frente_id']) ? $data['frente_id'] : null;
 // Función para obtener las obras de una empresa específica
 function getObras($empresa_id) {
     global $conn;
-    // Consulta SQL que une las tablas 'obras' y 'obra_empresa' y selecciona las obras de la empresa especificada
-    $sql = "SELECT obras.Obra_id FROM obras 
+    $sql = "SELECT obras.Nombre_obra FROM obras 
             JOIN obra_empresa ON obras.Obra_id = obra_empresa.Obra_id 
             WHERE obra_empresa.Empresa_id = :empresa_id";
     $stmt = $conn->prepare($sql);
@@ -37,8 +36,7 @@ function getObras($empresa_id) {
 // Función para obtener los frentes de una obra específica
 function getFrentes($obra_id) {
     global $conn;
-    // Consulta SQL que une las tablas 'frente' y 'obra_frente' y selecciona los frentes de la obra especificada
-    $sql = "SELECT frente.Frente_id FROM frente 
+    $sql = "SELECT frente.Nom_frente FROM frente 
             JOIN obra_frente ON frente.Frente_id = obra_frente.Frente_id 
             WHERE obra_frente.Obra_id = :obra_id";
     $stmt = $conn->prepare($sql);
@@ -53,14 +51,13 @@ function getFrentes($obra_id) {
 }
 
 // Función para obtener los empleados de un frente específico
+// Función para obtener los empleados de un frente específico
 function getEmpleados($frente_id) {
     global $conn;
-    // Consulta SQL que selecciona los empleados del frente especificado
-    $sql = "SELECT empleados_resguardantes.empleado_id FROM empleados_resguardantes WHERE id_frente = :frente_id";
+    $sql = "SELECT * FROM empleados_resguardantes WHERE id_frente = :frente_id";
     $stmt = $conn->prepare($sql);
     if ($stmt->execute([':frente_id' => $frente_id])) {
-        $empleados = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-        $empleados = array_values(array_unique($empleados));
+        $empleados = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($empleados, JSON_FORCE_OBJECT);
     } else {
         print_r($stmt->errorInfo());

@@ -52,7 +52,15 @@
                 $data["email"],
             ]);
 
-            header('Content-Type: application/json');
+            $empleadoId = $conn->lastInsertId();
+
+            $insertObraEmpresa = $conn->prepare("INSERT INTO obra_empresa (Obra_id, Empresa_id, Empleado_id) VALUES (?, ?, ?)");
+            $insertObraEmpresa->execute([$data["workBelongs"], $data["companyBelongs"], $empleadoId]);
+            
+            $insertObraFrente = $conn->prepare("INSERT INTO obra_frente (Obra_id, Frente_id, Empleado_id) VALUES (?, ?, ?)");
+            $insertObraFrente->execute([$data["workBelongs"], $data["forehead_belongs"], $empleadoId]);
+            
+            
             print json_encode(["message" => $messages["succesful"]], JSON_UNESCAPED_UNICODE);
         } catch(Exception $error) {
             header('Content-Type: application/json');

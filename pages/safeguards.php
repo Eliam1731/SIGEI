@@ -91,58 +91,12 @@
                             </tr>
                         </thead>
                         <tbody id="bodyTableAuthSafeguards">
-                            <tr>
-                                <td>
-                                    OPCIC-COM-00890
-                                </td>
-                                <td>
-                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
-                                </td>
-                                <td>
-                                    <button>Acciones</button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    OPCIC-COM-00890
-                                </td>
-                                <td>
-                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
-                                </td>
-                                <td>
-                                    <button>Acciones</button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    OPCIC-COM-00890
-                                </td>
-                                <td>
-                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
-                                </td>
-                                <td>
-                                    <button>Acciones</button>
-                                </td>
-                            </tr>
-
-                            
-                            <tr>
-                                <td>
-                                    OPCIC-COM-00890
-                                </td>
-                                <td>
-                                    Laptop Huawei BoDE-DH9 NS: V5MPM23412000893
-                                </td>
-                                <td>
-                                    <button>Acciones</button>
-                                </td>
-                            </tr>   
+                          
                         </tbody>
                     </table>
 
                     <div class="container-button__auth">
+                        <button>Añadir observaciones</button>
                         <button>Cancelar resguardo</button>
                         <button>Autorizar resguardo</button>
                     </div>

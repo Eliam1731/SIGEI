@@ -78,7 +78,7 @@ export const equipmentSystemsHTML = `
             <label for="invoiceDevices" class='modify-label'>Subir factura del equipo</label>
             <input id="invoiceDevices" type="file" accept=".pdf,.xml" class='modify' multiple>
 
-            <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compaq</label>
+            <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compras</label>
             <input id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" class="input-forms modify">
 
             <div id='openWindowAddress' class="container_messageAddress">

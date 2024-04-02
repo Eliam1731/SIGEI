@@ -1,4 +1,5 @@
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { renderingEquipmentInTable } from "./guardsAuth.js";
 
 const elementAuthDOM = {
     inputCode: 'codeEquipment',
@@ -20,6 +21,15 @@ buttonSearchEquipment.addEventListener('click', async() => {
    
    try {
         const response = await sendDataServer('../server/data/equipmentSafeguards.php', {code: codeEquipmentOpc});
+
+        if(response.error) {
+          alert(response.error);
+
+          return;
+        }
+
+        inputCodeEquipment.value = '';
+        renderingEquipmentInTable(response);
 
         console.log(response);
    } catch(error) {

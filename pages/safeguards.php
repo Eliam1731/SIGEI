@@ -91,26 +91,33 @@
                             </tr>
                         </thead>
                         <tbody id="bodyTableAuthSafeguards">
-                          
+                         
                         </tbody>
                     </table>
 
                     <div class="container-button__auth">
-                        <button>Añadir observaciones</button>
-                        <button>Cancelar resguardo</button>
-                        <button>Autorizar resguardo</button>
+                        <button id="cancel__button">Cancelar resguardo</button>
+                        <button id="observation_button">Añadir observaciones</button>
+                        <button id="auth__button">Autorizar resguardo</button>
                     </div>
+
+                    <textarea class="textarea__hidden" id="observation__auth-textarea" placeholder="Coloque sus observaciones..."></textarea>
                 </div>
+            </article>
+
+            <article class="second_article">
+                <h1>popo</h1>
             </article>
         </section>
         <nav>
             <ul>
-                <li>Autorizar resguardos</li>
-                <li>Devolución resguardos</li>
+                <li id="first_article" class="li-selected">Autorizar resguardos</li>
+                <li id="second_article">Devolución resguardos</li>
             </ul>
         </nav>
     </main>
-
+    
+    <script src="https://unpkg.com/pdf-lib@1.16.0/dist/pdf-lib.js"></script>
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/safeguards/auth/main.js"></script>
 </body>

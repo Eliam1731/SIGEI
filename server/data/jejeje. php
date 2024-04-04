@@ -1,0 +1,65 @@
+
+
+<?php foreach($resultados as $equipo): ?>
+    <div>
+        <p>
+        <?php 
+        echo 'Subcategoría: ' . $equipo['Nom_subcategoria'] . ', ' .
+             'Marca: ' . $equipo['Nom_marca'] . ', ' .
+             'Modelo: ' . $equipo['Modelo'] . ', ' .
+             'miId: ' . $equipo['miId'] . ', ' .
+             'Especificación: ' . $equipo['Especificacion'] . ', ' .
+             'Número de serie: ' . $equipo['Num_serie'] . ', ' .
+             'Importe: ' . $equipo['Importe'] . ', ' .
+             'Dirección MAC WiFi: ' . $equipo['Direccion_mac_wifi'] . ', ' .
+             'Dirección MAC Ethernet: ' . $equipo['Direccion_mac_ethernet'] . ', ' .
+             'Número de referencia Compaq: ' . $equipo['Num_ref_compaq'] . ', ' .
+             'Fecha de compra: ' . $equipo['Fecha_compra'] . ', ' .
+             'Fecha de garantía: ' . $equipo['Fecha_garantia'] . ', ' .
+             'Comentarios: ' . $equipo['Comentarios'] . ', ' .
+             'Service Tag: ' . $equipo['Service_tag'] . ', ' .
+             'Status: ' . $equipo['Nom_Status'];
+        ?>
+        </p>
+    </div>
+<?php endforeach; ?>
+
+<?php foreach($resultados as $equipo): ?>
+    <div>
+        <p>Subcategoría: <?php echo $equipo['Nom_subcategoria']; ?></p>
+        <p>Marca: <?php echo $equipo['Nom_marca']; ?></p>
+        <p>Modelo: <?php echo $equipo['Modelo']; ?></p>
+        <p>miId: <?php echo $equipo['miId']; ?></p>
+        <p>Especificación: <?php echo $equipo['Especificacion']; ?></p>
+        <p>Número de serie: <?php echo $equipo['Num_serie']; ?></p>
+        <p>Importe: <?php echo $equipo['Importe']; ?></p>
+        <p>Dirección MAC WiFi: <?php echo $equipo['Direccion_mac_wifi']; ?></p>
+        <p>Dirección MAC Ethernet: <?php echo $equipo['Direccion_mac_ethernet']; ?></p>
+        <p>Número de referencia Compaq: <?php echo $equipo['Num_ref_compaq']; ?></p>
+        <p>Fecha de compra: <?php echo $equipo['Fecha_compra']; ?></p>
+        <p>Fecha de garantía: <?php echo $equipo['Fecha_garantia']; ?></p>
+        <p>Comentarios: <?php echo $equipo['Comentarios']; ?></p>
+        <p>Service Tag: <?php echo $equipo['Service_tag']; ?></p>
+        <p>Status: <?php echo $equipo['Nom_Status']; ?></p>
+    </div>
+<?php endforeach; ?>
+
+<?php foreach($resultados as $equipo): ?>
+    <div>
+        <p><?php echo $equipo['Nom_subcategoria']; ?></p>
+        <p><?php echo $equipo['Nom_marca']; ?></p>
+        <p>Modelo: <?php echo $equipo['Modelo']; ?></p>
+        <p>miId: <?php echo $equipo['miId']; ?></p>
+        <p><?php echo $equipo['Especificacion']; ?></p>
+        <p>Número de serie: <?php echo $equipo['Num_serie']; ?></p>
+        <p>Importe: <?php echo $equipo['Importe']; ?></p>
+        <p>Dirección MAC WiFi: <?php echo $equipo['Direccion_mac_wifi']; ?></p>
+        <p>Dirección MAC Ethernet: <?php echo $equipo['Direccion_mac_ethernet']; ?></p>
+        <p>Número de referencia Compaq: <?php echo $equipo['Num_ref_compaq']; ?></p>
+        <p>Fecha de compra: <?php echo $equipo['Fecha_compra']; ?></p>
+        <p>Fecha de garantía: <?php echo $equipo['Fecha_garantia']; ?></p>
+        <p><?php echo $equipo['Comentarios']; ?></p>
+        <p>Service Tag: <?php echo $equipo['Service_tag']; ?></p>
+        <p>Status: <?php echo $equipo['Nom_Status']; ?></p>
+    </div>
+<?php endforeach; ?>

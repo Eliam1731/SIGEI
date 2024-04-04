@@ -1,5 +1,21 @@
-const bodyTable = document.getElementById("bodyTableAuthSafeguards");
+import { generateReportSafeguards } from "./generateReport.js";
+
+const bodyTable = document.getElementById('bodyTableAuthSafeguards');
+const cancelButton = document.getElementById('cancel__button');
+const selectCompanyClean = document.getElementById('companyBelongsEmployee')
+const textareaAuthObservation = document.getElementById('observation__auth-textarea');
+const buttonAuth = document.getElementById('auth__button');
 let equipmentIDs = [];
+
+const cleanSectionAuth = () => {
+    equipmentIDs = [];
+
+    bodyTable.innerHTML = '';
+    textareaAuthObservation.value = '';
+    selectCompanyClean.selectedIndex = 0;
+}
+
+cancelButton.addEventListener('click', () => cleanSectionAuth());
 
 const renderTableAllData = (equipment) => {
   const {
@@ -96,6 +112,19 @@ export const renderingEquipmentInTable = (equipment) => {
   tr.append(columnCodeOpc, columnEquipment, columnActions);
   bodyTable.appendChild(tr);
 };
+
+buttonAuth.addEventListener('click', () => {
+  const work = '8004';
+  const amount = '1 Pza';
+  const code = ['OPCIC-COM-00010', 'OPCIC-COM-00020', 'OPCIC-COM-00030', 'OPCIC-COM-00040', 'OPCIC-COM-00050'];
+  const description = ['Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893'];
+  const employee = 'Jesús Pérez Hidalgo';
+  const email = 'becariosistemas1@grupoopc.com';
+
+  generateReportSafeguards( work, amount, code, description, employee, email );
+});
+
+
 
 // const data = {
 //   equipos: [1, 2, 3],

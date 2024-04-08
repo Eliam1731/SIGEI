@@ -122,13 +122,9 @@ selectForehead.addEventListener('change', async() => {
                selectEmployee.appendChild(option);
                selectEmployee.removeAttribute('disabled');
           });
-
-          console.log(response)
      } catch(error) {
           console.log(error);
      }
-
-     console.log(foreheadID)
 });
 
 selectEmployee.addEventListener('change', () => {
@@ -168,7 +164,7 @@ buttonSearchEquipment.addEventListener('click', async() => {
 
         inputCodeEquipment.value = '';
         renderingEquipmentInTable(response);
-
+        console.log(response)
    } catch(error) {
         console.error(error)
    }

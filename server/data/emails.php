@@ -26,16 +26,15 @@ try {
     // Adjuntos
     $mail->addAttachment($_FILES['file']['tmp_name'], 'output.pdf');    
 
-    
     // Contenido
     $mail->isHTML(true);                                  
-    $mail->Subject = 'Ola este es un correo de pruebas';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    $mail->Subject = 'Documento de resguardo de equipos informáticos.';
+    $mail->Body    = 'Por favor coloque su firma electronica en el documento y reenviarlo al departamento de sistemas';
+    $mail->AltBody = '<b>Departamento de sistemas.</b>';
 
     $mail->send();
-    echo 'Message has been sent';
+    echo json_encode(['message' => 'Message has been sent']);
 } catch (Exception $e) {
-  echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  echo json_encode(['error' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
 }
 ?>

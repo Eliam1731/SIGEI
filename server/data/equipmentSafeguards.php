@@ -7,13 +7,11 @@ $data = json_decode($json, true);
 $codeEquipment = $data['code'];
 $equipment_data = [];
 
-// Verificar si el código del equipo existe
-$sql_check = $conn->prepare("SELECT 1 FROM equipos_informaticos WHERE miId = ?");
+$sql_check = $conn->prepare("SELECT 1 FROM equipos_informaticos WHERE miId = ? AND Status_id = 1");
 $sql_check->execute([$codeEquipment]);
 
 if (!$sql_check->fetchColumn()) {
-    // Si el código del equipo no existe, devolver un JSON con el error
-    $error_data = ['error' => 'El código del equipo no se encuentra en la base de datos.'];
+    $error_data = ['error' => 'El equipo no está disponible para su resguardo.'];
     $json_response = json_encode($error_data);
     header('Content-Type: application/json');
     print $json_response;
@@ -42,7 +40,7 @@ $sql = $conn->prepare("SELECT
         JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
         JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
         JOIN status ON equipos_informaticos.Status_id = status.Status_id
-        WHERE equipos_informaticos.miId = ?;");
+        WHERE equipos_informaticos.miId = ? AND equipos_informaticos.Status_id = 1;");
 
 $sql->execute([$codeEquipment]);
 

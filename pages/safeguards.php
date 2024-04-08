@@ -1,6 +1,8 @@
-<!-- <?php //include '../server/auth/session_auth.php'; ?> -->
+<!-- <?php //include '../server/auth/session_auth.php'; 
+        ?> -->
 <!DOCTYPE html>
 <html lang="es-MX">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +13,7 @@
     <link rel="stylesheet" href="../css/pages/safeguards.css">
     <title>Resguardos</title>
 </head>
+
 <body>
     <header>
         <img class="opc-logo" src="../images/opc-logo.png" alt="Logo de OPC Ingeniería y Costrucción">
@@ -39,7 +42,7 @@
             <article class="first_article">
                 <div class="first_div">
                     <label for="">Escriba el código del equipo</label>
-                    
+
                     <div class="container__codeEquipment">
                         <div>
                             <span>OPCIC-COM-</span>
@@ -91,7 +94,7 @@
                             </tr>
                         </thead>
                         <tbody id="bodyTableAuthSafeguards">
-                         
+
                         </tbody>
                     </table>
 
@@ -106,7 +109,62 @@
             </article>
 
             <article class="second_article">
-                <h1>popo</h1>
+                <div class="first_div">
+                    <label for="codeEquipmentReturn">Escriba el código del equipo</label>
+
+                    <div class="container__codeEquipment">
+                        <div>
+                            <span>OPCIC-COM-</span>
+                        </div>
+                        <input type="text" placeholder="Ejemplo: 00012" id="codeEquipmentReturn">
+                        <div>
+                            <button id="searchEquipmentReturn">
+                                <img src="../images/safeguards/search.svg" alt="">
+                            </button>
+                        </div>
+                    </div>
+
+                    <h2>Empleado que está devolviendo el equipo</h2>
+
+                    <div class="container-nameuser__return">
+                        <div class="circle__background">
+                            <div class="circle__center"></div>
+                        </div>
+
+                        <p id="employeeName-return">Jesús Pérez Hidalgo</p>
+                    </div>
+                </div>
+
+                <div class="second_div">
+                    <table id="tableReturnSafeguards">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Código
+                                </th>
+
+                                <th>
+                                    Equipo
+                                </th>
+
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTableReturnSafeguards">
+
+                        </tbody>
+                    </table>
+
+                    <div class="container-button__auth">
+                        <button id="cancel__button-return">Cancelar resguardo</button>
+                        <button id="observation_button-return">Añadir observaciones</button>
+                        <button id="auth__button-return">Autorizar resguardo</button>
+                    </div>
+
+                    <textarea class="textarea__hidden" id="observation__auth-textarea-return" placeholder="Coloque sus observaciones..."></textarea>
+                </div>
             </article>
         </section>
         <nav>
@@ -116,9 +174,10 @@
             </ul>
         </nav>
     </main>
-    
+
     <script src="https://unpkg.com/pdf-lib@1.16.0/dist/pdf-lib.js"></script>
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/safeguards/auth/main.js"></script>
 </body>
+
 </html>

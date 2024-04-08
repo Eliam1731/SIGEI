@@ -1,18 +1,48 @@
+import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { generateReportSafeguards } from "./generateReport.js";
 
 const bodyTable = document.getElementById('bodyTableAuthSafeguards');
 const cancelButton = document.getElementById('cancel__button');
 const selectCompanyClean = document.getElementById('companyBelongsEmployee')
+const selectWorkClean = document.getElementById('workBelongsEmployee');
+const selectForeheadClean = document.getElementById('forehead_belongs');
+const selectEmployeeClean = document.getElementById('protectiveEmployee');
 const textareaAuthObservation = document.getElementById('observation__auth-textarea');
 const buttonAuth = document.getElementById('auth__button');
-let equipmentIDs = [];
+const safeguardsData = {
+  equipments: [],
+  description: [],
+  codeOpc: [],
+  employee: undefined,
+  work: undefined,
+  dateAuth: undefined,
+  userAuth: undefined,
+  observation: undefined,
+};
 
 const cleanSectionAuth = () => {
-    equipmentIDs = [];
+    safeguardsData.equipments = [];
+    safeguardsData.description = [];
+    safeguardsData.employee = undefined;
+    safeguardsData.work = undefined;
+    safeguardsData.dateAuth = undefined;
+    safeguardsData.userAuth = undefined;
+    safeguardsData.observation = undefined;
+    safeguardsData.codeOpc = [];
 
     bodyTable.innerHTML = '';
     textareaAuthObservation.value = '';
+
     selectCompanyClean.selectedIndex = 0;
+    selectWorkClean.selectedIndex = 0;
+    selectForeheadClean.selectedIndex = 0;
+    selectEmployeeClean.selectedIndex = 0;
+
+    selectWorkClean.setAttribute('disabled', 'disabled')
+    selectForeheadClean.setAttribute('disabled', 'disabled')
+    selectEmployeeClean.setAttribute('disabled', 'disabled')
+
+    console.log(safeguardsData, '-------- Data clean ------------');
 }
 
 cancelButton.addEventListener('click', () => cleanSectionAuth());
@@ -43,9 +73,23 @@ const renderTableAllData = (equipment) => {
 const deleteItemTable = ( elementHTMl, parentDiv ) => {
     const itemDeleteID = elementHTMl.getAttribute('class');
     const itemDeleteHTML = document.getElementById(itemDeleteID);
+    let positionDeleteDescription;
+
+    safeguardsData.description = safeguardsData.description.filter( item => {
+      positionDeleteDescription = safeguardsData.equipments.indexOf(parseInt(itemDeleteID));
+      return item !== safeguardsData.description[positionDeleteDescription];
+    });
+
+    safeguardsData.codeOpc = safeguardsData.codeOpc.filter( item => {
+      positionDeleteDescription = safeguardsData.equipments.indexOf(parseInt(itemDeleteID));
+      return item !== safeguardsData.codeOpc[positionDeleteDescription];
+    });
+
+    safeguardsData.equipments = safeguardsData.equipments.filter( item => {
+      return item !== parseInt(itemDeleteID)
+    });
 
     itemDeleteHTML.remove();
-    equipmentIDs = equipmentIDs.filter( item => item !== parseInt(itemDeleteID));
     parentDiv.remove();
 }
 
@@ -86,13 +130,14 @@ export const renderingEquipmentInTable = (equipment) => {
     subcategoria,
   } = equipment;
 
-  if (equipmentIDs.includes(id)) {
+  if (safeguardsData.equipments.includes(id)) {
     alert(`El equipo con el codigo ${code} ya esta en la tabla.`);
     return;
   }
 
-  equipmentIDs.push(id);
-  console.log(equipmentIDs, 'Array que se mandara al server');
+  safeguardsData.equipments.push(id);
+  safeguardsData.codeOpc.push(code);
+  safeguardsData.description.push(`${subcategoria} ${marca} ${modelo} ${numSerie}`);
 
   const tr = document.createElement("tr");
   const columnCodeOpc = document.createElement("td");
@@ -113,23 +158,51 @@ export const renderingEquipmentInTable = (equipment) => {
   bodyTable.appendChild(tr);
 };
 
-buttonAuth.addEventListener('click', () => {
-  const work = '8004';
-  const amount = '1 Pza';
-  const code = ['OPCIC-COM-00010', 'OPCIC-COM-00020', 'OPCIC-COM-00030', 'OPCIC-COM-00040', 'OPCIC-COM-00050'];
-  const description = ['Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893', 'Laptop Huawei BoDE-DH9 N/S: V5MPM23412000893'];
-  const employee = 'Jesús Pérez Hidalgo';
-  const email = 'becariosistemas1@grupoopc.com';
+buttonAuth.addEventListener('click', async() => {
+  try {
+    const response = await sendDataServer('../server/data/numberwork.php', {
+      obra_id: selectWorkClean.value,
+    });
 
-  generateReportSafeguards( work, amount, code, description, employee, email );
+    safeguardsData.work = response.Num_obra;
+  } catch(error) {
+    console.log(error);
+  }
+
+  const now = new Date();
+  const date = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
+  safeguardsData.observation = textareaAuthObservation.value;
+  safeguardsData.userAuth = sessionStorage.getItem('email');
+  safeguardsData.employee = selectEmployeeClean.value;
+  safeguardsData.dateAuth = date;
+  const nameComplete = selectEmployeeClean.options[selectEmployeeClean.selectedIndex].text
+
+  try {
+    const response = await sendDataServer('../server/insert/resguard.php', {
+      equipments: safeguardsData.equipments,
+      employee: safeguardsData.employee,
+      user: safeguardsData.userAuth,
+      observation: safeguardsData.observation,
+      date_auth: safeguardsData.dateAuth,
+    });
+
+    if(response.message === 'Su resguardo fue exitoso' ) {
+      alert(response.message);
+
+      generateReportSafeguards( 
+        safeguardsData.work, 
+        '1 Pza', 
+        safeguardsData.codeOpc, 
+        safeguardsData.description, 
+        nameComplete,
+        response.employeeEmail,
+      );
+
+      cleanSectionAuth();
+    }
+
+    console.log(response);
+  } catch(error) {
+    console.log(error);
+  }
 });
-
-
-
-// const data = {
-//   equipos: [1, 2, 3],
-//   employee: 1,
-//   fechaAuth: "",
-//   user: 1,
-//   coments: "",
-// };

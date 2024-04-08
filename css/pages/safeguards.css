@@ -264,9 +264,140 @@ background-color: #fff;
 main section .second_article {
     height: 100%;
     width: 100%;
-    background: #833F0E;
+    display: flex;
     position: relative;
     overflow: hidden;
+}
+main section .second_article .first_div {
+    height: 100%;
+    width: 35%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+main section .second_article .first_div label {
+    padding: 10% 0 5% 5%;
+    font-weight: 700;
+    color: #424242;
+    font-size: 1.1em;
+}
+main section .second_article .first_div .container__codeEquipment {
+    height: 7%;
+    width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    background: #F5F5F5;
+    margin: 2% 0 15% 5%;
+}
+main section .second_article .first_div .container__codeEquipment div {
+    height: 100%;
+    width: 30%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #424242;
+    border-right: 2px solid #EEEEEE;
+}
+main section .second_article .first_div .container__codeEquipment div span { user-select: none; }
+main section .second_article .first_div .container__codeEquipment input {
+    height: 100%;
+    width: 55%;
+    position: relative;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    outline: none;
+    padding-left: 5%;
+}
+main section .second_article .first_div .container__codeEquipment div:last-child {
+    height: 100%;
+    width: 15%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #424242;
+    border-left: 2px solid #EEEEEE;
+}
+main section .second_article .first_div .container__codeEquipment div:last-child button {
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    background: none;
+    overflow: hidden;
+}
+main section .second_article .first_div h2 {
+    color: #424242;
+    font-size: 1.3em;
+    padding-bottom: 7%;
+}
+main section .second_article .first_div .container__codeEquipment div:last-child button img { width: 45%; }
+main section .second_article .first_div .container__codeEquipment div:last-child button:hover { background: #EEEEEE; }
+main section .second_article .first_div .container-nameuser__return {
+    border: 2px solid #EEEEEE;
+    background: #F5F5F5;
+    width: 90%;
+    height: 8%;
+    border-radius: 5px;
+    margin-left: 5%;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#cancel__button-return {
+    background: #616161;
+}
+#auth__button-return {
+    background: #833F0E;
+}
+#observation_button-return {
+    background: #01579B;
+}
+#observation__auth-textarea-return {
+    height: 20%;
+    width: 90%;
+    position: absolute;
+    resize: none;
+    border-radius: 5px;
+    padding: 2% 0  0 2%;
+    outline: none;
+    box-sizing: border-box;
+    background: #FAFAFA;
+    color: #757575;
+    border: 2px solid #757575;
+    box-shadow: 0px 0px 10px 0px #424242;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+main section .second_article .second_div {
+    height: 100%;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 main nav {
     height: 100%;

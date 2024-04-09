@@ -42,13 +42,14 @@ function getFrentes($obra_id) {
     }
 }
 
-function getEmpleados($frente_id) {
+function getEmpleados($empresa_id, $obra_id, $frente_id) {
     global $conn;
     $sql = "SELECT empleados_resguardantes.* FROM empleados_resguardantes 
-            JOIN resguardos_de_equipos ON empleados_resguardantes.Empleado_id = resguardos_de_equipos.Empleado_id 
-            WHERE empleados_resguardantes.id_frente = :frente_id";
+            WHERE empleados_resguardantes.Empresa_id = :empresa_id 
+            AND empleados_resguardantes.Obra_id = :obra_id 
+            AND empleados_resguardantes.id_frente = :frente_id";
     $stmt = $conn->prepare($sql);
-    if ($stmt->execute([':frente_id' => $frente_id])) {
+    if ($stmt->execute([':empresa_id' => $empresa_id, ':obra_id' => $obra_id, ':frente_id' => $frente_id])) {
         $empleados = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($empleados);
     } else {
@@ -59,14 +60,14 @@ function getEmpleados($frente_id) {
 
 $json_response = '';
 
-if ($empresa_id !== null) {
+if ($empresa_id !== null && $obra_id === null && $frente_id === null) {
     $obras_json = getObras($empresa_id);
     $json_response = $obras_json;
-} elseif ($obra_id !== null) {
+} elseif ($empresa_id !== null && $obra_id !== null && $frente_id === null) {
     $frentes_json = getFrentes($obra_id);
     $json_response = $frentes_json;
-} elseif ($frente_id !== null) {
-    $empleados_json = getEmpleados($frente_id);
+} elseif ($empresa_id !== null && $obra_id !== null && $frente_id !== null) {
+    $empleados_json = getEmpleados($empresa_id, $obra_id, $frente_id);
     $json_response = $empleados_json;
 }
 

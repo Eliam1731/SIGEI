@@ -20,7 +20,6 @@
                 <li><a href="records.php">Registros</a></li>
                 <li><a href="safeguards.php">Resguardos</a></li>
                 <li><a class="selected" href="inventory.php">Equipos y Empleados</a></li>
-                <li><a href="reports.php">Reportes</a></li>
                 <li><a href="history.php">Historial</a></li>
             </ul>
         </nav>
@@ -114,5 +113,6 @@
 
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/inventory/equipments/main.js"></script>
+    <script type="module" src="../js/inventory/equipments/renderDevices.js"></script>
 </body>
 </html>

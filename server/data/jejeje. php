@@ -1,256 +1,37 @@
-este codigo me da la obra dependiendo de la empresa que escoja y el frente dependiendo la obra y al final, el empleado dependiendo el frente, pero ahi esta el problema por que me da todos los empleados de ese frente y yo quiero que me de los empleados de esa que pertenezcan a la empresa, obra y frente seleccionadas anteriormente, ya que cuando se da de alta un empleado el pone a que empresa, obra y frente pertenece, te dare mis sql de las tablas: 
 
-tablas sql:
-
-CREATE TABLE `empleados_resguardantes` (
-  `Empleado_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(100) NOT NULL,
-  `Primer_apellido` varchar(100) NOT NULL,
-  `Segundo_apellido` varchar(100) NOT NULL,
-  `Num_seguro_social` varchar(100) NOT NULL,
-  `Empresa_id` int(11) NOT NULL,
-  `Obra_id` int(11) NOT NULL,
-  `Correo_electronico` varchar(255) NOT NULL,
-  `id_frente` int(11) NOT NULL,
-  PRIMARY KEY (`Empleado_id`),
-  UNIQUE KEY `num_ssocial` (`Num_seguro_social`),
-  KEY `FK_Empresa_Empleado` (`Empresa_id`),
-  KEY `FK_Obra_Empleado` (`Obra_id`),
-  KEY `FK_id_frente` (`id_frente`),
-  CONSTRAINT `FK_Empresa_Empleado` FOREIGN KEY (`Empresa_id`) REFERENCES `empresas` (`Empresa_id`),
-  CONSTRAINT `FK_Obra_Empleado` FOREIGN KEY (`Obra_id`) REFERENCES `obras` (`Obra_id`),
-  CONSTRAINT `FK_id_frente` FOREIGN KEY (`id_frente`) REFERENCES `frente` (`Frente_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
-
-
-CREATE TABLE `empresas` (
-  `Empresa_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Nom_empresa` varchar(255) NOT NULL,
-  `Nom_corto` varchar(50) NOT NULL,
-  PRIMARY KEY (`Empresa_id`),
-  UNIQUE KEY `nom_empresa` (`Nom_empresa`),
-  UNIQUE KEY `nom_corto_empresa` (`Nom_corto`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
-
-CREATE TABLE `frente` (
-  `Frente_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Nom_frente` varchar(255) NOT NULL,
-  `numero_frente` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Frente_id`),
-  UNIQUE KEY `frente_unico` (`Nom_frente`),
-  UNIQUE KEY `numero_frente` (`numero_frente`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
-
-CREATE TABLE `obras` (
-  `Obra_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre_obra` varchar(255) NOT NULL,
-  `Nom_corto_obra` varchar(50) NOT NULL,
-  `Num_obra` varchar(20) NOT NULL,
-  PRIMARY KEY (`Obra_id`),
-  UNIQUE KEY `nom_obra` (`Nombre_obra`),
-  UNIQUE KEY `nom_corto_obra` (`Nom_corto_obra`),
-  UNIQUE KEY `numero_obra` (`Num_obra`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
-
-y como mi relacion es de muchos a muchos tengo estas tablas auxiliares, no se de que tabla sea mejor sacar los datos asi que tambien te proporcionare mis tablas auxiliares:
-
-CREATE TABLE `obra_empresa` (
-  `Obra_id` int(11) NOT NULL,
-  `Empresa_id` int(11) NOT NULL,
-  `Empleado_id` int(11) NOT NULL,
-  PRIMARY KEY (`Obra_id`,`Empresa_id`,`Empleado_id`),
-  KEY `FK_ObraEmpresa_Empresa` (`Empresa_id`),
-  CONSTRAINT `FK_ObraEmpresa_Empresa` FOREIGN KEY (`Empresa_id`) REFERENCES `empresas` (`Empresa_id`),
-  CONSTRAINT `FK_ObraEmpresa_Obra` FOREIGN KEY (`Obra_id`) REFERENCES `obras` (`Obra_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
-
-CREATE TABLE `obra_frente` (
-  `Obra_id` int(11) NOT NULL,
-  `Frente_id` int(11) NOT NULL,
-  `Empleado_id` int(11) NOT NULL,
-  PRIMARY KEY (`Obra_id`,`Frente_id`,`Empleado_id`),
-  KEY `FK_ObraFrente_Frente` (`Frente_id`),
-  CONSTRAINT `FK_ObraFrente_Frente` FOREIGN KEY (`Frente_id`) REFERENCES `frente` (`Frente_id`),
-  CONSTRAINT `FK_ObraFrente_Obra` FOREIGN KEY (`Obra_id`) REFERENCES `obras` (`Obra_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
-
-este es mi php que ta esta funcional, el unico error es el ya mencionado:
-
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include '../config/connection_db.php';
-
-$json = file_get_contents('php://input');
-$data = json_decode($json, true);
-
-$empresa_id = isset($data['empresa_id']) ? $data['empresa_id'] : null;
-$obra_id = isset($data['obra_id']) ? $data['obra_id'] : null;
-$frente_id = isset($data['frente_id']) ? $data['frente_id'] : null;
-
-function getObras($empresa_id) {
-    global $conn;
-    $sql = "SELECT DISTINCT obras.Obra_id, obras.Nombre_obra FROM obras 
-            JOIN obra_empresa ON obras.Obra_id = obra_empresa.Obra_id 
-            WHERE obra_empresa.Empresa_id = :empresa_id";
-    $stmt = $conn->prepare($sql);
-    if ($stmt->execute([':empresa_id' => $empresa_id])) {
-        $obras = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return json_encode($obras);
-    } else {
-        print_r($stmt->errorInfo());
-        exit();
-    }
-}
-
-function getFrentes($obra_id) {
-    global $conn;
-    $sql = "SELECT DISTINCT frente.Frente_id, frente.Nom_frente FROM frente 
-            JOIN obra_frente ON frente.Frente_id = obra_frente.Frente_id 
-            WHERE obra_frente.Obra_id = :obra_id";
-    $stmt = $conn->prepare($sql);
-    if ($stmt->execute([':obra_id' => $obra_id])) {
-        $frentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return json_encode($frentes);
-    } else {
-        print_r($stmt->errorInfo());
-        exit();
-    }
-}
-
-function getEmpleados($frente_id) {
-    global $conn;
-    $sql = "SELECT empleados_resguardantes.* FROM empleados_resguardantes 
-            JOIN resguardos_de_equipos ON empleados_resguardantes.Empleado_id = resguardos_de_equipos.Empleado_id 
-            WHERE empleados_resguardantes.id_frente = :frente_id";
-    $stmt = $conn->prepare($sql);
-    if ($stmt->execute([':frente_id' => $frente_id])) {
-        $empleados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return json_encode($empleados);
-    } else {
-        print_r($stmt->errorInfo());
-        exit();
-    }
-}
-
-$json_response = '';
-
-if ($empresa_id !== null) {
-    $obras_json = getObras($empresa_id);
-    $json_response = $obras_json;
-} elseif ($obra_id !== null) {
-    $frentes_json = getFrentes($obra_id);
-    $json_response = $frentes_json;
-} elseif ($frente_id !== null) {
-    $empleados_json = getEmpleados($frente_id);
-    $json_response = $empleados_json;
-}
-
-header('Content-Type: application/json');
-print $json_response;
-?>
-
-No me sirvio el codigo por que sigue pasando lo mismo pero tengo una idea, si en vez de mandarme en el JSON uno por uno podria mandarme todos ejemplo cuando solicita la empresa solo me manda el JSON con el id de la empresa para darle las obras, hasta ahi vamos bien, pero cuando me de las obras en vez de mandarme solo el id de la obra que me mande el id de empresa y obra, y cuando me de los frentres en vez de mandarme solo el id de los frentes me mande el id de empresa, obra y frente, ya con esto podrias modificar el codigo para que pueda devolverme lo que necesito.
-
-mi front mandara esto:
-al seleccionar la empresa mandara esto:
 {
     "empresa_id": 1,
 }
 
-ya con esto nosotros daremos las obras, una vez que escoja las obra el devolvera esto:
 
 {
     "empresa_id": 1,
     "obra_id": 2,
 }
 
-con esto daremos los frentes y una vez que escoja los frentes devolvera esto:
 {
     "empresa_id": 1,
     "obra_id": 2,
     "frente_id": 3
 }
 
-y con esto nosotros debemos regresar los empleados que sean de esa obra empresa y frente, mi tabla sql de empleados es esta para que lo veas:
 
-CREATE TABLE `empleados_resguardantes` (
-  `Empleado_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(100) NOT NULL,
-  `Primer_apellido` varchar(100) NOT NULL,
-  `Segundo_apellido` varchar(100) NOT NULL,
-  `Num_seguro_social` varchar(100) NOT NULL,
-  `Empresa_id` int(11) NOT NULL,
-  `Obra_id` int(11) NOT NULL,
-  `Correo_electronico` varchar(255) NOT NULL,
-  `id_frente` int(11) NOT NULL,
-  PRIMARY KEY (`Empleado_id`),
-  UNIQUE KEY `num_ssocial` (`Num_seguro_social`),
-  KEY `FK_Empresa_Empleado` (`Empresa_id`),
-  KEY `FK_Obra_Empleado` (`Obra_id`),
-  KEY `FK_id_frente` (`id_frente`),
-  CONSTRAINT `FK_Empresa_Empleado` FOREIGN KEY (`Empresa_id`) REFERENCES `empresas` (`Empresa_id`),
-  CONSTRAINT `FK_Obra_Empleado` FOREIGN KEY (`Obra_id`) REFERENCES `obras` (`Obra_id`),
-  CONSTRAINT `FK_id_frente` FOREIGN KEY (`id_frente`) REFERENCES `frente` (`Frente_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
+campo unico en opcic en la tabla se llama MiId 
 
+Php para actualizar datos de equipos, status, y modificaciones que se puedan hacer
 
-
-el problema que tengo es que me sigue dando los empleados de todo el frente, no toma en cuenta la empresa y la obra, mi front me manda esto: 
-
-{
-    "empresa_id": 1,
-}
-
-{
-    "obra_id": 2,
-}
-
-{
-    "frente_id": 3
-}
-
-para escojer los empleados probablemte ese sea el problema asi que creo que una solucion es que mi front mew mande esto:
-
-al seleccionar la empresa mandara esto:
-{
-    "empresa_id": 1,
-}
-
-ya con esto nosotros daremos las obras, una vez que escoja las obra el devolvera esto:
-
-{
-    "empresa_id": 1,
-    "obra_id": 2,
-}
-
-con esto daremos los frentes y una vez que escoja los frentes devolvera esto:
-{
-    "empresa_id": 1,
-    "obra_id": 2,
-    "frente_id": 3
-}
-
-y con esto nosotros debemos regresar los empleados que sean de esa obra empresa y frente, mi tabla sql de empleados es esta para que lo veas:
-
-CREATE TABLE `empleados_resguardantes` (
-  `Empleado_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(100) NOT NULL,
-  `Primer_apellido` varchar(100) NOT NULL,
-  `Segundo_apellido` varchar(100) NOT NULL,
-  `Num_seguro_social` varchar(100) NOT NULL,
-  `Empresa_id` int(11) NOT NULL,
-  `Obra_id` int(11) NOT NULL,
-  `Correo_electronico` varchar(255) NOT NULL,
-  `id_frente` int(11) NOT NULL,
-  PRIMARY KEY (`Empleado_id`),
-  UNIQUE KEY `num_ssocial` (`Num_seguro_social`),
-  KEY `FK_Empresa_Empleado` (`Empresa_id`),
-  KEY `FK_Obra_Empleado` (`Obra_id`),
-  KEY `FK_id_frente` (`id_frente`),
-  CONSTRAINT `FK_Empresa_Empleado` FOREIGN KEY (`Empresa_id`) REFERENCES `empresas` (`Empresa_id`),
-  CONSTRAINT `FK_Obra_Empleado` FOREIGN KEY (`Obra_id`) REFERENCES `obras` (`Obra_id`),
-  CONSTRAINT `FK_id_frente` FOREIGN KEY (`id_frente`) REFERENCES `frente` (`Frente_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci
+date
+: 
+"04/09/2024"
+devices
+: 
+(3) [4, 7, 8]
+employee
+: 
+29
+observation
+: 
+"fsdfdfsfafsdfsdfsfsfsesef"
+user
+: 
+"jperezhidalgo@grupoopc.com"

@@ -131,7 +131,7 @@
                             <div class="circle__center"></div>
                         </div>
 
-                        <p id="employeeName-return">Jesús Pérez Hidalgo</p>
+                        <p id="employeeName-return">Aún no se ha seleccionado el equipo</p>
                     </div>
                 </div>
 
@@ -178,6 +178,7 @@
     <script src="https://unpkg.com/pdf-lib@1.16.0/dist/pdf-lib.js"></script>
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/safeguards/auth/main.js"></script>
+    <script type="module" src="../js/safeguards/return/main.js"></script>
 </body>
 
 </html>

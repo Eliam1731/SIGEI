@@ -200,8 +200,6 @@ buttonAuth.addEventListener('click', async() => {
 
       cleanSectionAuth();
     }
-
-    console.log(response);
   } catch(error) {
     console.log(error);
   }

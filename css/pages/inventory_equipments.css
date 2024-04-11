@@ -204,6 +204,35 @@ table tbody .table-row td {
     text-align: center;
     vertical-align: middle;
 }
+table tbody .table-row td:last-child {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+table tbody .table-row td:last-child button {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: none;
+    color: #757575;
+    box-sizing: border-box;
+    font-size: 1.8em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+table tbody .table-row td:last-child button:hover {
+    background: #EEEEEE;
+}
 table tbody .table-row:last-child { border-bottom: none; }
 table tfoot { height: 10%; width: 100%; position: relative; box-sizing: border-box; }
 table tfoot tr { height: 100%; width: 100%; position: relative; }
@@ -274,3 +303,115 @@ table tfoot tr td div button:hover {
     padding: 0 0 5% 7%;
 }
 .li-selected { color: #1A73E8 !important; }
+#deleteFiltrosDevices {
+    right: 7%;
+    height: 80%;
+    position: absolute;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    color: #757575;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: .7em;
+    border-radius: 7px;
+}
+/* Ventana de acciones */
+.actions-container {
+    top: 0%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+}
+.actions-container div {
+    height: 90%;
+    width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background: #FFFFFF;
+}
+.actions-container div #root-actions {
+    height: 100%;
+    width: 80%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.actions-container div #root-actions h2 {
+    padding: 3% 0 5% 5%;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #212121;
+}
+.actions-container div #root-actions #form-update-device {
+    height: 85%;
+    width: 90%;
+    margin: 0 0 0 5%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items:normal;
+    box-sizing: border-box;
+    overflow-y: auto;
+    border-radius: 0;
+}
+.actions-container div #root-actions #form-update-device label {
+    font-weight: 700;
+    font-size: 1em;
+    color: #424242;
+    padding-bottom: 3%;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+}
+.actions-container div #root-actions #form-update-device select {
+    height: auto;
+    padding: 1.5vh;
+    margin-bottom: 3%;
+    width: 70%;
+    display: block;
+    position: relative;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    box-sizing: border-box;
+}
+.actions-container div #root-actions #form-update-device input {
+    width: 70%;
+    border: 2px solid #EEEEEE;
+    background: #F5F5F5;
+    border-radius: 5px;
+    margin-bottom: 3%;
+    padding: 1.5vh !important;
+    outline: none;
+    box-sizing: border-box;
+}
+.actions-container div #root-actions #form-update-device textarea {
+    height: auto;
+    padding: 2vh 4vh  8vh 1.5vh !important;
+    width: 70%;
+    resize: none;
+    position: relative;
+    box-sizing: border-box;
+    border: 2px solid #EEEEEE;
+    background: #F5F5F5;
+    margin-bottom: 3%;
+}
+.actions-container div #root-actions #form-update-device button {
+    padding: 1.5vh;
+    width: 70%;
+    margin-bottom: 5%;
+}
+.actions-container div nav {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    border-left: 2px solid #757575;
+    box-sizing: border-box;
+}

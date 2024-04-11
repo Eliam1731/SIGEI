@@ -158,7 +158,7 @@
                     <div class="container-button__auth">
                         <button id="cancel__button-return">Cancelar resguardo</button>
                         <button id="observation_button-return">Añadir observaciones</button>
-                        <button id="auth__button-return">Autorizar resguardo</button>
+                        <button id="auth__button-return">Autorizar devolución</button>
                     </div>
 
                     <textarea class="textarea__hidden" id="observation__auth-textarea-return" placeholder="Coloque sus observaciones..."></textarea>

@@ -100,7 +100,7 @@ buttonSearchEquipmentReturn.addEventListener('click', () => {
     });
 });
 
-buttonReturnAuth.addEventListener('click', () => {
+buttonReturnAuth.addEventListener('click', async() => {
     const now = new Date();
     const date = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
     const data = {
@@ -116,8 +116,16 @@ buttonReturnAuth.addEventListener('click', () => {
         return;
     }
 
-    console.log(data);
-    cleanSectionReturnEquipment();
+    try {
+        const response = await sendDataServer('../server/insert/return.php', data);
+        if(response) {
+            alert('Los equipos se han devuelto correctamente!');
+            cleanSectionReturnEquipment();
+            console.log(response);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
 
 buttonCancelReturnAuth.addEventListener('click', () => cleanSectionReturnEquipment());

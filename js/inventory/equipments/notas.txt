@@ -1,0 +1,23 @@
+Actualizar datos de los equipos informaticos 
+Añadir gastos de equipos informaticos
+ver los gastos que se han tenido en el equipo
+
+Ver que personal lo tiene en resguardo 
+
+Datos que se van actualizar de los equipos 
+- Categoría - ready
+- Marca - ready
+- Modelo  - ready
+- Número de serie - ready 
+- Fecha de compra - ready 
+- Fecha en la que expira la garantía - ready
+- Importe del equipo - ready 
+- Imagenes (Se van a poder eliminar fotos de la base de datos o actualizarla por una nueva)
+- Especificación del equipo - ready 
+- Comentarios acerca del equipo - ready 
+- Service tag del equipo - ready 
+- Factura (Solo se podrá actualizar mas no eliminar ya que si o si debe tener una factura)
+- Numero de referencia de Compras - ready 
+- Dirección MAC Ethernet - ready 
+- Dirección MAC WI-FI -ready
+

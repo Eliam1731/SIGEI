@@ -69,29 +69,58 @@ document.addEventListener('DOMContentLoaded', async() => {
 
 selectCompany.addEventListener('change', async() => {
      const companyID = selectCompany.value;
-
-     try {
-          const response = await sendDataServer('../server/data/protectiveemployee.php', {empresa_id: companyID});
-
-          response.forEach( element => {
-               const option = document.createElement('option');
-
-               option.value = element.Obra_id;
-               option.textContent = element.Nombre_obra;
-
-               selectWork.appendChild(option);
-               selectWork.removeAttribute('disabled');
-          });
-     } catch(error) {
-          console.error(error);
+ 
+     while (selectWork.options.length > 1) {
+         selectWork.remove(1);
      }
-});
+     while (selectForehead.options.length > 1) {
+         selectForehead.remove(1);
+     }
+     while (selectEmployee.options.length > 1) {
+         selectEmployee.remove(1);
+     }
+ 
+     selectWork.setAttribute('disabled', '');
+     selectForehead.setAttribute('disabled', '');
+     selectEmployee.setAttribute('disabled', '');
+ 
+     try {
+         const response = await sendDataServer('../server/data/protective_employees.php', {empresa_id: companyID});
+ 
+         response.forEach( element => {
+             const option = document.createElement('option');
+ 
+             option.value = element.Obra_id;
+             option.textContent = element.Nombre_obra;
+ 
+             selectWork.appendChild(option);
+             selectWork.removeAttribute('disabled');
+         });
+     } catch(error) {
+         console.error(error);
+     }
+ });
 
 selectWork.addEventListener('change', async() => {
      const workID = selectWork.value;
+     const companyID = selectCompany.value;
+
+      while (selectForehead.options.length > 1) {
+          selectForehead.remove(1);
+      }
+      while (selectEmployee.options.length > 1) {
+          selectEmployee.remove(1);
+      }
+  
+      selectForehead.setAttribute('disabled', '');
+      selectEmployee.setAttribute('disabled', '');
 
      try {
-          const response = await sendDataServer('../server/data/protectiveemployee.php', {obra_id: workID});
+          const response = await sendDataServer('../server/data/protective_employees.php', {
+               empresa_id: companyID,
+               obra_id: workID,
+               
+          });
 
           response.forEach( element => {
                const option = document.createElement('option');
@@ -108,10 +137,22 @@ selectWork.addEventListener('change', async() => {
 });
 
 selectForehead.addEventListener('change', async() => {
+     const companyID = selectCompany.value;
+     const workID = selectWork.value;
      const foreheadID = selectForehead.value;
 
+      while (selectEmployee.options.length > 1) {
+          selectEmployee.remove(1);
+      }
+  
+      selectEmployee.setAttribute('disabled', '');
+
      try {
-          const response = await sendDataServer('../server/data/protectiveemployee.php', {frente_id: foreheadID});
+          const response = await sendDataServer('../server/data/protective_employees.php', {
+               empresa_id: companyID,
+               obra_id: workID,
+               frente_id: foreheadID
+          });
 
           response.forEach( element => {
                const option = document.createElement('option');
@@ -164,7 +205,6 @@ buttonSearchEquipment.addEventListener('click', async() => {
 
         inputCodeEquipment.value = '';
         renderingEquipmentInTable(response);
-        console.log(response)
    } catch(error) {
         console.error(error)
    }

@@ -34,23 +34,27 @@
     </header>
 
     <main>
-        <div id="root">
-            <section id="equipments_section">
-                <form id="search_equipment">
-                    <div class="container-search">
-                        <div class="container-input__equipment">
-                            <div>
-                                <span>OPCIC-COM-</span>
-                            </div>
+            <div id="root">
+                <section id="equipments_section">
+                    <form id="search_equipment">
+                        <div class="container-search">
+                            <div class="container-input__equipment">
+                                <div>
+                                    <span>OPCIC-COM-</span>
+                                </div>
 
-                            <input type="text" name="codeEquipment" id="inputSearchEquipment" placeholder="00021">
-                        </div>
-                        <div class="container-buttonSearch__equipment">
-                            <button id="buttonSearchEquipment" type="button">
+                                <input type="text" name="codeEquipment" id="inputSearchEquipment" placeholder="00021">
+                            </div>
+                            <div class="container-buttonSearch__equipment">
+                                <button id="buttonSearchEquipment" type="button">
                                 <img src="../images/safeguards/search.svg" alt="">
                             </button>
                         </div>
                     </div>
+
+                    <button id="deleteFiltrosDevices" type="button">
+                        Eliminar filtros
+                    </button>
 
                     <button id="enableWindowFilter" type="button">
                         <img src="../images/filter.png" alt="">

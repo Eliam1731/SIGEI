@@ -1,19 +1,4 @@
 
-{
-    "empresa_id": 1,
-}
-
-
-{
-    "empresa_id": 1,
-    "obra_id": 2,
-}
-
-{
-    "empresa_id": 1,
-    "obra_id": 2,
-    "frente_id": 3
-}
 
 UPDATE ejemplo de JSON
 
@@ -36,4 +21,42 @@ UPDATE ejemplo de JSON
     "MAC_Ethernet": "00:0a:95:9d:68:16",
     "MAC_WIFI": "00:0a:95:9d:68:17"
 }
+
+
+
+{
+    "Equipo_id": 1,
+    "Cantidad": ,
+    "Piezas": "Disco duro SSD",
+    "Fecha": "2022-01-01",
+    "Recibo_pdf": "base64 del recibo en pdf"
+}
+
+
+
+
+
+
+
+
+ver los gastos que se han tenido en el equipo
+datos de la tabla del equipo agregar al JSON de equipmentvisualization
+
+
+
+
+
+eliminar imagen 
+
+
+
+
+
+
+
+ver todos los empleados y si tiene equipos a resguardo
+
+
+
+
 

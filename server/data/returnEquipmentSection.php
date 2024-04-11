@@ -5,11 +5,11 @@
 
     try {
         $query =  $conn->prepare("SELECT
-                                     Equipo_id AS id, 
-                                     Status_id AS status
-                                  FROM 
+                                    Equipo_id AS id, 
+                                    Status_id AS status
+                                FROM 
                                     equipos_informaticos 
-                                  WHERE 
+                                WHERE 
                                     miId = ?;");
         $query->bindParam(1, $id);
         $query->execute();

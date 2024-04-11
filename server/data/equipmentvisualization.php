@@ -17,12 +17,19 @@ $sql = $conn->prepare("SELECT
     equipos_informaticos.Service_tag AS serviceTag,
     equipos_informaticos.Comentarios AS comentarios,
     status.Nom_Status AS status,
-    equipos_informaticos.miId AS codeOpc
+    equipos_informaticos.miId AS codeOpc,
+    empleados_resguardantes.Nombre AS nombreEmpleado,
+    empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
+    empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
+    empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
+    empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado
 FROM 
     equipos_informaticos
 JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
 JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
-JOIN status ON equipos_informaticos.Status_id = status.Status_id");
+JOIN status ON equipos_informaticos.Status_id = status.Status_id
+JOIN resguardos_de_equipos ON equipos_informaticos.Equipo_id = resguardos_de_equipos.Equipo_id
+JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id");
 $sql->execute();
 
 $rows = $sql->fetchAll();
@@ -48,7 +55,12 @@ foreach ($rows as $row) {
         'serviceTag' => $row['serviceTag'],
         'comentarios' => $row['comentarios'],
         'status' => $row['status'],
-        'codeOpc' => $row['codeOpc']
+        'codeOpc' => $row['codeOpc'],
+        'nombreEmpleado' => $row['nombreEmpleado'],
+        'primerApellidoEmpleado' => $row['primerApellidoEmpleado'],
+        'segundoApellidoEmpleado' => $row['segundoApellidoEmpleado'],
+        'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
+        'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado']
     ];
 
     $sql_images = $conn->prepare("SELECT Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");

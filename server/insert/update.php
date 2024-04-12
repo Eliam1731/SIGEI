@@ -1,12 +1,8 @@
 <?php
 include '../config/connection_db.php';
 
-
 $json = file_get_contents('php://input');
-
-
 $data = json_decode($json, true);
-
 
 $sql_equipos = "UPDATE equipos_informaticos SET 
     Id_subcategoria = :subcategoria, 
@@ -34,11 +30,9 @@ $sql_facturas = "UPDATE facturas SET
     Factura_file = :factura_file 
     WHERE Equipo_id = :equipo_id";
 
-
 $stmt_equipos = $conn->prepare($sql_equipos);
 $stmt_imagenes = $conn->prepare($sql_imagenes);
 $stmt_facturas = $conn->prepare($sql_facturas);
-
 
 try {
     $conn->beginTransaction();
@@ -60,10 +54,14 @@ try {
         'equipo_id' => $data['Equipo_id']
     ]);
 
+    $imageData = base64_decode($data['Imagenes']);
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mime_type = $finfo->buffer($imageData);
+
     $stmt_imagenes->execute([
         'nombre' => $data['Modelo'], 
-        'tipo_mime' => $data['Tipo_mime'], 
-        'datos_imagen' => base64_decode($data['Imagenes']), 
+        'tipo_mime' => $mime_type, 
+        'datos_imagen' => $imageData, 
         'equipo_id' => $data['Equipo_id']
     ]);
 

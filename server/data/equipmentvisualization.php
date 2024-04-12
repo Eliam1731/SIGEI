@@ -83,6 +83,20 @@ foreach ($rows as $row) {
 
     $equipment['invoices'] = $invoices;
 
+    $sql_expenses = $conn->prepare("SELECT Cantidad, Piezas, Fecha, Recibo_pdf FROM gastos_de_los_equipos WHERE Equipo_id = ?");
+    $sql_expenses->execute([$row['idEquipo']]);
+    $expenses = $sql_expenses->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($expenses)) {
+        $expenses = ['message' => 'Este equipo aún no tiene gastos extra'];
+    } else {
+        foreach ($expenses as $key => $expense) {
+            $expenses[$key]['Recibo_pdf'] = base64_encode($expense['Recibo_pdf']);
+        }
+    }
+
+    $equipment['expenses'] = $expenses;
+
     $statusKey = lcfirst(str_replace(' ', '', $row['status']));
     $equipment_data[$statusKey][] = $equipment;
 }

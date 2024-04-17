@@ -75,6 +75,12 @@
         $sql_guard->execute();
         $guard = $sql_guard->fetch(PDO::FETCH_ASSOC);
 
+        // Consulta para obtener los ID de las imágenes
+        $sql_images = $conn->prepare("SELECT Imagen_id FROM imagenes WHERE Equipo_id = ?;");
+        $sql_images->bindParam(1, $equipo_id);
+        $sql_images->execute();
+        $images = $sql_images->fetchAll(PDO::FETCH_COLUMN, 0);
+
         $result_guard = [
             'estado' => $guard['estado'],
             'user_id' => $guard['user_id'],
@@ -97,6 +103,7 @@
                 'frente_id' => $guard['frente_id'],
                 'correoResguardante' => $guard['correoResguardante'],
             ],
+            'imagenes' => $images,
         ];
 
         header('Content-Type: application/json');

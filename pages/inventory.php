@@ -1,6 +1,7 @@
 <?php include '../server/auth/session_auth.php'; ?>
 <!DOCTYPE html>
 <html lang="es-MX">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,10 @@
     <link rel="stylesheet" href="../css/components/navegation.css">
     <link rel="stylesheet" href="../css/components/button.css">
     <link rel="stylesheet" href="../css/pages/inventory_equipments.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <title>Inventario</title>
 </head>
+
 <body>
     <header>
         <img class="opc-logo" src="../images/opc-logo.png" alt="Logo de OPC Ingeniería y Costrucción">
@@ -34,19 +37,19 @@
     </header>
 
     <main>
-            <div id="root">
-                <section id="equipments_section">
-                    <form id="search_equipment">
-                        <div class="container-search">
-                            <div class="container-input__equipment">
-                                <div>
-                                    <span>OPCIC-COM-</span>
-                                </div>
-
-                                <input type="text" name="codeEquipment" id="inputSearchEquipment" placeholder="00021">
+        <div id="root">
+            <section id="equipments_section">
+                <form id="search_equipment">
+                    <div class="container-search">
+                        <div class="container-input__equipment">
+                            <div>
+                                <span>OPCIC-COM-</span>
                             </div>
-                            <div class="container-buttonSearch__equipment">
-                                <button id="buttonSearchEquipment" type="button">
+
+                            <input type="text" name="codeEquipment" id="inputSearchEquipment" placeholder="00021">
+                        </div>
+                        <div class="container-buttonSearch__equipment">
+                            <button id="buttonSearchEquipment" type="button">
                                 <img src="../images/safeguards/search.svg" alt="">
                             </button>
                         </div>
@@ -62,44 +65,35 @@
 
                 </form>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Equipo</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="renderDataEquipments">
-                        <tr id="none-equipment">
-                            <td>
-                                <div class="message_table">
-                                    <h3>Ups! No hay equipos registrados</h3>
+                <div class="container-table__devices">
+                    <div class="container-title">
+                        <div>
+                            <h3>Equipos informáticos</h3>
+                            <p>Toque la fila en donde se encuentra el equipo para ver mas detalles.</p>
+                        </div>
 
-                                    <img src="../images/capibara-table.png" alt="">
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>
-                                <div>
-                                    <button id="prevIndexButton">
-                                        <img src="../images/arrowPrev.svg" alt="">
-                                    </button>
+                        <div>
+                            <button>Agregar equipo</button>
+                        </div>
+                    </div>
 
-                                    <p id="textIndexCurrent">1</p>
-
-                                    <button id="nextIndexButton">
-                                        <img src="../images/arrowNext.svg" alt="">
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                    <div class="root_devices">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Información del equipo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="renderDataEquipments">
+                                <!-- Primera fila -->
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
 
             <section id="employee_section">
@@ -115,8 +109,10 @@
         </nav>
     </main>
 
+    <script type="module" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/inventory/equipments/main.js"></script>
     <script type="module" src="../js/inventory/equipments/renderDevices.js"></script>
 </body>
+
 </html>

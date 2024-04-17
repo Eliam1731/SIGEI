@@ -2,34 +2,34 @@
 include '../config/connection_db.php';
 
 $sql = $conn->prepare("SELECT 
-    equipos_informaticos.Equipo_id AS idEquipo,
-    subcategoria.Nom_subcategoria AS subcategoria,
-    marca_del_equipo.Nom_marca AS marca,
-    equipos_informaticos.Modelo AS modelo,
-    equipos_informaticos.Num_serie AS numSerie,
-    equipos_informaticos.Especificacion AS especificacion,
-    equipos_informaticos.Fecha_compra AS fechaCompra,
-    equipos_informaticos.Fecha_garantia AS fechaGarantia,
-    equipos_informaticos.Importe AS importe,
-    equipos_informaticos.Direccion_mac_wifi AS direccionMacWifi,
-    equipos_informaticos.Direccion_mac_ethernet AS direccionMacEthernet,
-    equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
-    equipos_informaticos.Service_tag AS serviceTag,
-    equipos_informaticos.Comentarios AS comentarios,
-    status.Nom_Status AS status,
-    equipos_informaticos.miId AS codeOpc,
-    empleados_resguardantes.Nombre AS nombreEmpleado,
-    empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
-    empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
-    empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
-    empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado
-FROM 
-    equipos_informaticos
-JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
-JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
-JOIN status ON equipos_informaticos.Status_id = status.Status_id
-JOIN resguardos_de_equipos ON equipos_informaticos.Equipo_id = resguardos_de_equipos.Equipo_id
-JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id");
+        equipos_informaticos.Equipo_id AS idEquipo,
+        subcategoria.Nom_subcategoria AS subcategoria,
+        marca_del_equipo.Nom_marca AS marca,
+        equipos_informaticos.Modelo AS modelo,
+        equipos_informaticos.Num_serie AS numSerie,
+        equipos_informaticos.Especificacion AS especificacion,
+        equipos_informaticos.Fecha_compra AS fechaCompra,
+        equipos_informaticos.Fecha_garantia AS fechaGarantia,
+        equipos_informaticos.Importe AS importe,
+        equipos_informaticos.Direccion_mac_wifi AS direccionMacWifi,
+        equipos_informaticos.Direccion_mac_ethernet AS direccionMacEthernet,
+        equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
+        equipos_informaticos.Service_tag AS serviceTag,
+        equipos_informaticos.Comentarios AS comentarios,
+        status.Nom_Status AS status,
+        equipos_informaticos.miId AS codeOpc,
+        empleados_resguardantes.Nombre AS nombreEmpleado,
+        empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
+        empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
+        empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
+        empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado
+    FROM 
+        equipos_informaticos
+    LEFT JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
+    LEFT JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
+    LEFT JOIN status ON equipos_informaticos.Status_id = status.Status_id
+    LEFT JOIN resguardos_de_equipos ON equipos_informaticos.Equipo_id = resguardos_de_equipos.Equipo_id
+    LEFT JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id");
 $sql->execute();
 
 $rows = $sql->fetchAll();

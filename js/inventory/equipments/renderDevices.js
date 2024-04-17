@@ -4,8 +4,6 @@ import { checkboxStates } from "./main.js";
 
 let data;
 let indexTable = 1;
-const prevIndexTableDevices = document.getElementById('prevIndexButton');
-const nextIndexTableDevices = document.getElementById('nextIndexButton');
 let paragraphMessageIndex = document.getElementById('textIndexCurrent');
 const deleteFiltersTable = document.getElementById('deleteFiltrosDevices');
 const messageTable = document.getElementById('none-equipment');
@@ -35,73 +33,58 @@ deleteFiltersTable.addEventListener('click', () => {
     if (checkboxInMaintenance) checkboxInMaintenance.checked = false;
 
     indexTable = 1;
-    paragraphMessageIndex.textContent = indexTable;
     renderDevices(devicesArray);
 });
 
-export const checkboxAvailableEvent = ( checkboxAvailable ) => {
-    devicesFilter = devicesFilter.filter(device => device.status !== filters.disponible);
+export const checkboxAvailableEvent = (checkboxAvailable) => {
+    checkboxStates.available = checkboxAvailable.checked;
+    updateDevicesFilter();
+}
 
-    if (checkboxAvailable.checked) {
-        const newDevices = devicesArray.filter(device => device.status === filters.disponible);
-        devicesFilter = [...devicesFilter, ...newDevices];
+export const checkboxInResguardoEvent = (checkboxInResguardo) => {
+    checkboxStates.inResguardo = checkboxInResguardo.checked;
+    updateDevicesFilter();
+}
+
+export const checkboxInMaintenanceEvent = (checkboxInMaintenance) => {
+    checkboxStates.inMaintenance = checkboxInMaintenance.checked;
+    updateDevicesFilter();
+}
+
+const updateDevicesFilter = () => {
+    // Si todos los checkboxes están desmarcados, resetea el filtro
+    if (!checkboxStates.available && !checkboxStates.inResguardo && !checkboxStates.inMaintenance) {
+        devicesFilter = [];
+    } else {
+        // Filtra los dispositivos basándose en los estados de los checkboxes
+        devicesFilter = devicesArray.filter(device => {
+            if (checkboxStates.available && device.status.toLowerCase() === filters.disponible.toLowerCase()) {
+                return true;
+            }
+            if (checkboxStates.inResguardo && device.status.toLowerCase() === filters.enResguardo.toLowerCase()) {
+                return true;
+            }
+            if (checkboxStates.inMaintenance && device.status.toLowerCase() === filters.enMantenimiento.toLowerCase()) {
+                return true;
+            }
+            return false;
+        });
     }
-    
+
     indexTable = 1;
-    paragraphMessageIndex.textContent = indexTable;
-
-    if (devicesFilter.length === 0) {
-        renderDevices(devicesArray);
-    } else {
-        renderDevices(devicesFilter);
-    }
+    renderDevices(devicesFilter.length > 0 ? devicesFilter : devicesArray);
 }
 
-export const checkboxInResguardoEvent = ( checkboxInResguardo ) => {
-    devicesFilter = devicesFilter.filter(device => device.status !== filters.enResguardo);
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        data = await getDataServer('../server/data/equipmentvisualization.php');
 
-    if (checkboxInResguardo.checked) {
-        const newDevices = devicesArray.filter(device => device.status === filters.enResguardo);
-        devicesFilter = [...devicesFilter, ...newDevices];
+        devicesArray = Object.values(data).flat();
+        renderDevices(data);
+        console.log('Data:', data);
+    } catch (error) {
+        console.error('Error:', error);
     }
-    
-    indexTable = 1; 
-    paragraphMessageIndex.textContent = indexTable;
-
-    if (devicesFilter.length === 0) {
-        renderDevices(devicesArray);
-    } else {
-        renderDevices(devicesFilter);
-    }
-}
-
-export const checkboxInMaintenanceEvent = ( checkboxInMaintenance ) => {
-    devicesFilter = devicesFilter.filter(device => device.status !== filters.enMantenimiento);
-
-    if (checkboxInMaintenance.checked) {
-        const newDevices = devicesArray.filter(device => device.status === filters.enMantenimiento);
-        devicesFilter = [...devicesFilter, ...newDevices];
-    }
-    
-    indexTable = 1;
-    paragraphMessageIndex.textContent = indexTable;
-
-    if (devicesFilter.length === 0) {
-        renderDevices(devicesArray);
-    } else {
-        renderDevices(devicesFilter);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', async() => {  
-   try {
-       data = await getDataServer('../server/data/equipmentvisualization.php');
-
-       devicesArray = Object.values(data).flat();
-       renderDevices(data);
-   } catch(error) { 
-       console.error('Error:', error);
-   }
 });
 
 export const renderDevices = (devices) => {
@@ -109,17 +92,18 @@ export const renderDevices = (devices) => {
 
     const devicesArray = Object.values(devices).flat();
 
-    const start = (indexTable - 1) * 6;
-    const end = indexTable * 6;
+    const start = (indexTable - 1) * 8;
+    const end = indexTable * 8;
 
     const slicedDevices = devicesArray.slice(start, end);
 
     slicedDevices.forEach(device => {
         const { codeOpc, subcategoria, marca, modelo, numSerie, status, idEquipo } = device;
+        let className = status === 'Disponible' ? 'active-devices' : 'not-available__devices';
         const tr = document.createElement('tr');
         const buttonActions = document.createElement('button');
         const paragraphButton = document.createElement('p');
-        paragraphButton.textContent = '. . .';
+        paragraphButton.textContent = 'Editar';
 
         tr.setAttribute('id', idEquipo);
         tr.setAttribute('class', 'table-row');
@@ -127,41 +111,64 @@ export const renderDevices = (devices) => {
         buttonActions.setAttribute('data-id', idEquipo);
 
         tr.innerHTML = `
-            <td>${codeOpc}</td>
-            <td>${subcategoria} ${marca} ${modelo} ${numSerie}</td>
-            <td>${status}</td>
-            <td id='columnActionsDevices'></td>
-        `;
-        
+        <td>${codeOpc}</td>
+        <td>${subcategoria} ${marca} ${modelo} ${numSerie}</td>
+        <td>
+            <div class="background-paragraph ${className}">${status}</div>
+        </td>
+        <td id='columnActionsDevices'></td>
+    `;
+
         tr.querySelector('#columnActionsDevices').appendChild(buttonActions);
         tableDevices.appendChild(tr);
 
         buttonActions.addEventListener('click', () => {
             const devicesID = buttonActions.getAttribute('data-id');
             const filterDevice = devicesArray.filter(device => device.idEquipo === Number(devicesID));
-            
+
             windowActionsDevices(filterDevice);
-            console.log('ID:', idEquipo);
+            console.log('ID:', idEquipo);   
         })
     });
 }
 
-nextIndexTableDevices.addEventListener('click', () => {
-    const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
-    if(indexTable === Math.ceil(devicesToRender.length / 6)) return;
-    paragraphMessageIndex.textContent = indexTable + 1;
+document.addEventListener('keydown', (event) => {
+    
+    if (event.key === 'ArrowRight') {
+        const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
+        if (indexTable === Math.ceil(devicesToRender.length / 8)) return;
 
-    indexTable++;
-    renderDevices(devicesToRender);
+        indexTable++;
+        renderDevices(devicesToRender);
+    }
+
+    if (event.key === 'ArrowLeft') {
+        if (indexTable === 1) {
+            return;
+        };
+
+        indexTable--;
+        const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
+        renderDevices(devicesToRender);
+    }
 });
 
-prevIndexTableDevices.addEventListener('click', () => {
-    if(indexTable === 1) {
-        return;
-    };
-    paragraphMessageIndex.textContent = indexTable - 1;
+// nextIndexTableDevices.addEventListener('click', () => {
+//     const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
+//     if (indexTable === Math.ceil(devicesToRender.length / 6)) return;
+//     paragraphMessageIndex.textContent = indexTable + 1;
 
-    indexTable--;
-    const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
-    renderDevices(devicesToRender);
-});
+//     indexTable++;
+//     renderDevices(devicesToRender);
+// });
+
+// prevIndexTableDevices.addEventListener('click', () => {
+//     if (indexTable === 1) {
+//         return;
+//     };
+//     paragraphMessageIndex.textContent = indexTable - 1;
+
+//     indexTable--;
+//     const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
+//     renderDevices(devicesToRender);
+// });

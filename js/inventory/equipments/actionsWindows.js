@@ -1,3 +1,42 @@
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    let month = '' + (date.getUTCMonth() + 1);
+    let day = '' + date.getUTCDate();
+    const year = date.getUTCFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+const formatDateForDisplay = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    const formattedDateString = `${month}-${day}-${year}`;
+
+    let date = new Date(formattedDateString);
+    const opciones = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }
+    return date.toLocaleDateString("es-VE", opciones);
+}
+
+const attachDateChangeEvent = () => {
+    const dateBuys = document.getElementById('dateBuys');
+    const textFecha = document.getElementById('textFecha');
+
+    flatpickr(dateBuys, {
+        defaultDate: dateBuys.value,
+        onChange: function(selectedDates, dateStr, instance) {
+            textFecha.textContent = formatDateForDisplay(dateStr);
+        },
+    });
+}
+
 const firstSectionActions = ( dataOriginal ) => {
     const rootActions = document.getElementById('root-actions');
     const data = dataOriginal[0];
@@ -22,8 +61,11 @@ const firstSectionActions = ( dataOriginal ) => {
                 <label for='serial'>Actualice el número de serie del equipo (opcional).</label>
                 <input type='text' id='serial' name='serial' value='${data.numSerie}' required>
 
-                <label for='dateBuys'>Actualice la fecha de la compra (opcional).</label>
-                <input class='input-forms' type='date' id='dateBuys' name='dateBuys' value='${data.fechaCompra}' required>
+                <label for='dateBuys' class='label-date'>
+                    <span id="textFecha">${formatDateForDisplay(data.fechaCompra)}</span>
+                    <input class='input-date' type='date' id='dateBuys' name='dateBuys' value=${formatDate(data.fechaCompra)} required>
+                </label>
+                
 
                 <label for='dateWarranty'>Actualice la fecha en la que expira la garantía (opcional).</label>
                 <input class='input-forms' type='date' id='dateWarranty' name='dateWarranty' value='${data.fechaGarantia}' required>
@@ -54,6 +96,8 @@ const firstSectionActions = ( dataOriginal ) => {
     `;
 
     rootActions.innerHTML = html;
+   
+    attachDateChangeEvent();
 }
 
 const secondSectionActions = ( data ) => {

@@ -18,7 +18,9 @@
         <img class="opc-logo" src="../images/opc-logo.png" alt="Logo de OPC Ingeniería y Costrucción">
         <nav>
             <ul>
-                <li><a href="home.php">Inicio</a></li>
+                <li>
+                    <a href="home.php">Inicio</a>
+                </li>
                 <li><a href="records.php">Registros</a></li>
                 <li><a class="selected" href="safeguards.php">Resguardos</a></li>
                 <li><a href="inventory.php">Equipos y Empleados</a></li>
@@ -37,6 +39,7 @@
 
     <main>
         <section>
+
             <article class="first_article">
                 <div class="first_div">
                     <label for="">Escriba el código del equipo</label>

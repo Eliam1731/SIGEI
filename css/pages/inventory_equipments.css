@@ -131,145 +131,161 @@ form .container-search .container-buttonSearch__equipment button {
     width: 100%;
     border: none;
 }
-table {
+.container-table__devices {
     height: 85%;
     width: 95%;
     position: relative;
-    background: #FAFAFA;
-    border: 2px solid #EEEEEE;
+    border: 2px solid #E0E0E0;
+    border-radius: 5px;
+    overflow-y: auto;
     box-sizing: border-box;
-    overflow: hidden;
 }
-table thead { height: 6%; width: 100%; position: relative; border-bottom: 2px solid #EEEEEE; box-sizing: border-box;}
-table thead tr { height: 100%; width: 100%; position: relative; }
-table thead tr th:first-child { width: 16%; }
-table thead tr th:nth-child(2) { width: 60%; }
-table thead tr th:nth-child(3) { width: 12%; }
-table thead tr th:last-child { width: 12%; }
-table thead tr th {
-    color: #757575;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-size: .9em;
-    font-weight: 600;
-    border-right: 2px solid #EEEEEE;
-    text-align: center;
-    vertical-align: middle;
-}
-table thead tr th:last-child { border-right: none; }
-table tbody {
-    height: 84%;
+.container-title {
+    height: 15%;
     width: 100%;
-    position: relative;
+    display: flex;
+    border-bottom: px solid gray;
     box-sizing: border-box;
-    border-left: 2px solid #EEEEEE;
-    border-right: 2px solid #EEEEEE;
 }
-table tbody #none-equipment { height: 100%; width: 100%; position: absolute; }
-table tbody #none-equipment td { height: 100%; width: 100%; position: absolute; }
-table tbody #none-equipment td div {
+.container-title div:first-child {
     height: 100%;
-    width: 100%;
-    position: relative;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    padding-left: 3%;
 }
-table tbody #none-equipment td div {
-    color: #424242;
+.container-title div:first-child h3 {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
+    font-size: .9em;
+    padding-top: 4%;
+    padding-bottom: 2%;
     font-weight: 700;
+    font-style: normal;
+    color: #424242;
 }
-table tbody #none-equipment td div img {
-    width: 25%;
+.container-title div:first-child p {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-size: .9em;
+    font-weight: 500;
+    font-style: normal;
+    color: #616161;
 }
-table tbody .table-row {
+.container-title div:last-child {
+    height: 100%;
+    width: 30%;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.container-title div:last-child button {
+    margin-top: 5%;
+    right: 8%;
+    height: 45%;
+    position: absolute;
+    border: none;
+    border-radius: 5px;
+    background: #01579B;
+    color: #FAFAFA;
+    padding: 0 4%;
+}
+.root_devices {
+    margin-top: 3%;
     height: auto;
     width: 100%;
     position: relative;
     box-sizing: border-box;
-    border-left: 2px solid #EEEEEE;
-    border-bottom: 2px solid #EEEEEE;
 }
-table tbody .table-row td {
+.root_devices table {
+    height: auto;
+    width: 100%;
+    position: relative;
     box-sizing: border-box;
-    padding: 1% 1%;
-    color: #424242;
+}
+.root_devices table thead {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+.root_devices table thead tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid #BDBDBD;
+    box-sizing: border-box;
+}
+.root_devices table thead tr th {
+    height: auto;
+    position: relative;
+    padding: 1%;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: #212121;
+    box-sizing: border-box;
+}
+.root_devices table thead tr th:first-child { width: 17%; padding-left: 3%; }
+.root_devices table thead tr th:nth-child(2) { width: 55%;}
+.root_devices table thead tr th:nth-child(3) { width: 18%; text-align: center; }
+.root_devices table thead tr th:last-child { width: 10%; }
+.root_devices table tbody {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+.root_devices table tbody tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid #E0E0E0;
+    box-sizing: border-box;
+}
+.root_devices table tbody tr td {
+    padding: 1.7% 0;
+    height: auto;
+    position: relative;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
     font-size: .8em;
-    font-family: "Montserrat", sans-serif;
+    text-align: left;
     font-optical-sizing: auto;
-    font-weight: 600;
-    text-align: center;
-    vertical-align: middle;
-}
-table tbody .table-row td:last-child {
-    height: 100%;
-    width: 100%;
-    position: relative;
+    font-weight: 550;
+    font-style: normal;
+    color: #6B7280;
+} 
+.root_devices table tbody tr td:first-child { padding-left: 3%; color: #212121; }
+.root_devices table tbody tr td:nth-child(2) { padding-left: 1%; }
+.root_devices table tbody tr td:nth-child(3) { 
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;
-    box-sizing: border-box;
 }
-table tbody .table-row td:last-child button {
-    height: 100%;
-    width: 100%;
+.root_devices table tbody tr td:nth-child(3) .background-paragraph {
+    height: min-content;
+    width: max-content;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
+    padding: 2%;
+    border-radius: 5px;
+}
+.active-devices { color: #1B5E20; border: 1px solid #A5D6A7; background: #E8F5E9; }
+.not-available__devices { color: #B71C1C; border: 1px solid #EF9A9A; background: #FFCDD2; }
+.root_devices table tbody tr td:last-child button { 
+    height: 100%;
+    width: 55%;
+    color: #0277BD;
+    font-weight: 700; 
     background: none;
-    color: #757575;
-    box-sizing: border-box;
-    font-size: 1.8em;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
+    border: none;
 }
-table tbody .table-row td:last-child button:hover {
-    background: #EEEEEE;
-}
-table tbody .table-row:last-child { border-bottom: none; }
-table tfoot { height: 10%; width: 100%; position: relative; box-sizing: border-box; }
-table tfoot tr { height: 100%; width: 100%; position: relative; }
-table tfoot tr td {
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    position: absolute;
-    border-top: 2px solid #EEEEEE;
-}
-table tfoot tr td div {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-table tfoot tr td div p {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    color: #424242;
-    font-weight: 700;
-    font-size: 1.1em;
-    padding: 0 3% 0 3%;
-}
-table tfoot tr td div button {
-    height: 55%;
-    width: 6%;
-    border: 2px solid #E0E0E0;
-    background: #EEEEEE;
-    border-radius: 10px;
-}
-table tfoot tr td div button:hover {
-    border: 2px solid #BDBDBD;
-}
+.root_devices table tbody tr td:last-child:hover { color: #6B7280; }
+.container-table__devices:hover .container-table_buttons { display: flex; }
 /* Estilos de la renderización de empleados */
 #employee_section {
     height: 100%;
@@ -329,7 +345,7 @@ table tfoot tr td div button:hover {
 }
 .actions-container div {
     height: 90%;
-    width: 90%;
+    width: 70%;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -352,7 +368,7 @@ table tfoot tr td div button:hover {
     color: #212121;
 }
 .actions-container div #root-actions #form-update-device {
-    height: 85%;
+    height: auto;
     width: 90%;
     margin: 0 0 0 5%;
     position: relative;
@@ -361,6 +377,7 @@ table tfoot tr td div button:hover {
     align-items:normal;
     box-sizing: border-box;
     overflow-y: auto;
+    overflow-x: hidden;
     border-radius: 0;
 }
 .actions-container div #root-actions #form-update-device label {
@@ -370,12 +387,13 @@ table tfoot tr td div button:hover {
     padding-bottom: 3%;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
+    box-sizing: border-box;
 }
 .actions-container div #root-actions #form-update-device select {
     height: auto;
-    padding: 1.5vh;
+    padding: 1.6vh;
     margin-bottom: 3%;
-    width: 70%;
+    width: 80%;
     display: block;
     position: relative;
     background: #F5F5F5;
@@ -383,18 +401,34 @@ table tfoot tr td div button:hover {
     box-sizing: border-box;
 }
 .actions-container div #root-actions #form-update-device input {
-    width: 70%;
+    width: 80%;
     border: 2px solid #EEEEEE;
     background: #F5F5F5;
     border-radius: 5px;
     margin-bottom: 3%;
-    padding: 1.5vh !important;
+    padding: 1.6vh;
     outline: none;
     box-sizing: border-box;
 }
+.input-date {
+    opacity: 0;
+    position: absolute;
+}
+
+.label-date {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    position: relative;
+    box-sizing: border-box;
+    margin-bottom: 3%;
+    border-radius: 5px;
+}
 .actions-container div #root-actions #form-update-device textarea {
     height: auto;
-    padding: 2vh 4vh  8vh 1.5vh !important;
+    padding: 2vh 4vh  8vh 1.5vh;
     width: 70%;
     resize: none;
     position: relative;

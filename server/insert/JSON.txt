@@ -36,3 +36,5 @@ Delete_img ejemplo JSON
     "Equipo_id": 1,
     "Imagen_id": 2
 }
+
+

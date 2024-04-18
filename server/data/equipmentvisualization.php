@@ -63,7 +63,7 @@ foreach ($rows as $row) {
         'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado']
     ];
 
-    $sql_images = $conn->prepare("SELECT Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
+    $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
     $sql_images->execute([$row['idEquipo']]);
     $images = $sql_images->fetchAll(PDO::FETCH_ASSOC);
 

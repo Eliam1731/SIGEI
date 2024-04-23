@@ -1,8 +1,7 @@
 <?php
 include '../config/connection_db.php';
 
-$json = file_get_contents('php://input');
-$data = json_decode($json, true);
+$data = $_POST;
 
 $sql_equipos = "UPDATE equipos_informaticos SET 
     Id_subcategoria = :subcategoria, 
@@ -54,9 +53,9 @@ try {
         'equipo_id' => $data['Equipo_id']
     ]);
 
-    $imageData = base64_decode($data['Imagenes']);
+    $imageData = file_get_contents($_FILES['Imagenes']['tmp_name']);
     $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mime_type = $finfo->buffer($imageData);
+    $mime_type = $finfo->file($_FILES['Imagenes']['tmp_name']);
 
     $stmt_imagenes->execute([
         'nombre' => $data['Modelo'], 
@@ -66,7 +65,7 @@ try {
     ]);
 
     $stmt_facturas->execute([
-        'factura_file' => base64_decode($data['Factura']), 
+        'factura_file' => file_get_contents($_FILES['Factura']['tmp_name']), 
         'equipo_id' => $data['Equipo_id']
     ]);
 

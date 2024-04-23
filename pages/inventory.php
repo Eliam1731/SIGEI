@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="../css/resources/resetStyle.css">
     <link rel="stylesheet" href="../css/components/navegation.css">
     <link rel="stylesheet" href="../css/components/button.css">
-    <link rel="stylesheet" href="../css/pages/inventory_equipments.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/pages/inventory_equipments.css">
     <title>Inventario</title>
 </head>
 
@@ -42,7 +42,7 @@
                 <form id="search_equipment">
                     <div class="container-search">
                         <div class="container-input__equipment">
-                            <div>
+                            <div class='container-code__search'>
                                 <span>OPCIC-COM-</span>
                             </div>
 
@@ -55,11 +55,11 @@
                         </div>
                     </div>
 
-                    <button id="deleteFiltrosDevices" type="button">
+                    <button class="filters-button" id="deleteFiltrosDevices" type="button">
                         Eliminar filtros
                     </button>
 
-                    <button id="enableWindowFilter" type="button">
+                    <button class="filters-button" id="enableWindowFilter" type="button">
                         <img src="../images/filter.png" alt="">
                     </button>
 
@@ -97,7 +97,7 @@
             </section>
 
             <section id="employee_section">
-
+                <h2>Seccion de ver todos los empleados</h2>
             </section>
         </div>
 
@@ -108,8 +108,7 @@
             </ul>
         </nav>
     </main>
-
-    <script type="module" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/inventory/equipments/main.js"></script>
     <script type="module" src="../js/inventory/equipments/renderDevices.js"></script>

@@ -52,11 +52,9 @@ export const checkboxInMaintenanceEvent = (checkboxInMaintenance) => {
 }
 
 const updateDevicesFilter = () => {
-    // Si todos los checkboxes están desmarcados, resetea el filtro
     if (!checkboxStates.available && !checkboxStates.inResguardo && !checkboxStates.inMaintenance) {
         devicesFilter = [];
     } else {
-        // Filtra los dispositivos basándose en los estados de los checkboxes
         devicesFilter = devicesArray.filter(device => {
             if (checkboxStates.available && device.status.toLowerCase() === filters.disponible.toLowerCase()) {
                 return true;
@@ -88,6 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 export const renderDevices = (devices) => {
+    console.log(devices)
     tableDevices.innerHTML = '';
 
     const devicesArray = Object.values(devices).flat();
@@ -152,23 +151,3 @@ document.addEventListener('keydown', (event) => {
         renderDevices(devicesToRender);
     }
 });
-
-// nextIndexTableDevices.addEventListener('click', () => {
-//     const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
-//     if (indexTable === Math.ceil(devicesToRender.length / 6)) return;
-//     paragraphMessageIndex.textContent = indexTable + 1;
-
-//     indexTable++;
-//     renderDevices(devicesToRender);
-// });
-
-// prevIndexTableDevices.addEventListener('click', () => {
-//     if (indexTable === 1) {
-//         return;
-//     };
-//     paragraphMessageIndex.textContent = indexTable - 1;
-
-//     indexTable--;
-//     const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
-//     renderDevices(devicesToRender);
-// });

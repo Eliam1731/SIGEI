@@ -1,139 +1,237 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-main { display: flex; }
+
+main {
+    display: flex;
+}
+
 #root {
     height: 100%;
     width: 80%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 }
-/* Estilos de la renderización de equipos */
+
 #equipments_section {
     height: 100%;
     width: 100%;
     position: relative;
+}
+
+#search_equipment {
+    height: 10%;
+    width: 100%;
+    position: relative;
     display: flex;
     align-items: center;
+    justify-content: space-around;
+    box-sizing: border-box;
+}
+
+.container-search {
+    height: 75%;
+    width: 40%;
+    position: relative;
+    display: flex;
+    background: #FAFAFA;
+    border: 1px solid #EEEEEE;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-right: 55%;
+}
+
+.container-input__equipment {
+    height: 100%;
+    width: 85%;
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.container-code__search {
+    height: 100%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #EEEEEE;
+}
+
+.container-code__search span {
+    color: #BDBDBD;
+    font-size: .8em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    user-select: none;
+}
+
+.filters-button {
+    height: 70%;
+    width: auto;
+    box-sizing: border-box;
+    background: #FAFAFA;
+    border: 1px solid #EEEEEE;
+    color: #9E9E9E;
+    border-radius: 10px;
+    padding: 0px 1%;
+    font-size: .8em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#enableWindowFilter { position: absolute; right: 0; }
+#deleteFiltrosDevices { position: absolute; right: 7%; }
+
+#inputSearchEquipment {
+    height: 100%;
+    width: 70%;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    padding-left: 5%;
+    outline: none;
+}
+
+#inputSearchEquipment::placeholder {
+    color: #BDBDBD;
+    font-size: .9em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.container-buttonSearch__equipment {
+    height: 100%;
+    width: 15%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.container-buttonSearch__equipment #buttonSearchEquipment {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    border: none;
+    background: #F5F5F5;
+    border-left: 1px solid #EEEEEE;
+}
+
+#navigation_sections-inventory {
+    height: 100%;
+    width: 20%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Estilos de la ventana emergente para ver todos los equipos informaticos */
+.container-close {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+}
+.container-actions {
+    height: 90%;
+    width: 85%;
+    position: relative;
+    display: flex;
+    background: #FAFAFA;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+#root-actions {
+    height: 100%;
+    width: 80%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    background: #FAFAFA;
+}
+
+#root-actions h2 {
+    padding: 5% 0 5% 5%;
+    color: #212121;
+    font-size: 1.1em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#form-update-device {
+    height: auto;
+    width: 100%;
+    position: relative;
+    display: flex;
     flex-direction: column;
     box-sizing: border-box;
 }
-form {
-    height: 7%;
-    width: 95%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin: 1% 0 2% 0;
-    border-radius: 15px;
-    box-sizing: border-box;
-}
-#enableWindowFilter {
-    height: 100%;
-    width: 5%;
-    right: 0;
-    background: none;
-    border: none;
-    position: absolute;
-    border-radius: 10px;
-    background: #F5F5F5;
-}
-.filter-container {
-    top: 17%;
-    left: 74.2%;
-    height: 15%;
-    width: 15%;
-    position: absolute;
-    background: #F5F5F5;
-    border: 2px solid #E0E0E0;
-}
-.filter-container .filter {
-    height: 33.3%;
-    width: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-.filter-container .filter label {
-    width: 100%;
-    margin-left: 5%;
-}
-.filter-container .filter label span {
-    user-select: none;
-    padding-left: 5%;
-    color: #9E9E9E;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-size: .9em;
-    font-weight: 600;
-}
-.filter-container .filter:hover { background: #EEEEEE; }
-#enableWindowFilter:hover { border: 2px solid #E0E0E0; }
-form .container-search {
-    height: 100%;
-    width: 50%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #EEEEEE;
-    background: #FAFAFA;
-    overflow: hidden;
-    border-radius: 10px;
-}
-form .container-search:hover { border: 2px solid #BDBDBD; }
-form .container-search .container-input__equipment {
-    height: 100%;
-    width: 90%;
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-form .container-search .container-input__equipment div {
-    height: 100%;
-    width: 30%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-size: .9em;
-    font-weight: 600;
+
+#form-update-device label {
+    font-size: 1em;
+    font-weight: 700;
     color: #424242;
-    border-right: 2px solid #EEEEEE;
-}
-form .container-search .container-input__equipment input {
-    height: 100%;
-    width: 70%;
-    position: relative;
-    border: none;
-    outline: none;
-    background: none;
+    padding-bottom: 3%;
     padding-left: 5%;
+}
+
+#form-update-device select {
+    height: 45px;
+    width: 70%;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    background: #F5F5F5;
+    box-sizing: border-box;
+    border: 1px solid #EEEEEE;
+}
+
+#form-update-device input {
+    margin-left: 5%;
+    margin-bottom: 3%;
+    height: 45px;
+    width: 70%;
+    box-sizing: border-box;
+    background: #F5F5F5;
+    border: 1px solid #EEEEEE;
+}
+
+#form-update-device textarea {
+    margin-left: 5%;
+    margin-bottom: 3%;
+    height: 100px;
+    width: 70%;
+    padding: 1%;
+    resize: none;
+    background: #F5F5F5;
+    border: 1px solid #EEEEEE;
+    outline: none;
+}
+#form-update-device textarea:focus { border: 1px solid #BDBDBD; }
+
+#nav-actions {
+    height: 100%;
+    width: 20%;
+    position: relative;
     box-sizing: border-box;
 }
-form .container-search .container-buttonSearch__equipment {
-    height: 100%;
-    width: 10%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-left: 2px solid #EEEEEE;
-}
-form .container-search .container-buttonSearch__equipment button {
-    height: 100%;
-    width: 100%;
-    border: none;
-}
+/* Estilos de la tabla de equipos informaticos */
 .container-table__devices {
     height: 85%;
-    width: 95%;
+    width: 97%;
+    display: block;
+    margin: 2% 0 0 3%;
     position: relative;
     border: 2px solid #E0E0E0;
     border-radius: 5px;
@@ -286,166 +384,75 @@ form .container-search .container-buttonSearch__equipment button {
 }
 .root_devices table tbody tr td:last-child:hover { color: #6B7280; }
 .container-table__devices:hover .container-table_buttons { display: flex; }
-/* Estilos de la renderización de empleados */
-#employee_section {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    display: none;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-/* Estilos de la barra de navegación */
-#navigation_sections-inventory {
-    height: 100%;
-    width: 20%;
-    position: relative;
-    box-sizing: border-box;
-}
-#navigation_sections-inventory ul {
-    margin-top: 29%;
-    margin-left: 10%;
-    height: auto;
-    width: 90%;
-    border-left: 3px solid #F5F5F5;
-    box-sizing: border-box;
-}
-#navigation_sections-inventory ul li {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    color: #424242;
-    font-weight: 700;
-    font-size: .9em;
-    padding: 0 0 5% 7%;
-}
-.li-selected { color: #1A73E8 !important; }
-#deleteFiltrosDevices {
-    right: 7%;
-    height: 80%;
-    position: absolute;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    color: #757575;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-size: .7em;
-    border-radius: 7px;
-}
-/* Ventana de acciones */
-.actions-container {
-    top: 0%;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.7);
-}
-.actions-container div {
-    height: 90%;
-    width: 70%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    background: #FFFFFF;
-}
-.actions-container div #root-actions {
-    height: 100%;
-    width: 80%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-.actions-container div #root-actions h2 {
+.title-images {
     padding: 3% 0 5% 5%;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
+    font-size: 1em;
     font-weight: 700;
-    font-size: 1.2em;
-    color: #212121;
+    font-style: normal;
+    color: #424242;
 }
-.actions-container div #root-actions #form-update-device {
-    height: auto;
+/* Estilos del carrusel de imagenes */
+.container-image {
+    height: 550px;
     width: 90%;
-    margin: 0 0 0 5%;
+    position: relative;
+    margin: 0 0 5% 5%;
+    box-sizing: border-box;
+}
+
+.image-device {
+    height: 100%;
+    width: 100%;
     position: relative;
     display: flex;
-    flex-direction: column;
-    align-items:normal;
+    overflow: hidden;
     box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-radius: 0;
-}
-.actions-container div #root-actions #form-update-device label {
-    font-weight: 700;
-    font-size: 1em;
-    color: #424242;
-    padding-bottom: 3%;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    box-sizing: border-box;
-}
-.actions-container div #root-actions #form-update-device select {
-    height: auto;
-    padding: 1.6vh;
-    margin-bottom: 3%;
-    width: 80%;
-    display: block;
+} 
+
+.root-image {
+    height: 100%;
+    width: 100%;
     position: relative;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    box-sizing: border-box;
+    flex: none;
 }
-.actions-container div #root-actions #form-update-device input {
-    width: 80%;
-    border: 2px solid #EEEEEE;
-    background: #F5F5F5;
-    border-radius: 5px;
-    margin-bottom: 3%;
-    padding: 1.6vh;
-    outline: none;
-    box-sizing: border-box;
+
+.root-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    user-select: none;
 }
-.input-date {
-    opacity: 0;
+
+.root-image button {
+    top: 3%;
+    left: 50%;
     position: absolute;
 }
 
-.label-date {
-    width: 80%;
-    display: flex;
-    align-items: center;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    position: relative;
-    box-sizing: border-box;
-    margin-bottom: 3%;
-    border-radius: 5px;
-}
-.actions-container div #root-actions #form-update-device textarea {
-    height: auto;
-    padding: 2vh 4vh  8vh 1.5vh;
-    width: 70%;
-    resize: none;
-    position: relative;
-    box-sizing: border-box;
-    border: 2px solid #EEEEEE;
-    background: #F5F5F5;
-    margin-bottom: 3%;
-}
-.actions-container div #root-actions #form-update-device button {
-    padding: 1.5vh;
-    width: 70%;
-    margin-bottom: 5%;
-}
-.actions-container div nav {
+.container-navigation__images {
+    top: 0;
     height: 100%;
-    width: 20%;
-    position: relative;
-    border-left: 2px solid #757575;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
     box-sizing: border-box;
+} 
+
+.container-navigation__images button {
+    height: 9%;
+    width: 5%;
+    border-radius: 100%;
+    background: rgba(245, 245, 245, 0.5);
+    border: 1px solid #EEEEEE;
+}
+
+#left-image { position: absolute; left: 2%; } 
+#right-image { position: absolute; right: 2%; }
+#delete-image2 { position: absolute; top: 2%; left: 50%;}
+#imageInput {
+    display: none;
 }

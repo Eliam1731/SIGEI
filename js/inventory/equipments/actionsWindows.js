@@ -75,7 +75,28 @@ const firstSectionActions = (dataOriginal) => {
                     </div>
                 </div>
 
-                <input type='file' id='imageInput' name='image' accept='image/*' multiple>
+                <div class='container-input__image'>
+                    <input type='file' id='imageInput' name='image' accept='image/*' multiple>
+                    <label for='imageInput' id='label-image'>No hay imagenes seleccionadas</label>
+                </div>
+
+                <h3 class='title-images'>Factura del equipo</h3>
+
+                <p class='description_action-bill'>
+                    Al elegir una factura, se reemplazará la factura actual del equipo.
+                </p>
+
+                <div class='container-file__bill'>
+                    <div class='file-bill'>
+                        <input type='file' id='billInput' name='bill' accept='application/pdf, text/xml'>
+                        <label for='billInput' id='label-bill'>No hay factura seleccionada</label>
+                    </div>
+                    
+                    <div class='control__bill'>
+                        <button id='download-bill' type='button'>Ver factura del equipo</button>
+                    </div>
+                </div>
+
                 <button id='update-data' type='submit'>Actualizar datos del equipo</button>
             </form>
     `;
@@ -89,6 +110,48 @@ const firstSectionActions = (dataOriginal) => {
   const imagesDeleteArray = []; //Array para guardar las imagenes que se eliminaran
   let currentImage = 0;
   const imageInput = document.getElementById('imageInput');
+  const formUpdateDevice = document.getElementById('form-update-device');
+  const downloadBill = document.getElementById('download-bill');
+
+  console.log(data.invoices[0].Factura_file, 'data.invoices');
+
+  const decodeBase64ToBytes = (base64) => {
+    const bytes = atob(base64);
+    const byteNumbers = new Array(bytes.length);
+  
+    for (let i = 0; i < bytes.length; i++) {
+      byteNumbers[i] = bytes.charCodeAt(i);
+    }
+  
+    return byteNumbers;
+  }
+  
+  const createBlobFromBytes = (bytes) => {
+    const blob = new Blob([new Uint8Array(bytes)], {type: 'application/pdf'});
+    return blob;
+  }
+  
+  const configureDownloadLink = (url) => {
+    window.open(url, '_blank');
+  };
+  
+  downloadBill.addEventListener('click', (event) => {
+    // Evita que el evento de clic original se propague
+    event.preventDefault();
+  
+    const pdfBytes = decodeBase64ToBytes(data.invoices[0].Factura_file);
+    const blob = createBlobFromBytes(pdfBytes);
+    const url = URL.createObjectURL(blob);
+  
+    configureDownloadLink(url);
+  });
+  
+
+  formUpdateDevice.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    console.log(data.images, 'data.images en el submit');
+  });
 
   if (data.images.length < 3) {
     imageInput.style.display = 'block';
@@ -157,7 +220,7 @@ deleteImage.addEventListener('click', async () => {
   console.log(imagesDeleteArray, 'imagesDeleteArray');
 
   if (data.images.length === 0) {
-    image.src = '../images/notImage.jpg';
+    image.src = '../images/notImage.png';
     image.id = '';
     controlerImage.style.display = 'none';
 

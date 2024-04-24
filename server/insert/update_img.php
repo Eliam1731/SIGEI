@@ -4,7 +4,7 @@ include '../config/connection_db.php';
 $data = json_decode(file_get_contents('php://input'), true);
 
 $equipo_id = $data['equipo_id'];
-$new_images = $data['new_images']; // Asegúrate de que 'new_images' es un array de archivos
+$new_images = $data['new_images']; //'new_images' array de archivos
 
 $sql_delete = "DELETE FROM imagenes WHERE Equipo_id = :equipo_id";
 $stmt_delete = $conn->prepare($sql_delete);
@@ -15,7 +15,7 @@ $stmt_insert = $conn->prepare($sql_insert);
 try {
     $conn->beginTransaction();
 
-    // Eliminar imágenes existentes
+    // Eliminar imágenes 
     $stmt_delete->execute(['equipo_id' => $equipo_id]);
 
     // Insertar nuevas imágenes

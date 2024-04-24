@@ -19,18 +19,11 @@ $sql_equipos = "UPDATE equipos_informaticos SET
     Comentarios = :comentarios 
     WHERE Equipo_id = :equipo_id";
 
-$sql_imagenes = "UPDATE imagenes SET 
-    Nombre = :nombre, 
-    Tipo_mime = :tipo_mime, 
-    Datos_imagen = :datos_imagen 
-    WHERE Equipo_id = :equipo_id";
-
 $sql_facturas = "UPDATE facturas SET 
     Factura_file = :factura_file 
     WHERE Equipo_id = :equipo_id";
 
 $stmt_equipos = $conn->prepare($sql_equipos);
-$stmt_imagenes = $conn->prepare($sql_imagenes);
 $stmt_facturas = $conn->prepare($sql_facturas);
 
 try {
@@ -50,17 +43,6 @@ try {
         'n_ref_compaq' => $data['N_referencia_Compras'], 
         'service_tag' => $data['Service_tag'], 
         'comentarios' => $data['Comentarios'], 
-        'equipo_id' => $data['Equipo_id']
-    ]);
-
-    $imageData = file_get_contents($_FILES['Imagenes']['tmp_name']);
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mime_type = $finfo->file($_FILES['Imagenes']['tmp_name']);
-
-    $stmt_imagenes->execute([
-        'nombre' => $data['Modelo'], 
-        'tipo_mime' => $mime_type, 
-        'datos_imagen' => $imageData, 
         'equipo_id' => $data['Equipo_id']
     ]);
 

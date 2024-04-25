@@ -22,15 +22,22 @@ $sql = $conn->prepare("SELECT
         empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
         empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
         empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
-        empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado
+        empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado,
+        empresas.Nom_empresa AS nombreEmpresa,
+        obras.Nombre_obra AS nombreObra,
+        frente.Nom_frente AS nombreFrente
     FROM 
         equipos_informaticos
     LEFT JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
     LEFT JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
     LEFT JOIN status ON equipos_informaticos.Status_id = status.Status_id
     LEFT JOIN resguardos_de_equipos ON equipos_informaticos.Equipo_id = resguardos_de_equipos.Equipo_id
-    LEFT JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id");
+    LEFT JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id
+    LEFT JOIN empresas ON empleados_resguardantes.Empresa_id = empresas.Empresa_id
+    LEFT JOIN obras ON empleados_resguardantes.Obra_id = obras.Obra_id
+    LEFT JOIN frente ON empleados_resguardantes.id_frente = frente.Frente_id");
 $sql->execute();
+
 
 $rows = $sql->fetchAll();
 
@@ -60,8 +67,12 @@ foreach ($rows as $row) {
         'primerApellidoEmpleado' => $row['primerApellidoEmpleado'],
         'segundoApellidoEmpleado' => $row['segundoApellidoEmpleado'],
         'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
-        'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado']
+        'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado'],
+        'nombreEmpresa' => $row['nombreEmpresa'],
+        'nombreObra' => $row['nombreObra'],
+        'nombreFrente' => $row['nombreFrente']
     ];
+
 
     $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
     $sql_images->execute([$row['idEquipo']]);

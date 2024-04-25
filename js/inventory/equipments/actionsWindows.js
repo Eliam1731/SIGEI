@@ -89,7 +89,7 @@ const firstSectionActions = (dataOriginal) => {
                 <div class='container-file__bill'>
                     <div class='file-bill'>
                         <input type='file' id='billInput' name='bill' accept='application/pdf, text/xml'>
-                        <label for='billInput' id='label-bill'>No hay factura seleccionada</label>
+                        <label for='billInput' id='label-bill'>Cargar nueva factura del equipo</label>
                     </div>
                     
                     <div class='control__bill'>
@@ -107,13 +107,11 @@ const firstSectionActions = (dataOriginal) => {
   const leftImage = document.getElementById('left-image');
   const rightImage = document.getElementById('right-image');
   const controlerImage = document.querySelector('.container-navigation__images');
-  const imagesDeleteArray = []; //Array para guardar las imagenes que se eliminaran
+  const imagesDeleteArray = [];
   let currentImage = 0;
   const imageInput = document.getElementById('imageInput');
   const formUpdateDevice = document.getElementById('form-update-device');
   const downloadBill = document.getElementById('download-bill');
-
-  console.log(data.invoices[0].Factura_file, 'data.invoices');
 
   const decodeBase64ToBytes = (base64) => {
     const bytes = atob(base64);
@@ -203,7 +201,6 @@ const firstSectionActions = (dataOriginal) => {
     }
   });
 
-  //Evento que elimina imagenes del DOM
 deleteImage.addEventListener('click', async () => {
   const imageDelete = parseInt(image.id);
   const imageToDelete = data.images.find((image) => image.Imagen_id === imageDelete);
@@ -228,7 +225,7 @@ deleteImage.addEventListener('click', async () => {
   }
 
   updateImage();
-  updateImageInputValue(); // Actualizamos el valor del input de imagen
+  updateImageInputValue(); 
 });
 
   leftImage.addEventListener('click', () => {
@@ -259,11 +256,185 @@ deleteImage.addEventListener('click', async () => {
   updateImage();
 };
 
-const secondSectionActions = (data) => { };
+const secondSectionActions = (data) => { 
+  const rootActions = document.getElementById('root-actions');
 
-const thirdSectionActions = (data) => { };
+  const html = `
+      <h2>Añadir gastos al equipo</h2>
+  `;
 
-const fourthSectionActions = (data) => { };
+  rootActions.innerHTML = html;
+};
+
+const thirdSectionActions = (data) => { 
+  const rootActions = document.getElementById('root-actions');
+
+  const html = `
+      <h2>Gastos del equipo</h2>
+  `;
+
+  rootActions.innerHTML = html;
+};
+
+const fourthSectionActions = (data) => {
+  const rootActions = document.getElementById('root-actions');
+  const { 
+    correoElectronicoEmpleado: emailEmployee, 
+    nombreEmpleado: name, 
+    primerApellidoEmpleado: firstSurname, 
+    numSeguroSocialEmpleado: sureSocial,
+    segundoApellidoEmpleado: secondSurname,
+    nombreEmpresa: company,
+    nombreFrente: front,
+    nombreObra: work,
+  } = data[0];
+
+  const notProtectiveEmployee = `
+    <h2>Empleado resguardante</h2>
+
+    <div class='message-not-protective'>
+        </p>Este equipo no tiene un empleado resguardante asignado.</p>
+
+        <img src='../images/capibara-table.png' alt='Imagen de empleado no resguardante'>
+     
+        <a href='safeguards.php' id='add-protective-employee'>Añadir resguardante</a>
+    </div>
+  `;  
+
+  if(!name) {
+    rootActions.innerHTML = notProtectiveEmployee;
+    return;
+  }
+
+  const html = `
+      <h2 class='title-employeeProtective'>Empleado resguardante</h2>
+
+      <div class='container-protective-employee'>
+          <div class='root-protective__card'>
+              <div class='card-protective'>
+                  <div class='circle-decoration-protective'></div>
+
+                  <p><span>Nombre completo:</span> ${name} ${firstSurname} ${secondSurname}</p>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='line-decoration-protective'></div>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='circle-decoration-protective'></div>
+
+                  <p><span>Número de seguro social:</span> ${sureSocial}</p>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='line-decoration-protective'></div>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='circle-decoration-protective'></div>
+
+                  <p><span>Correo electrónico:</span> ${emailEmployee}</p>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='line-decoration-protective'></div>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='circle-decoration-protective'></div>
+
+                  <p><span>Empresa a la que pertenece el empleado:</span> ${company}</p>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='line-decoration-protective'></div>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='circle-decoration-protective'></div>
+
+                  <p><span>Obra a la que pertenece el empleado:</span> ${work}</p>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='line-decoration-protective'></div>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='circle-decoration-protective'></div>
+
+                  <p><span>Frente a la que pertenece el empleado:</span> ${front}</p>
+              </div>
+
+              <div class='card-protective'>
+                  <div class='line-decoration-protective'></div>
+              </div>
+
+              <div class='card-protective__email'>
+                  <div class='circle-email-protective'>
+                      <div class='circle-decorationImage-protective'>
+                          <img src='../images/email.svg' alt='Icono de email'>
+                      </div>
+                  </div>
+
+                  <div class='container-email-protective'>
+                      <div class='card-email'>
+                          <div class='container-title__email'>
+                              <p>Enviar mensaje</p>
+                          </div>
+
+                          <form id='form-email-protective'>
+                              <div>
+                                  <label for='affair'>Asunto</label>
+                                  <input type='text' id='affair' name='titulo'>
+                              </div>
+
+                              <div class='container-message__form'>
+                                  <textarea id='message' name='mensaje' placeholder=''></textarea>
+                              </div>
+
+                              <button id='send-email' type='submit'>Enviar mensaje</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  `;
+
+  rootActions.innerHTML = html;
+  const inputAffair = document.getElementById('affair');
+  const formEmailProtective = document.getElementById('form-email-protective');
+
+  //Enviar datos al backend
+
+  formEmailProtective.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = new FormData(formEmailProtective);
+    const email = emailEmployee;
+  
+    data.append('correo', email); 
+  
+    try {
+      const response = await fetch('../server/data/send_email.php', {
+        method: 'POST',
+        body: data,
+      });
+  
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+
+
+  inputAffair.focus();
+
+
+};
 
 export const windowActionsDevices = (data) => {
   const containerClose = document.createElement("div");
@@ -275,7 +446,7 @@ export const windowActionsDevices = (data) => {
 
         <nav id='nav-actions'>
             <ul>
-                <li>Actualizar datos del equipo</li>
+                <li class='selected-actions__li'>Actualizar datos del equipo</li>
                 <li>Añadir gastos al equipo</li>
                 <li>Gatos del equipo</li>
                 <li>Resguardante</li>

@@ -145,7 +145,7 @@ main {
     width: 85%;
     position: relative;
     display: flex;
-    background: #FAFAFA;
+    background: #FFFFFF;
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -398,7 +398,7 @@ main {
     height: 550px;
     width: 90%;
     position: relative;
-    margin: 0 0 5% 5%;
+    margin: 0 0 3% 5%;
     box-sizing: border-box;
 }
 
@@ -450,9 +450,102 @@ main {
     border: 1px solid #EEEEEE;
 }
 
+.container-input__image {
+    margin: 0 0 5% 5%;
+    height: 4em;
+    width: 90%;
+    position: relative;
+    background: #212121;
+    box-sizing: border-box;
+}
+
+#imageInput {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#label-image {
+    top: 0;
+    height: 100%;
+    width: 100% ;
+    position: absolute;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 0 0 5% !important;
+}
+
 #left-image { position: absolute; left: 2%; } 
 #right-image { position: absolute; right: 2%; }
 #delete-image2 { position: absolute; top: 2%; left: 50%;}
 #imageInput {
     display: none;
+}
+
+#update-data {
+    height: 4em;
+    width: 90%;
+    display: block;
+    margin: 5% auto 5%;
+    background: #833F0E;
+    border: 0;
+    color: #F5F5F5;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.container-file__bill {
+    height: 5em;
+    width: 90%;
+    margin: 0 0 0 5%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+}
+ 
+.file-bill {
+    height: 100%;
+    width: 50%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.file-bill input {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.file-bill label {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    padding: 0 !important;
+    background: #FFFFFF;
+    box-sizing: border-box;
+}
+
+.control__bill {
+    height: 100%;
+    width: 50%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.description_action-bill {
+    
 }

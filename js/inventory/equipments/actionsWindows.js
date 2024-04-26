@@ -258,12 +258,93 @@ deleteImage.addEventListener('click', async () => {
 
 const secondSectionActions = (data) => { 
   const rootActions = document.getElementById('root-actions');
+  const { idEquipo: device } = data[0];
 
   const html = `
       <h2>Añadir gastos al equipo</h2>
+
+      <form id='form-add-expenses'>
+          <div class='firstInputs__expends'>
+              <div>
+                  <label for=''>Nombre del producto</label>
+                  <input type='text' id='product' name='Piezas' required>
+              </div>
+
+              <div class='last-div'>
+                  <label id='label_quantity' for=''>Cantidad</label>
+
+                  <div class='container-quantity-root'>
+                      <input type='text' id='quantity' name='Cantidad' required>
+                      
+                      <div class='container-quantity'>
+                          <span>Pza</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class='secondInputs__expends'>
+                <div class='secondInputs__expends-div'>
+                      <label for=''>Fecha en la que se compro el producto</label>
+                      <input type='date' id='date' name='Fecha' required>
+                </div>
+
+                <div class='secondInputs__expends-div'>
+                      <label for=''>Precio unitario</label>
+
+                      <div class='secondInputs__expends-unitPrice'>
+                          <input type='text' id='unitPrice' name='Importe' required>
+
+                          <div class='container-pesos'>
+                              <span>MXN</span>
+                          </div>
+                      </div>
+                </div>
+          </div>  
+
+          <div class='container-file-pdf'>
+                <input type="file" id="pdf" name="Recibo_pdf" accept=".pdf" required>
+
+                <label for='pdf' id='label-pdf'>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg>
+
+                    <span id='message-file'>No hay archivo seleccionado</span>
+                </label>
+          </div>
+
+          <button id='add-expenses' type='submit'>Añadir gasto</button>
+      </form>
   `;
 
   rootActions.innerHTML = html;
+  const formAddExpenses = document.getElementById('form-add-expenses');
+
+  formAddExpenses.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = new FormData(formAddExpenses);
+    data.append('Equipo_id', device);
+
+    try {
+      const response = await fetch('../server/insert/equipment_expense.php', {
+        method: 'POST',
+        body: data,
+      });
+
+      // if (response === 'false') {
+      //   alert('No se pudo añadir el gasto');
+      //   return;
+      // }
+
+      const responseText = await response.text();
+
+      console.log(responseText, 'response');  
+
+      formAddExpenses.reset();
+      alert('Gasto añadido correctamente');
+    } catch (error) {
+      console.log(error);
+    }
+  });
 };
 
 const thirdSectionActions = (data) => { 
@@ -387,11 +468,11 @@ const fourthSectionActions = (data) => {
                           <form id='form-email-protective'>
                               <div>
                                   <label for='affair'>Asunto</label>
-                                  <input type='text' id='affair' name='titulo'>
+                                  <input type='text' id='affair' name='titulo' required>
                               </div>
 
                               <div class='container-message__form'>
-                                  <textarea id='message' name='mensaje' placeholder=''></textarea>
+                                  <textarea id='message' name='mensaje' placeholder='' required></textarea>
                               </div>
 
                               <button id='send-email' type='submit'>Enviar mensaje</button>
@@ -405,6 +486,7 @@ const fourthSectionActions = (data) => {
 
   rootActions.innerHTML = html;
   const inputAffair = document.getElementById('affair');
+  const inputMessage = document.getElementById('message');
   const formEmailProtective = document.getElementById('form-email-protective');
 
   //Enviar datos al backend
@@ -423,17 +505,22 @@ const fourthSectionActions = (data) => {
       });
   
       const result = await response.text();
-      console.log(result);
+      
+      if( result === 'false') {
+        alert('No se pudo enviar el mensaje');
+        return;
+      }
+
+      inputAffair.value = '';
+      inputMessage.value = '';
+
+      alert('Mensaje enviado correctamente');
     } catch (error) {
       console.log(error);
     }
   });
 
-
-
   inputAffair.focus();
-
-
 };
 
 export const windowActionsDevices = (data) => {

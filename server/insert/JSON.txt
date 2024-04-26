@@ -42,6 +42,3 @@ Busqueda de equipos con su codigo OPCIC-COM-
 
 
 git pull origin dev
-
-
-cambiaar a un string de text true

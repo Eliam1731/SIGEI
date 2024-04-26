@@ -1,12 +1,12 @@
 <?php
-// Intentar incluir el archivo de conexión a la base de datos
+
 try {
     include '../config/connection_db.php';
 } catch (Exception $e) {
     die(json_encode(['error' => 'Error al conectar a la base de datos: ' . $e->getMessage()]));
 }
 
-// Recibir el ID de la obra en formato JSON y decodificarlo
+
 $data = json_decode(file_get_contents('php://input'), true);
 $obra_id = $data['obra_id'];
 

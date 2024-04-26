@@ -28,8 +28,8 @@ try {
     $mail->AltBody = $_POST['mensaje'];
 
     $mail->send();
-    echo 'El mensaje ha sido enviado';
+    echo 'true';
 } catch (Exception $e) {
-    echo "El mensaje no pudo ser enviado. Mailer Error: {$mail->ErrorInfo}";
+    echo 'false';
 }
 ?>

@@ -9,12 +9,19 @@ try {
     if (!isset($_FILES['Recibo_pdf'])) {
         throw new Exception("Recibo_pdf no puede ser nulo");
     }
-    
+
+    $stmt = $conn->prepare("SELECT * FROM gastos_de_los_equipos WHERE orden_compra = :orden_compra");
+    $stmt->bindParam(':orden_compra', $_POST['orden_compra']);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+        throw new Exception("El número de orden de compra ya está en uso. Por favor, ingrese uno válido.");
+    }
+
     $reciboContent = file_get_contents($_FILES['Recibo_pdf']['tmp_name']);
 
-    
     $stmt = $conn->prepare("INSERT INTO gastos_de_los_equipos (Equipo_id, orden_compra, Piezas, Importe, Fecha, Recibo_pdf) VALUES (:Equipo_id, :orden_compra, :Piezas, :Importe, :Fecha, :Recibo_pdf)");
-    
+
     $stmt->bindParam(':Equipo_id', $_POST['Equipo_id']);
     $stmt->bindParam(':orden_compra', $_POST['orden_compra']);
     $stmt->bindParam(':Piezas', $_POST['Piezas']);
@@ -31,4 +38,3 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-

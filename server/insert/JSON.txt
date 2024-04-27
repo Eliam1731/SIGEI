@@ -37,14 +37,11 @@ Delete_img ejemplo JSON
     "Imagen_id": 2
 }
 
+codigo para modificar la tabla de gastos
+ALTER TABLE `gastos_de_los_equipos`
+MODIFY `Recibo_pdf` MEDIUMBLOB NOT NULL;
+
+
+
 Busqueda de empleados mediante su nombre es una busqueda en tiempo real 
-
-
-Busqueda de equipos con su codigo OPCIC-COM-
-
-codigo para el cambio de dato de la tabla
-
-ALTER TABLE gastos_de_los_equipos CHANGE Cantidad orden_compra INT;
-
-
 

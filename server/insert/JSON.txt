@@ -41,7 +41,9 @@ codigo para modificar la tabla de gastos
     ALTER TABLE `gastos_de_los_equipos`
     MODIFY `Recibo_pdf` MEDIUMBLOB NOT NULL;
 
-
-
-Busqueda de empleados mediante su nombre es una busqueda en tiempo real 
-
+.....
+{
+    "equipo_id": 1,
+    "user_id": 2,
+    "motivo_baja": "El equipo está obsoleto"
+}

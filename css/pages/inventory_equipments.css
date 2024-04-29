@@ -129,6 +129,31 @@ main {
     position: relative;
 }
 
+#navigation-ul {
+    height: auto;
+    width: 85%;
+    margin: 20% 0 0 15%;
+    border-left: 2px solid #EEEEEE;
+    box-sizing: border-box;
+}
+
+#navigation-ul li {
+    font-size: .9em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    user-select: none;
+}
+
+#navigation-ul li:first-child {
+    padding: 5% 0 7% 5%;
+}
+
+#navigation-ul li:last-child {
+    padding: 0  0 5% 5%;
+}
+
 /* Estilos de la ventana emergente para ver todos los equipos informaticos */
 .container-close {
     top: 0;
@@ -771,7 +796,7 @@ main {
 }
 
 .firstInputs__expends {
-    height: 20%;
+    height: 22%;
     width: 100%;
     position: relative;
     display: flex;
@@ -789,13 +814,22 @@ main {
 
 .firstInputs__expends div:first-child label {
     padding: 5% 0 5% 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    color: #212121;
 }
 
 .firstInputs__expends div:first-child input {
-    height: 30%;
+    height: 37%;
     width: 90%;
     box-sizing: border-box;
     outline: none;
+    border: 2px solid #EEEEEE;
+    border-radius: .5em;
 }
 
 .firstInputs__expends .last-div {
@@ -810,10 +844,17 @@ main {
     position: relative;
     display: inline-block;
     box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    color: #212121;
 }
 
 .firstInputs__expends .last-div .container-quantity-root {
-    height: 30%;
+    height: 37%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -822,6 +863,8 @@ main {
     box-sizing: border-box;
     border: 1px solid black;
     overflow: hidden;
+    border: 2px solid #EEEEEE;
+    border-radius: .5em;
 }
 
 .firstInputs__expends .last-div .container-quantity-root input {
@@ -838,11 +881,13 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 1px solid black;
+    background: #FAFAFA;
+    border-left: 2px solid #EEEEEE;
+    color: #9E9E9E;
 }
 
 .secondInputs__expends {
-    height: 20%;
+    height: 22%;
     width: 100%;
     position: relative;
     display: flex;
@@ -860,23 +905,36 @@ main {
 
 .secondInputs__expends-div label {
     padding: 5% 0 5% 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    color: #212121;
 }
 
 #date {
-    height: 30%;
+    height: 37%;
     width: 90%;
     box-sizing: border-box;
+    border: 2px solid #EEEEEE;
+    border-radius: .5em;
+    padding: 1em;
+    color: #9E9E9E;
 }
 
 .secondInputs__expends-unitPrice {
-    height: 30%;
+    height: 37%;
     width: 100%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    border: 2px solid #EEEEEE;
+    border-radius: .5em;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 #unitPrice {
@@ -893,7 +951,9 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 1px solid black;
+    background: #FAFAFA;
+    border-left: 2px solid #EEEEEE;
+    color: #9E9E9E;
 }
 
 .container-file-pdf {
@@ -901,7 +961,7 @@ main {
     height: 40%;
     width: 100%;
     position: relative;
-    border: 1px dashed black;
+    border: 1px dashed #BDBDBD;
 }
 
 #pdf {
@@ -928,7 +988,7 @@ main {
     height: 25%;
     width: 25%;
     margin-bottom: 3%;
-    fill: #616161;
+    fill: #BDBDBD;
     display: block;
 }
 
@@ -937,4 +997,191 @@ main {
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+/* Estilos de la table de gastos */
+.title-expenses{
+    padding: 3% 0 3% 5% !important;
+}
+
+.root-table__expenses {
+    height: 85%;
+    width: 95%;
+    position: relative;
+    display: block;
+    margin: 0 0 0 5%;
+    border: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    border-radius: .5em;
+}
+
+.table-expenses {
+    height: 90%;
+    width: 100%;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.table-expenses-original {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.table-expenses-original thead {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.table-expenses-original thead tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.table-expenses-original thead tr th {
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: #212121;
+}
+
+.table-expenses-original thead tr th:first-child {
+    padding: 2% 0;
+    width: 5%;
+    position: relative;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.table-expenses-original thead tr th:nth-child(2) {
+    padding: 2% 0;
+    width: 12%;
+    position: relative;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.table-expenses-original thead tr th:nth-child(3) {
+    padding: 2% 0;
+    width: 15%;
+    position: relative;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.table-expenses-original thead tr th:nth-child(4) {
+    padding: 2% 0;
+    width: 45%;
+    position: relative;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.table-expenses-original thead tr th:nth-child(5) {
+    padding: 2% 0;
+    width: 13%;
+    position: relative;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.table-expenses-original thead tr th:last-child {
+    padding: 2% 0;
+    width: 10%;
+    position: relative;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.table-expenses-original tbody {
+    height: auto;
+    width: 100%;
+    position: relative;
+}
+
+.table-expenses-original tbody tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+
+}
+
+.table-expenses-original tbody tr td {
+    padding: 2% 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: #424242;
+}
+
+.table-expenses-original tbody tr td:first-child {
+    color: #000;
+}
+
+.table-expenses-original tbody tr td:last-child {
+    text-align: center;
+}
+
+.table-expenses-original tbody tr td:nth-child(5) button {
+    padding: 0;
+    color: #01579B;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    background: none;
+    border: none;
+}
+
+.table-expenses-original tbody tr td:first-child {
+    text-align: center;
+}
+
+.table-expenses-original tbody tr:nth-child(2n) {
+    background: #FAFAFA; 
+}
+
+.container-pagination__expenses {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.container-pagination__expenses-buttons {
+    height: 100%;
+    width: 50%;
+    position: relative;
+}
+
+.container-pagination__expenses-totalBuy {
+    height: 100%;
+    width: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.container-pagination__expenses-totalBuy p {
+    position: absolute;
+    right: 5%;
 }

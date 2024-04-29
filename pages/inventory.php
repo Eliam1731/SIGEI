@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/components/button.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="../css/pages/inventory_equipments.css">
+    <link rel="stylesheet" href="../css/pages/inventory_employee.css">
     <title>Inventario</title>
 </head>
 
@@ -97,7 +98,31 @@
             </section>
 
             <section id="employee_section">
-                <h2>Seccion de ver todos los empleados</h2>
+                <div class="container-search__employee">
+                    <div class="search__employe">
+                        <input type="text" id="searcherEmployee">
+
+                        <div>
+                            <button id="searchEmployee">
+                                <img src="../images/safeguards/search.svg" alt="">
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="filters-button__employee" id="deleteFiltrosEmployee" type="button">
+                        Eliminar filtros
+                    </button>
+
+                    <button class="filters-button__employee" id="enableWindowFilterEmployee" type="button">
+                        <img src="../images/filter.png" alt="">
+                    </button>
+                </div>
+
+                <div class="container-table__employee"> 
+                    <div class="container-table__employee-root">
+                        
+                    </div>
+                </div>
             </section>
         </div>
 

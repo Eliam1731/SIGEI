@@ -1,9 +1,12 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
+import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { windowActionsDevices } from "./actionsWindows.js";
 import { checkboxStates } from "./main.js";
 
 let data;
 let indexTable = 1;
+const inputSearch = document.getElementById('inputSearchEquipment');
+const buttonSearch = document.getElementById('buttonSearchEquipment');
 let paragraphMessageIndex = document.getElementById('textIndexCurrent');
 const deleteFiltersTable = document.getElementById('deleteFiltrosDevices');
 const messageTable = document.getElementById('none-equipment');
@@ -79,14 +82,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         devicesArray = Object.values(data).flat();
         renderDevices(data);
-        console.log('Data:', data);
     } catch (error) {
         console.error('Error:', error);
     }
 });
 
+buttonSearch.addEventListener('click', async() => {
+    const codeOpc = 'OPCIC-COM-';
+    const search = inputSearch.value;
+
+    if (search === '') {
+        alert('Ingrese el codigo de equipo');
+        return;
+    }
+
+    try {
+        const response = await sendDataServer('../server/data/searcher_equipment.php', {
+            opcicCode: `${codeOpc}${search}`
+        });
+
+        if (response.length === 0) {
+            alert('No se encontro el equipo');
+            return;
+        }
+
+        inputSearch.value = '';
+        windowActionsDevices(response.enresguardo);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+    console.log('Search');
+});
+
 export const renderDevices = (devices) => {
-    console.log(devices)
     tableDevices.innerHTML = '';
 
     const devicesArray = Object.values(devices).flat();

@@ -134,7 +134,6 @@ const firstSectionActions = (dataOriginal) => {
   };
   
   downloadBill.addEventListener('click', (event) => {
-    // Evita que el evento de clic original se propague
     event.preventDefault();
   
     const pdfBytes = decodeBase64ToBytes(data.invoices[0].Factura_file);
@@ -185,11 +184,11 @@ const firstSectionActions = (dataOriginal) => {
   
       reader.onloadend = function () {
         const newImage = {
-          Datos_imagen: reader.result.split(',')[1], // Obtenemos solo la parte de datos de la imagen en base64
-          Imagen_id: Date.now(), // Generamos un id único basado en la fecha actual
+          Datos_imagen: reader.result.split(',')[1], 
+          Imagen_id: Date.now(), 
           Nombre: file.name,
           Tipo_mime: file.type,
-          isNew: true // Indicamos que la imagen es nueva
+          isNew: true 
         };
   
         data.images.push(newImage);
@@ -271,10 +270,10 @@ const secondSectionActions = (data) => {
               </div>
 
               <div class='last-div'>
-                  <label id='label_quantity' for=''>Cantidad</label>
+                  <label id='label_quantity' for=''>Orden de compra</label>
 
                   <div class='container-quantity-root'>
-                      <input type='text' id='quantity' name='Cantidad' required>
+                      <input type='text' id='quantity' name='orden_compra' required>
                       
                       <div class='container-quantity'>
                           <span>Pza</span>
@@ -290,7 +289,7 @@ const secondSectionActions = (data) => {
                 </div>
 
                 <div class='secondInputs__expends-div'>
-                      <label for=''>Precio unitario</label>
+                      <label for=''>Importe</label>
 
                       <div class='secondInputs__expends-unitPrice'>
                           <input type='text' id='unitPrice' name='Importe' required>
@@ -349,12 +348,106 @@ const secondSectionActions = (data) => {
 
 const thirdSectionActions = (data) => { 
   const rootActions = document.getElementById('root-actions');
+  const expenses = data[0].expenses;
+  let totalBuy = 0;
+  let countBuy = 0;
+
+  console.log(expenses, 'expenses')
 
   const html = `
-      <h2>Gastos del equipo</h2>
+      <h2 class='title-expenses'>Gastos del equipo</h2>
+
+      <div class='root-table__expenses'>
+            <div class='table-expenses'>
+                <table class='table-expenses-original'>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Fecha</th>
+                            <th>Orden de compra</th>
+                            <th>Nombre del producto </th>
+                            <th>Factura</th>
+                            <th>Importe</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${expenses.map((expense, index) => {
+                          return `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${expense.Fecha}</td>
+                                <td>${expense.orden_compra}</td>
+                                <td>${expense.Piezas}</td>
+                                <td>
+                                    <button id='${expense.orden_compra}' class='download-expenses__bill' type='button'>Ver factura</button>
+                                </td>
+                                <td>${expense.Importe}</td>
+                            </tr>
+                          `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class='container-pagination__expenses'>
+                <div class='container-pagination__expenses-buttons'>
+                
+                </div>
+
+                <div class='container-pagination__expenses-totalBuy'>
+                        ${
+                          expenses.map( expense => {
+                              countBuy++;
+                              totalBuy += parseFloat(expense.Importe);
+
+                              if( countBuy === expenses.length) {
+                                  return `
+                                      <p>Total de gastos: $${totalBuy}</p>
+                                  `;
+                              }
+                          }).join('')
+
+                        }
+                </div>
+            </div>
+      </div>
   `;
 
   rootActions.innerHTML = html;
+  const downloadExpensesBill = document.querySelectorAll('.download-expenses__bill');
+
+  const decodeBase64ToBytes = (base64) => {
+    const bytes = atob(base64);
+    const byteNumbers = new Array(bytes.length);
+  
+    for (let i = 0; i < bytes.length; i++) {
+      byteNumbers[i] = bytes.charCodeAt(i);
+    }
+  
+    return byteNumbers;
+  }
+
+  const createBlobFromBytes = (bytes) => {
+    const blob = new Blob([new Uint8Array(bytes)], {type: 'application/pdf'});
+    return blob;
+  }
+  
+  const configureDownloadLink = (url) => {
+    window.open(url, '_blank');
+  };
+
+  downloadExpensesBill.forEach( button => {
+    button.addEventListener('click', () => {
+      const order = parseInt(button.id);
+      const expense = expenses.find(expense => expense.orden_compra === order);
+      const pdfBytes = decodeBase64ToBytes(expense.Recibo_pdf);
+      const blob = createBlobFromBytes(pdfBytes);
+      const url = URL.createObjectURL(blob);
+
+      configureDownloadLink(url);
+    });
+  });
 };
 
 const fourthSectionActions = (data) => {
@@ -472,7 +565,7 @@ const fourthSectionActions = (data) => {
                               </div>
 
                               <div class='container-message__form'>
-                                  <textarea id='message' name='mensaje' placeholder='' required></textarea>
+                                  <textarea id='message' name='mensaje' placeholder='Mensaje...' required></textarea>
                               </div>
 
                               <button id='send-email' type='submit'>Enviar mensaje</button>
@@ -488,8 +581,6 @@ const fourthSectionActions = (data) => {
   const inputAffair = document.getElementById('affair');
   const inputMessage = document.getElementById('message');
   const formEmailProtective = document.getElementById('form-email-protective');
-
-  //Enviar datos al backend
 
   formEmailProtective.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -523,7 +614,19 @@ const fourthSectionActions = (data) => {
   inputAffair.focus();
 };
 
+const fiveSectionActions = (data) => {
+  const rootActions = document.getElementById('root-actions');
+
+  const html = `
+      <h2>Mantenimiento preventivo</h2>
+  `;
+
+
+  rootActions.innerHTML = html;
+}
+
 export const windowActionsDevices = (data) => {
+  console.log(data, 'data')
   const containerClose = document.createElement("div");
   const containerActions = document.createElement("div");
   const html = `
@@ -537,6 +640,7 @@ export const windowActionsDevices = (data) => {
                 <li>Añadir gastos al equipo</li>
                 <li>Gatos del equipo</li>
                 <li>Resguardante</li>
+                <li>Mantenimiento preventivo</li>
             </ul>
         </nav>
 
@@ -558,6 +662,8 @@ export const windowActionsDevices = (data) => {
   const addExpenses = document.querySelector("#nav-actions li:nth-child(2)");
   const expensesDevice = document.querySelector("#nav-actions li:nth-child(3)");
   const resguardante = document.querySelector("#nav-actions li:nth-child(4)");
+  const preventiveMaintenance = document.querySelector("#nav-actions li:nth-child(5)");
+  
 
   firstSectionActions(data);
 
@@ -575,5 +681,9 @@ export const windowActionsDevices = (data) => {
 
   resguardante.addEventListener("click", () => {
     fourthSectionActions(data);
+  });
+
+  preventiveMaintenance.addEventListener("click", () => {
+    fiveSectionActions(data);
   });
 };

@@ -38,8 +38,8 @@ Delete_img ejemplo JSON
 }
 
 codigo para modificar la tabla de gastos
-ALTER TABLE `gastos_de_los_equipos`
-MODIFY `Recibo_pdf` MEDIUMBLOB NOT NULL;
+    ALTER TABLE `gastos_de_los_equipos`
+    MODIFY `Recibo_pdf` MEDIUMBLOB NOT NULL;
 
 
 

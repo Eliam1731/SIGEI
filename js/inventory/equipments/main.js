@@ -2,6 +2,7 @@ import { checkboxAvailableEvent, checkboxInMaintenanceEvent, checkboxInResguardo
 
 const elementsEquipmentsDOM = {
     filterBtn: document.getElementById('enableWindowFilter'),
+    formCodeDevice: document.getElementById('search_equipment'),
 }
 
 export const checkboxStates = {
@@ -9,6 +10,29 @@ export const checkboxStates = {
     inResguardo: false,
     inMaintenance: false
 };
+
+const devicesSection = document.querySelector("#navigation-ul li:nth-child(1)");
+const employeesSection = document.querySelector("#navigation-ul li:nth-child(2)");
+const firstSection = document.getElementById('equipments_section');
+const secondSection = document.getElementById('employee_section');
+
+devicesSection.addEventListener('click', () => {
+    if (firstSection.style.display === 'none') firstSection.style.display = 'block';
+
+    secondSection.style.display = 'none';
+});
+
+employeesSection.addEventListener('click', () => {
+    if (secondSection.style.display === 'none') secondSection.style.display = 'block';
+
+    firstSection.style.display = 'none';
+});
+
+
+
+elementsEquipmentsDOM.formCodeDevice.addEventListener('submit', (event) => {
+    event.preventDefault();
+});
 
 elementsEquipmentsDOM.filterBtn.addEventListener('click', () => {
     if(document.querySelector('.filter-container')) {

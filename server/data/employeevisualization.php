@@ -2,17 +2,21 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, e.Empresa_id, e.Obra_id, e.Correo_electronico, e.id_frente, r.Resguardo_id, eq.* 
+    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, ob.Nombre_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion 
             FROM empleados_resguardantes e 
             LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id 
-            LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id";
+            LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
+            LEFT JOIN empresas emp ON e.Empresa_id = emp.Empresa_id
+            LEFT JOIN obras ob ON e.Obra_id = ob.Obra_id
+            LEFT JOIN frente fr ON e.id_frente = fr.Frente_id
+            ORDER BY r.Fecha_autorizacion DESC";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-
     $result = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $Empleado_id = $row['Empleado_id'];
+        $Equipo_id = $row['Equipo_id'];
         if (!isset($result[$Empleado_id])) {
             $result[$Empleado_id] = [
                 'Empleado_id' => $Empleado_id,
@@ -20,17 +24,17 @@ try {
                 'Primer_apellido' => $row['Primer_apellido'],
                 'Segundo_apellido' => $row['Segundo_apellido'],
                 'Num_seguro_social' => $row['Num_seguro_social'],
-                'Empresa_id' => $row['Empresa_id'],
-                'Obra_id' => $row['Obra_id'],
+                'Empresa' => $row['Nom_empresa'],
+                'Obra' => $row['Nombre_obra'],
+                'Frente' => $row['Nom_frente'],
                 'Correo_electronico' => $row['Correo_electronico'],
-                'id_frente' => $row['id_frente'],
                 'Equipos' => []
             ];
         }
 
-        if ($row['Resguardo_id'] !== null) {
-            $result[$Empleado_id]['Equipos'][] = [
-                'Equipo_id' => $row['Equipo_id'],
+        if ($row['Resguardo_id'] !== null && !isset($result[$Empleado_id]['Equipos'][$Equipo_id])) {
+            $result[$Empleado_id]['Equipos'][$Equipo_id] = [
+                'Equipo_id' => $Equipo_id,
                 'Id_subcategoria' => $row['Id_subcategoria'],
                 'Id_marca' => $row['Id_marca'],
                 'Modelo' => $row['Modelo'],
@@ -53,6 +57,8 @@ try {
     foreach ($result as $Empleado_id => $data) {
         if (empty($data['Equipos'])) {
             $result[$Empleado_id]['Mensaje'] = 'Este empleado no tiene a resguardo ningún equipo';
+        } else {
+            $result[$Empleado_id]['Equipos'] = array_values($result[$Empleado_id]['Equipos']);
         }
     }
 

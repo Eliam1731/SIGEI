@@ -50,4 +50,3 @@ codigo para modificar la tabla de gastos
 
 }
 
-

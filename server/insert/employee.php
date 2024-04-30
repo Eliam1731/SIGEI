@@ -21,7 +21,6 @@
             "email" => $formData['email'],
         ];
 
-        // Verificar si el número de seguro social ya existe
         $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Num_seguro_social = ?");
         $stmt->execute([$data["numberSocial"]]);
         if($stmt->fetch()) {
@@ -30,7 +29,6 @@
             exit;
         }
 
-        // Verificar si el correo electrónico ya existe
         $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Correo_electronico = ?");
         $stmt->execute([$data["email"]]);
         if($stmt->fetch()) {

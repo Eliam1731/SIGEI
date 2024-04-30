@@ -1,7 +1,8 @@
 <?php
 include '../config/connection_db.php';
 
-$sql = $conn->prepare("SELECT 
+$sql = $conn->prepare("
+    SELECT 
         equipos_informaticos.Equipo_id AS idEquipo,
         subcategoria.Nom_subcategoria AS subcategoria,
         marca_del_equipo.Nom_marca AS marca,
@@ -18,26 +19,11 @@ $sql = $conn->prepare("SELECT
         equipos_informaticos.Comentarios AS comentarios,
         status.Nom_Status AS status,
         equipos_informaticos.miId AS codeOpc,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Nombre
-        END AS nombreEmpleado,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Primer_apellido
-        END AS primerApellidoEmpleado,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Segundo_apellido
-        END AS segundoApellidoEmpleado,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Num_seguro_social
-        END AS numSeguroSocialEmpleado,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Correo_electronico
-        END AS correoElectronicoEmpleado,
+        empleados_resguardantes.Nombre AS nombreEmpleado,
+        empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
+        empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
+        empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
+        empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado,
         empresas.Nom_empresa AS nombreEmpresa,
         obras.Nombre_obra AS nombreObra,
         frente.Nom_frente AS nombreFrente
@@ -46,13 +32,31 @@ $sql = $conn->prepare("SELECT
     LEFT JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
     LEFT JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
     LEFT JOIN status ON equipos_informaticos.Status_id = status.Status_id
-    LEFT JOIN resguardos_de_equipos ON equipos_informaticos.Equipo_id = resguardos_de_equipos.Equipo_id
-    LEFT JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id
+    LEFT JOIN (
+        SELECT 
+            resguardos_de_equipos.Equipo_id, 
+            resguardos_de_equipos.Empleado_id
+        FROM 
+            resguardos_de_equipos
+        INNER JOIN (
+            SELECT 
+                Equipo_id, 
+                MAX(Resguardo_id) AS ultimoResguardo
+            FROM 
+                resguardos_de_equipos
+            GROUP BY 
+                Equipo_id
+        ) AS resguardos_max ON resguardos_de_equipos.Equipo_id = resguardos_max.Equipo_id AND resguardos_de_equipos.Resguardo_id = resguardos_max.ultimoResguardo
+    ) AS ultimo_resguardo ON equipos_informaticos.Equipo_id = ultimo_resguardo.Equipo_id
+    LEFT JOIN empleados_resguardantes ON ultimo_resguardo.Empleado_id = empleados_resguardantes.Empleado_id
     LEFT JOIN empresas ON empleados_resguardantes.Empresa_id = empresas.Empresa_id
     LEFT JOIN obras ON empleados_resguardantes.Obra_id = obras.Obra_id
     LEFT JOIN frente ON empleados_resguardantes.id_frente = frente.Frente_id
+    WHERE status.Nom_Status = 'resguardado'
     GROUP BY equipos_informaticos.Equipo_id
-    ORDER BY equipos_informaticos.Equipo_id DESC");
+    ORDER BY equipos_informaticos.Equipo_id DESC
+");
+
 
 $sql->execute();
 

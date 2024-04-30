@@ -1,171 +1,79 @@
-<style>
-    section {
-  width: 40em;
-  height: 25em;
-  margin: 0 auto;
-  position: relative;
-}
-
-li {
-  width: 500px;
-  height: 281px;
-  background: #333;
-  display: inline-block;
-  -webkit-transition: all .3s ease-in-out;
-  -moz-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
-  overflow: hidden;
-}
-
-li p {
-  color: white;
-  font-weight: bold;
-  font-size: 5em;
-  text-align: center;
-  margin-top: 1.175em;
-}
-
-.items {
-  position: absolute;
-}
-
-.main-pos {
-  margin-left: 2em !important;
-  z-index: 3000;
-  /*background-image: url('https://dl.dropbox.com/u/32649907/imgs/shadow.png');*/
-}
-
-.left-pos {
-  opacity: .3;
-  margin-left: -17em !important;
-  z-index: 1000;
-  -webkit-transform: scale(.75);
-  -moz-transform: scale(.75);
-  transform: scale(.75);
-}
-
-.back-pos {
-  margin-left: 2em !important;
-  opacity: .05;
-  -webkit-transform: scale(.5);
-  -moz-transform: scale(.5);
-  transform: scale(.5);
-}
-
-.right-pos {
-  opacity: .3;
-  margin-left:  21em !important;
-  z-index: 1000;
-  -webkit-transform: scale(.75);
-  -moz-transform: scale(.75);
-  transform: scale(.75);
-}
-
-span {
-  position: relative;
-  margin: 0 auto;
-  left: 17em;
-  top: 20em;
-}
-</style>
-
-<section>
-    <ul class="carousel">
-        <li class="items main-pos" id="1">
-            <p>1</p>
-        </li>
-        <li class="items right-pos" id="2">
-            <img src="http://farm9.staticflickr.com/8337/8234123289_2b23aeaf06.jpg" />
-        </li>
-        <li class="items back-pos" id="3">
-            <img src="http://farm9.staticflickr.com/8337/8234711202_831b23a2b7.jpg" />
-        </li>
-        <li class="items back-pos" id="4"><iframe width="500" height="281" src="https://www.youtube.com/embed/szIEr2F61DU" frameborder="0" allowfullscreen></iframe></li>
-        <li class="items back-pos" id="5">
-            <iframe src="https://player.vimeo.com/video/19464611" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-        </li>
-        <li class="items back-pos" id="6">
-            <img src="http://woofie2.pixiq.com/files/cache/20030323_img_7465_3072_x_2048_619x413.jpg" />
-        </li>
-        <li class="items left-pos" id="7"><img src="http://www.mishes.com/wp-content/uploads/2011/12/FlickrMonday07.jpg" />
-        </li>
-    </ul>
-    <span>
-        <input type="button" value="Prev" id="prev">
-        <input type="button" value="Next" id="next">
-    </span>
-</section>
-
-
-<script>
-  // global variables
-let startItem = 1;
-let itemCount = document.querySelectorAll('.carousel li.items').length;
-
-// swap images function
-function swap(direction = 'clockwise') {
-    const mainPosItem = document.querySelector('.main-pos');
-    const rightPosItem = document.querySelector('.right-pos');
-    const backPosItems = document.querySelectorAll('.back-pos');
-    const leftPosItem = document.querySelector('.left-pos');
-
-    if(direction === 'counter-clockwise') {
-        const leftitem = document.querySelector('.left-pos').id - 1 === 0 ? itemCount : document.querySelector('.left-pos').id - 1;
-
-        swapClasses(rightPosItems, 'right-pos', 'back-pos');
-        swapClasses(mainPosItems, 'main-pos', 'right-pos');
-        swapClasses(leftPosItems, 'left-pos', 'main-pos');
-
-        document.getElementById(leftitem).classList.remove('back-pos');
-        document.getElementById(leftitem).classList.add('left-pos');
-
-        startItem = startItem < 1 ? itemCount : --startItem;
-    } else {
-        mainPosItem.classList.remove('main-pos');
-        mainPosItem.classList.add('left-pos');
-
-        rightPosItem.classList.remove('right-pos');
-        rightPosItem.classList.add('main-pos');
-
-        backPosItems[0].classList.remove('back-pos');
-        backPosItems[0].classList.add('right-pos');
-
-        leftPosItem.classList.remove('left-pos');
-        leftPosItem.classList.add('back-pos');
-
-        startItem = startItem > itemCount ? 1 : ++startItem;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 100vh;
+      width: 100vw;
+      border: 0;
+      margin: 0;
     }
-}
 
-// swap classes function
-function swapClasses(items, removeClass, addClass) {
-    items.forEach(item => {
-        item.classList.remove(removeClass);
-        item.classList.add(addClass);
-    });
-}
+    header {
+      height: 10%;
+      width: 100%;
+      background: red;
+    }
 
-// slideshow style interval
-let autoSwap = setInterval(swap, 3500);
+    main {
+      height: 90%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: cadetblue;
+    }
 
-// pause slideshow and reinstantiate on mouseout
-['ul', 'span'].forEach(selector => {
-    const element = document.querySelector(selector);
-    element.addEventListener('mouseover', () => clearInterval(autoSwap));
-    element.addEventListener('mouseout', () => autoSwap = setInterval(swap, 3500));
-});
+    main div:first-child {
+      height: 100%;
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: pink;
+    }
 
-// next button click function
-document.getElementById('next').addEventListener('click', () => swap('clockwise'));
+    main div:first-child section:first-child {
+      height: 50%;
+      width: 90%;
+      background: brown;
+    }
 
-// prev button click function
-document.getElementById('prev').addEventListener('click', () => swap('counter-clockwise'));
+    main div:first-child section:last-child {
+      height: 50%;
+      width: 90%;
+      background: blue;
+    }
 
-// if any visible items are clicked
-document.querySelectorAll('li').forEach(item => {
-    item.addEventListener('click', () => {
-        const direction = item.className === 'items left-pos' ? 'counter-clockwise' : 'clockwise';
-        swap(direction);
-    });
-});
-</script>
+    main nav {
+      height: 100%;
+      width: 20%;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <header>
+
+  </header>
+
+  <main>
+    <div>
+      <section>
+
+      </section>
+
+      <section>
+
+      </section>
+    </div>
+
+    <nav>
+
+    </nav>
+  </main>
+</body>
+</html>

@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         data = await getDataServer('../server/data/equipmentvisualization.php');
 
         devicesArray = Object.values(data).flat();
+        console.log(devicesArray, 'Todos los equipos informaticos');
         renderDevices(data);
     } catch (error) {
         console.error('Error:', error);

@@ -67,3 +67,98 @@
     border: 1px solid #E0E0E0;
     box-sizing: border-box;
 }
+
+#table__employee-root {
+    height: auto;
+    width: 100%;
+    position: relative;
+    margin-top: 5%;
+}
+
+.rootWindowActionsEmployee {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.windowActionsEmployee {
+    height: 95%;
+    width: 80%;
+    position: relative;
+    display: flex;
+    background: #FFFFFF;
+}
+
+.root-employee {
+    height: 100%;
+    width: 78%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.root-employee h2 {
+    padding: 3% 0 3% 5%;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 1em;
+    font-weight: 700;
+    font-style: normal;
+    color: #424242;
+}
+
+ 
+#formUpdateInformationEmployee {
+    height: 90%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#formUpdateInformationEmployee label {
+    padding: 3% 5% ;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-size: .9em;
+    font-weight: 700;
+    font-style: normal;
+    color: #424242;
+}
+
+#formUpdateInformationEmployee input {
+    margin: 0 0 0 5%;
+    padding: 1.5% 2%;
+    width: 70%;
+    position: relative;
+    box-sizing: border-box;
+} 
+
+#formUpdateInformationEmployee select {
+    margin: 0 0 0 5%;
+    padding: 1.5% 2%;
+    width: 70%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#formUpdateInformationEmployee button {
+    margin: 5% 0 5% 5%;
+    padding: 2% 0;
+    width: 70%;
+    position: relative;
+    display: block;
+}
+
+.windowActionsEmployee__nav {
+    height: 100%;
+    width: 22%;
+    position: relative;
+    box-sizing: border-box;
+}

@@ -120,7 +120,32 @@
 
                 <div class="container-table__employee"> 
                     <div class="container-table__employee-root">
-                        
+                        <div class="container-title">
+                            <div>
+                                <h3>Empleados resguardantes</h3>
+                                <p>Toque la fila en donde se encuentra el empleado para ver mas detalles.</p>
+                            </div>
+
+                            <div>
+                                <button>Agregar empleado</button>
+                            </div>
+                        </div>
+
+                        <table id="table__employee-root">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Empresa</th>
+                                    <th>Obra</th>
+                                    <th>Frente</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="renderDataEmployee">
+                    
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -129,14 +154,16 @@
         <nav id="navigation_sections-inventory">
             <ul id="navigation-ul">
                 <li class="li-selected">Equipos</li>
-                <li>Empleados resguardantes</li>
+                <li id="listItemEmployee">Empleados resguardantes</li>
             </ul>
         </nav>
     </main>
     
+    <script src="https://unpkg.com/pdf-lib@1.16.0/dist/pdf-lib.js"></script>
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/inventory/equipments/main.js"></script>
     <script type="module" src="../js/inventory/equipments/renderDevices.js"></script>
+    <script type="module" src="../js/inventory/employee/main.js"></script>
 </body>
 
 </html>

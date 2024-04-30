@@ -2,13 +2,16 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, ob.Nombre_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion 
+    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, ob.Nombre_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion, st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca
             FROM empleados_resguardantes e 
             LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id 
             LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
             LEFT JOIN empresas emp ON e.Empresa_id = emp.Empresa_id
             LEFT JOIN obras ob ON e.Obra_id = ob.Obra_id
             LEFT JOIN frente fr ON e.id_frente = fr.Frente_id
+            LEFT JOIN status st ON eq.Status_id = st.Status_id
+            LEFT JOIN subcategoria sc ON eq.Id_subcategoria = sc.Subcategoria_id
+            LEFT JOIN marca_del_equipo m ON eq.Id_marca = m.Id_Marca
             ORDER BY r.Fecha_autorizacion DESC";
 
     $stmt = $conn->prepare($sql);
@@ -35,8 +38,8 @@ try {
         if ($row['Resguardo_id'] !== null && !isset($result[$Empleado_id]['Equipos'][$Equipo_id])) {
             $result[$Empleado_id]['Equipos'][$Equipo_id] = [
                 'Equipo_id' => $Equipo_id,
-                'Id_subcategoria' => $row['Id_subcategoria'],
-                'Id_marca' => $row['Id_marca'],
+                'Subcategoria' => $row['Nom_subcategoria'],
+                'Marca' => $row['Nom_marca'],
                 'Modelo' => $row['Modelo'],
                 'Num_serie' => $row['Num_serie'],
                 'Especificacion' => $row['Especificacion'],
@@ -48,7 +51,7 @@ try {
                 'Num_ref_compaq' => $row['Num_ref_compaq'],
                 'Service_tag' => $row['Service_tag'],
                 'Comentarios' => $row['Comentarios'],
-                'Status_id' => $row['Status_id'],
+                'Status' => $row['Nom_Status'],
                 'miId' => $row['miId'],
             ];
         }

@@ -50,4 +50,3 @@ MODIFY `Recibo_pdf` MEDIUMBLOB NOT NULL;
 
 }
 
-

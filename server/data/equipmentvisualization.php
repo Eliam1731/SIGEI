@@ -51,8 +51,7 @@ $sql = $conn->prepare("SELECT
     LEFT JOIN empresas ON empleados_resguardantes.Empresa_id = empresas.Empresa_id
     LEFT JOIN obras ON empleados_resguardantes.Obra_id = obras.Obra_id
     LEFT JOIN frente ON empleados_resguardantes.id_frente = frente.Frente_id
-    ORDER BY equipos_informaticos.Equipo_id DESC
-    LIMIT 1");
+    ORDER BY equipos_informaticos.Equipo_id DESC");
 
 $sql->execute();
 

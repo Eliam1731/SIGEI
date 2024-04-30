@@ -41,7 +41,7 @@
             print json_encode($result);
             return;
         }
-
+    
         //Empieza la logica para obtener los datos del equipo
         $sql_guard = $conn->prepare("SELECT 
             resguardos_de_equipos.User_id AS user_id,
@@ -69,12 +69,16 @@
         JOIN status ON equipos_informaticos.Status_id = status.Status_id
         JOIN empleados_resguardantes ON resguardos_de_equipos.Empleado_id = empleados_resguardantes.Empleado_id
         WHERE 
-            resguardos_de_equipos.Equipo_id = ?;");
+            resguardos_de_equipos.Equipo_id = ? AND
+            resguardos_de_equipos.status = 'resguardado'
+        ORDER BY 
+            resguardos_de_equipos.Fecha_autorizacion DESC
+        LIMIT 1;");
 
         $sql_guard->bindParam(1, $equipo_id);
         $sql_guard->execute();
         $guard = $sql_guard->fetch(PDO::FETCH_ASSOC);
-
+        
         // Consulta para obtener los ID de las imágenes
         $sql_images = $conn->prepare("SELECT Imagen_id FROM imagenes WHERE Equipo_id = ?;");
         $sql_images->bindParam(1, $equipo_id);

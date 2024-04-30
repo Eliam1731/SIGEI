@@ -3,6 +3,33 @@ include '../config/connection_db.php';
 
 $data = $_POST;
 
+
+foreach ($data as $key => $value) {
+    $data[$key] = trim($value);
+}
+
+
+$stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Num_seguro_social = ? AND Empleado_id != ?");
+$stmt->execute([$data['Num_seguro_social'], $data['Empleado_id']]);
+if($stmt->fetch()) {
+    echo json_encode(["message" => "El número de seguro social ya está en uso. Intenta con otro número."]);
+    exit;
+}
+
+
+$stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Correo_electronico = ? AND Empleado_id != ?");
+$stmt->execute([$data['Correo_electronico'], $data['Empleado_id']]);
+if($stmt->fetch()) {
+    echo json_encode(["message" => "El correo electrónico ya está en uso. Intenta con otro correo electrónico."]);
+    exit;
+}
+
+
+if(strpos($data['Correo_electronico'], '@grupoopc.com') === false) {
+    echo json_encode(["message" => "Solo se pueden meter correos con el dominio @grupoopc.com"]);
+    exit;
+}
+
 $sql = "UPDATE empleados_resguardantes SET 
     Nombre = :nombre, 
     Primer_apellido = :primer_apellido, 

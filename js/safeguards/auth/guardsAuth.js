@@ -175,7 +175,7 @@ buttonAuth.addEventListener('click', async() => {
   safeguardsData.userAuth = sessionStorage.getItem('email');
   safeguardsData.employee = selectEmployeeClean.value;
   safeguardsData.dateAuth = date;
-  const nameComplete = selectEmployeeClean.options[selectEmployeeClean.selectedIndex].text
+  const nameComplete = selectEmployeeClean.options[selectEmployeeClean.selectedIndex].text;
 
   try {
     const response = await sendDataServer('../server/insert/resguard.php', {

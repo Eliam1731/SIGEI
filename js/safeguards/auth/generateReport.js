@@ -40,6 +40,7 @@ const sendReportToBackend = async( file, emailUser) => {
 export const generateReportSafeguards = ( work, amount, code, description, employee, email) => {
     const now = new Date();
     const date = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
+    console.log(date)
 
     fetch(pathFile).then( res => res.arrayBuffer()).then( async arrayBuffer => {
         const { PDFDocument, StandardFonts, rgb } = PDFLib;

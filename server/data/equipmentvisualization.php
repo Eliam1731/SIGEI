@@ -19,11 +19,26 @@ $sql = $conn->prepare("
         equipos_informaticos.Comentarios AS comentarios,
         status.Nom_Status AS status,
         equipos_informaticos.miId AS codeOpc,
-        empleados_resguardantes.Nombre AS nombreEmpleado,
-        empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
-        empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
-        empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
-        empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado,
+        CASE 
+            WHEN status.Nom_Status = 'Disponible' THEN NULL
+            ELSE empleados_resguardantes.Nombre
+        END AS nombreEmpleado,
+        CASE 
+            WHEN status.Nom_Status = 'Disponible' THEN NULL
+            ELSE empleados_resguardantes.Primer_apellido
+        END AS primerApellidoEmpleado,
+        CASE 
+            WHEN status.Nom_Status = 'Disponible' THEN NULL
+            ELSE empleados_resguardantes.Segundo_apellido
+        END AS segundoApellidoEmpleado,
+        CASE 
+            WHEN status.Nom_Status = 'Disponible' THEN NULL
+            ELSE empleados_resguardantes.Num_seguro_social
+        END AS numSeguroSocialEmpleado,
+        CASE 
+            WHEN status.Nom_Status = 'Disponible' THEN NULL
+            ELSE empleados_resguardantes.Correo_electronico
+        END AS correoElectronicoEmpleado,
         empresas.Nom_empresa AS nombreEmpresa,
         obras.Nombre_obra AS nombreObra,
         frente.Nom_frente AS nombreFrente
@@ -52,7 +67,6 @@ $sql = $conn->prepare("
     LEFT JOIN empresas ON empleados_resguardantes.Empresa_id = empresas.Empresa_id
     LEFT JOIN obras ON empleados_resguardantes.Obra_id = obras.Obra_id
     LEFT JOIN frente ON empleados_resguardantes.id_frente = frente.Frente_id
-    WHERE status.Nom_Status = 'resguardado'
     GROUP BY equipos_informaticos.Equipo_id
     ORDER BY equipos_informaticos.Equipo_id DESC
 ");

@@ -3,16 +3,16 @@ include '../config/connection_db.php';
 
 try {
     $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, emp.Nom_corto as Nom_corto_empresa, ob.Nombre_obra, ob.Num_obra as Num_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion, st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca
-            FROM empleados_resguardantes e 
-            LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id 
-            LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
-            LEFT JOIN empresas emp ON e.Empresa_id = emp.Empresa_id
-            LEFT JOIN obras ob ON e.Obra_id = ob.Obra_id
-            LEFT JOIN frente fr ON e.id_frente = fr.Frente_id
-            LEFT JOIN status st ON eq.Status_id = st.Status_id
-            LEFT JOIN subcategoria sc ON eq.Id_subcategoria = sc.Subcategoria_id
-            LEFT JOIN marca_del_equipo m ON eq.Id_marca = m.Id_Marca
-            ORDER BY r.Fecha_autorizacion DESC";
+        FROM empleados_resguardantes e 
+        LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id AND r.status = 'resguardado'
+        LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
+        LEFT JOIN empresas emp ON e.Empresa_id = emp.Empresa_id
+        LEFT JOIN obras ob ON e.Obra_id = ob.Obra_id
+        LEFT JOIN frente fr ON e.id_frente = fr.Frente_id
+        LEFT JOIN status st ON eq.Status_id = st.Status_id
+        LEFT JOIN subcategoria sc ON eq.Id_subcategoria = sc.Subcategoria_id
+        LEFT JOIN marca_del_equipo m ON eq.Id_marca = m.Id_Marca
+        ORDER BY r.Fecha_autorizacion DESC";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();

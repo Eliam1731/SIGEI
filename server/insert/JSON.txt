@@ -51,5 +51,6 @@ codigo para modificar la tabla de gastos
 }
 
 
+crear buscador, el mandara el codigo opc 
 
-disponible
+

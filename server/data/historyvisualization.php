@@ -26,67 +26,47 @@ try {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $Empleado_id = $row['Empleado_id'];
         $Equipo_id = $row['Equipo_id'];
-        if (!isset($result[$Empleado_id])) {
-            $result[$Empleado_id] = [
-                'Empleado_id' => $Empleado_id,
-                'Nombre' => $row['Nombre'],
-                'Primer_apellido' => $row['Primer_apellido'],
-                'Segundo_apellido' => $row['Segundo_apellido'],
-                'Num_seguro_social' => $row['Num_seguro_social'],
-                'Empresa' => $row['Nom_empresa'],
-                'Nom_corto_empresa' => $row['Nom_corto_empresa'],
-                'Obra' => $row['Nombre_obra'],
-                'Num_obra' => $row['Num_obra'],
-                'Frente' => $row['Nom_frente'],
-                'Correo_electronico' => $row['Correo_electronico'],
-                'Equipos' => []
-            ];
-        }
-
-        if ($row['Resguardo_id'] !== null && !isset($result[$Empleado_id]['Equipos'][$Equipo_id])) {
-    $fechaInicio = date("d-m-Y", strtotime($row['Fecha_inicio']));
-    $fechaTerminacion = date("d-m-Y", strtotime($row['Fecha_terminacion']));
-    $result[$Empleado_id]['Equipos'][$Equipo_id] = [
-        'Equipo_id' => $Equipo_id,
-        'Subcategoria' => $row['Nom_subcategoria'],
-        'Marca' => $row['Nom_marca'],
-        'Modelo' => $row['Modelo'],
-        'Num_serie' => $row['Num_serie'],
-        'Especificacion' => $row['Especificacion'],
-        'Fecha_compra' => $row['Fecha_compra'],
-        'Fecha_garantia' => $row['Fecha_garantia'],
-        'Importe' => $row['Importe'],
-        'Direccion_mac_wifi' => $row['Direccion_mac_wifi'],
-        'Direccion_mac_ethernet' => $row['Direccion_mac_ethernet'],
-        'Num_ref_compaq' => $row['Num_ref_compaq'],
-        'Service_tag' => $row['Service_tag'],
-        'Comentarios' => $row['Comentarios'],
-        'Status' => $row['Nom_Status'],
-        'miId' => $row['miId'],
-        'Fecha de inicio' => $fechaInicio,
-        'Fecha de terminacion' => $fechaTerminacion,
-        'Autorizacion_de_resguardo' => $row['Autorizacion_de_resguardo'],
-        'Autorizacion_de_devolucion' => $row['Autorizacion_de_devolucion']
-    ];
-}
-    foreach ($result as $Empleado_id => $data) {
-        if (empty($data['Equipos'])) {
-            $result[$Empleado_id]['Mensaje'] = 'Este empleado no tiene a resguardo ningún equipo';
-        } else {
-            foreach ($data['Equipos'] as $Equipo_id => $equipo) {
-                if (isset($equipo['Autorizacion_de_resguardo']) && isset($equipo['Autorizacion_de_devolucion'])) {
-                    $result[$Empleado_id]['Equipos'][$Equipo_id]['Autorizacion_de_resguardo'] = $equipo['Autorizacion_de_resguardo'];
-                    $result[$Empleado_id]['Equipos'][$Equipo_id]['Autorizacion_de_devolucion'] = $equipo['Autorizacion_de_devolucion'];
-                }
-            }
-            $result[$Empleado_id]['Equipos'] = array_values($result[$Empleado_id]['Equipos']);
-        }
-    } 
+        $fechaInicio = date("d-m-Y", strtotime($row['Fecha_inicio']));
+        $fechaTerminacion = date("d-m-Y", strtotime($row['Fecha_terminacion']));
+        $result[] = [
+            'Empleado_id' => $Empleado_id,
+            'Nombre' => $row['Nombre'],
+            'Primer_apellido' => $row['Primer_apellido'],
+            'Segundo_apellido' => $row['Segundo_apellido'],
+            'Num_seguro_social' => $row['Num_seguro_social'],
+            'Empresa' => $row['Nom_empresa'],
+            'Nom_corto_empresa' => $row['Nom_corto_empresa'],
+            'Obra' => $row['Nombre_obra'],
+            'Num_obra' => $row['Num_obra'],
+            'Frente' => $row['Nom_frente'],
+            'Correo_electronico' => $row['Correo_electronico'],
+            'Equipo' => [
+                'Equipo_id' => $Equipo_id,
+                'Subcategoria' => $row['Nom_subcategoria'],
+                'Marca' => $row['Nom_marca'],
+                'Modelo' => $row['Modelo'],
+                'Num_serie' => $row['Num_serie'],
+                'Especificacion' => $row['Especificacion'],
+                'Fecha_compra' => $row['Fecha_compra'],
+                'Fecha_garantia' => $row['Fecha_garantia'],
+                'Importe' => $row['Importe'],
+                'Direccion_mac_wifi' => $row['Direccion_mac_wifi'],
+                'Direccion_mac_ethernet' => $row['Direccion_mac_ethernet'],
+                'Num_ref_compaq' => $row['Num_ref_compaq'],
+                'Service_tag' => $row['Service_tag'],
+                'Comentarios' => $row['Comentarios'],
+                'Status' => $row['Nom_Status'],
+                'miId' => $row['miId'],
+                'Fecha de inicio' => $fechaInicio,
+                'Fecha de terminacion' => $fechaTerminacion,
+                'Autorizacion_de_resguardo' => $row['Autorizacion_de_resguardo'],
+                'Autorizacion_de_devolucion' => $row['Autorizacion_de_devolucion']
+            ]
+        ];
     }
 
     header('Content-Type: application/json');
-    echo json_encode(array_values($result));
-    } catch (PDOException $e) {
+    echo json_encode($result);
+} catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
-    }
-
+}

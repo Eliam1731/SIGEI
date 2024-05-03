@@ -352,7 +352,15 @@ const thirdSectionActions = (data) => {
   let totalBuy = 0;
   let countBuy = 0;
 
-  console.log(expenses, 'expenses')
+  const notExpenses = `
+      <h2 class='title-expenses'>El equipo no tiene gastos disponibles</h2>    
+  `;
+
+  console.log(expenses, 'expenses');
+  if(expenses.message === 'Este equipo aún no tiene gastos extra') {
+    rootActions.innerHTML = notExpenses;
+    return;
+  }
 
   const html = `
       <h2 class='title-expenses'>Gastos del equipo</h2>

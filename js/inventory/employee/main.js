@@ -8,16 +8,21 @@ const employeeElementsDOM = {
 
 const bodyTableEmployee = document.getElementById( employeeElementsDOM.tableBody );
 const listItemEmployee = document.getElementById( employeeElementsDOM.listItemEmployee );
+let idx = 0; 
 
 const renderDataEmployee = ( data ) => {
     bodyTableEmployee.innerHTML = '';
+
     data.forEach( employee => {
-        const { Empleado_id: employeeID, Nombre: name, Primer_apellido: firstLastName, Segundo_apellido: secondLastName, Num_seguro_social: sureSocial, Correo_electronico: email, Empresa: companyID, Obra: workID, Frente: frontID } = employee;
+        const { 
+            Empleado_id: employeeID, Nombre: name, Primer_apellido: firstLastName, Segundo_apellido: secondLastName, 
+            Num_seguro_social: sureSocial, Correo_electronico: email, Empresa: companyID, Obra: workID, Frente: frontID, 
+            Nom_corto_empresa: shortName } = employee;
 
         const employeeRow = `
             <tr>
                 <td>${name} ${firstLastName} ${secondLastName}</td>
-                <td>${companyID}</td>
+                <td>${shortName}</td>
                 <td>${workID}</td>
                 <td>${frontID}</td>   
                 <td id='${ sureSocial }'>

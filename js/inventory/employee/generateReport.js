@@ -1,9 +1,4 @@
-const pathFile = '../js/safeguards/auth/autorizacion_resguardo.pdf';
-//work es un string 
-//amount es un string
-//code es un array de strings
-//description es un array de strings
-//employee es un string
+const pathFile = '../js/safeguards/auth/autorizacion_resguardo.pdf';    
 
 export const generateReportSafeguards = ( work, amount, code, description, employee ) => {
     const now = new Date();
@@ -23,7 +18,7 @@ export const generateReportSafeguards = ( work, amount, code, description, emplo
         firstPage.drawText( work.toString(), { x: 300, y: 345, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
 
         for (let i = 0; i < code.length; i++) {
-            const y1 = 737 - i * 13.5; // Ajusta el '30' según la separación que quieras entre registros
+            const y1 = 737 - i * 13.5;
             const y2 = 345 - i * 14;
 
             firstPage.drawText( amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
@@ -39,7 +34,7 @@ export const generateReportSafeguards = ( work, amount, code, description, emplo
         secondPage.drawText( work.toString(), { x: 300, y: 727, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
 
         for (let i = 0; i < code.length; i++) {
-            const y1 = 727 - i * 13.5; // Ajusta el '30' según la separación que quieras entre registros
+            const y1 = 727 - i * 13.5;
 
             secondPage.drawText( amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
             secondPage.drawText( code[i].toString(), { x: 90, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });

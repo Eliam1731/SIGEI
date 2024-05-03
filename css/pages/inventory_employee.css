@@ -73,6 +73,74 @@
     width: 100%;
     position: relative;
     margin-top: 5%;
+    box-sizing: border-box;
+}
+
+#table__employee-root thead {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#table__employee-root thead tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+#table__employee-root thead tr th {
+    font-family: "Montserrat", sans-serif;
+    padding-bottom: 1%;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: #212121;
+}
+
+#table__employee-root thead tr th:first-child { padding-left: 3%; }
+
+#table__employee-root tbody {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#table__employee-root tbody tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#table__employee-root tbody tr td {
+    padding: 1% 0;
+    height: auto;
+    position: relative;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 550;
+    font-style: normal;
+    color: #6B7280;
+}
+
+#table__employee-root tbody tr td:first-child { padding-left: 3%; }
+#table__employee-root tbody tr td:last-child button  {
+    padding: 0;
+    height: 100%;
+    width: 55%;
+    color: #0277BD;
+    font-weight: 700; 
+    background: none;
+    border: none;
 }
 
 .rootWindowActionsEmployee {
@@ -160,5 +228,33 @@
     height: 100%;
     width: 22%;
     position: relative;
+    display: flex;
+    justify-content: center;
     box-sizing: border-box;
+}
+
+.windowActionsEmployee__list {
+    height: 7%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    border-left: 2px solid #E0E0E0;
+    margin: 20% 0 0 10%;
+    box-sizing: border-box;
+}
+
+.windowActionsEmployee__list li {
+    padding: 0 0 0 5%;
+    user-select: none;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-size: .8em;
+    font-weight: 700;
+    font-style: normal;
+    color: #1A73E8;
+}
+
+.windowActionsEmployee__nav button {
+    position: absolute;
+    bottom: 5%;
 }

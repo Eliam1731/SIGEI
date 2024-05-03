@@ -1,6 +1,7 @@
 <?php include '../server/auth/session_auth.php'; ?>
 <!DOCTYPE html>
 <html lang="es-MX">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,10 @@
     <link rel="stylesheet" href="../css/resources/resetStyle.css">
     <link rel="stylesheet" href="../css/components/navegation.css">
     <link rel="stylesheet" href="../css/components/button.css">
+    <link rel="stylesheet" href="../css/pages/history.css">
     <title>Historial</title>
 </head>
+
 <body>
     <header>
         <img class="opc-logo" src="../images/opc-logo.png" alt="Logo de OPC Ingeniería y Costrucción">
@@ -33,9 +36,50 @@
     </header>
 
     <main>
-        <h1>History</h1>
+        <section id="root-tables">
+            <article id="table-safeguards">
+                <div class="containerRoot__tableSafeguards">
+                    <div class="overflow__tableSafeguards">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Iniciado</th>
+                                    <th>Empleado resguardante</th>
+                                    <th>Finalizado</th>
+                                    <th>Autorizador</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="table-safeguards__finished">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="control-buttons__safeguards">
+                        <button id="prevSafeguards">-</button>
+                        <p id="indexTextTable">1</p>
+                        <button id="nextSafeguards">+</button>
+                    </div>
+                </div>
+            </article>
+
+            <article id="table-devices__low">
+                <p>Equipos dados de baja</p>
+            </article>
+        </section>
+
+        <nav id="navegation_history">
+            <ul>
+                <li id="listItemSafeguards">Resguardos finalizados</li>
+                <li id="listItemDevicesLow">Equipos dados de baja</li>
+            </ul>
+        </nav>
     </main>
 
     <script type="module" src="../js/utilities/profileUser.js"></script>
+    <script type="module" src="../js/history/main.js"></script>
 </body>
+
 </html>

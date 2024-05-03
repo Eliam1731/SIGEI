@@ -1,0 +1,130 @@
+main { display: flex; }
+#root-tables { height: 100%; width: 80%; position: relative; overflow: hidden; box-sizing: border-box; }
+#table-safeguards {
+    height: 100%;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+}
+.containerRoot__tableSafeguards {
+    height: 95%;
+    width: 95%;
+    position: relative;
+    background: #FAFAFA;
+    border: 1px solid #EEEEEE;
+    border-radius: .5em;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.overflow__tableSafeguards {
+    height: 92%;
+    width: 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.overflow__tableSafeguards table { height: auto; width: 100%; position: relative; box-sizing: border-box; }
+.overflow__tableSafeguards table thead { height: auto; width: 100%; position: relative; box-sizing: border-box; }
+.overflow__tableSafeguards table thead tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    border-bottom: 1px solid #EEEEEE;
+}
+.overflow__tableSafeguards table thead tr th { padding: 1% 0; font-weight: 500; color: #757575; border-right: 1px solid #EEEEEE;}
+.overflow__tableSafeguards table thead tr th:last-child { border-right: none; }
+.overflow__tableSafeguards table tbody {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+.overflow__tableSafeguards table tbody tr {
+    height: auto;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+.overflow__tableSafeguards table tbody tr td {
+    padding: 1% 0;
+    text-align: center;
+    color: #424242;
+    border-right: 1px solid #EEEEEE;
+}
+.overflow__tableSafeguards table tbody tr td:last-child { border-right: none; }
+.overflow__tableSafeguards table tbody tr td:last-child button {
+    background: none;
+    border: none;
+    color: #757575;
+    font-weight: 700;
+}
+.control-buttons__safeguards {
+    height: 8%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: #F8F8F8;
+    border-top: 1px solid #EEEEEE;
+}
+
+.control-buttons__safeguards button {
+    height: 60%;
+    width: 7%;
+    color: #9E9E9E;
+    background: #EEEEEE;
+    border: 1px solid #BDBDBD;
+    border-radius: .5em;
+}
+
+.control-buttons__safeguards p {
+    color: #424242;
+    padding: 0 2%;
+    font-size: 1.3em;
+}
+
+
+
+
+
+
+#table-devices__low {
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: relative;
+}
+
+#navegation_history {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#navegation_history ul {
+    height: auto;
+    width: 90%;
+    margin: 20% 0 0 10%;
+    border-left: 3px solid #F5F5F5;
+    box-sizing: border-box;
+}
+
+#navegation_history ul li:first-child {
+    padding: 5% 0 5% 5%;
+}
+
+#navegation_history ul li:last-child {
+    padding: 0 0 5% 5%;
+}
+
+.li-selected { color: #1A73E8; }

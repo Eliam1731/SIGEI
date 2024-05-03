@@ -42,6 +42,8 @@ const createWindowActionsEmployee = ( employee ) => {
 
     downloadGuardFile.addEventListener('click', () => {
         const { Num_obra: work, Nombre, Primer_apellido, Segundo_apellido, Equipos } = employee[0];
+        if( Equipos.length === 0 ) return alert('El empleado no tiene equipos asignados');
+
         const employeeName = `${Nombre} ${Primer_apellido} ${Segundo_apellido}`;
         const amount = '1';
         const code = [];

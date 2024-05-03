@@ -11,9 +11,9 @@
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
         $data = [
-            "name" => $obj->firstNameUser,
-            "firstSurname" => $obj->firstSurnameUser,
-            "secondSurname" => $obj->secondSurnameUser,
+            "name" => ucfirst(strtolower($obj->firstNameUser)),
+            "firstSurname" => ucfirst(strtolower($obj->firstSurnameUser)),
+            "secondSurname" => ucfirst(strtolower($obj->secondSurnameUser)),
             "password" => password_hash($obj->newPasswordUser, PASSWORD_DEFAULT), // Utilizar password_hash aquí
             "roleId" => $obj->userRol,
             "email" => $obj->newEmailUser,

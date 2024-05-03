@@ -11,9 +11,9 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $formData = $_POST;
         $data = [
-            "nameEmployee" => $formData['name'],
-            "firstSurname" => $formData['first_surname'],
-            "secondSurname" => $formData['second_surname'],
+            "nameEmployee" => ucfirst(strtolower($formData['name'])),
+            "firstSurname" => ucfirst(strtolower($formData['first_surname'])),
+            "secondSurname" => ucfirst(strtolower($formData['second_surname'])),
             "numberSocial" => $formData['number_social'],
             "companyBelongs" => $formData['company_belongs'],
             "workBelongs" => $formData['work_belongs'],

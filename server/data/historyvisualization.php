@@ -3,70 +3,77 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, emp.Nom_corto as Nom_corto_empresa, ob.Nombre_obra, ob.Num_obra as Num_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion as Fecha_inicio, d.Fecha_autorizacion as Fecha_terminacion, st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca,
-        CONCAT(u1.Nombre, ' ', u1.Primer_apellido, ' ', u1.Segundo_apellido) as Autorizacion_de_resguardo,
-        CONCAT(u2.Nombre, ' ', u2.Primer_apellido, ' ', u2.Segundo_apellido) as Autorizacion_de_devolucion
-        FROM empleados_resguardantes e 
-        LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id AND r.status = 'disponible'
-        LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
-        LEFT JOIN devolucion_de_equipos d ON r.Equipo_id = d.Equipo_id AND e.Empleado_id = d.Empleado_id
-        LEFT JOIN empresas emp ON e.Empresa_id = emp.Empresa_id
-        LEFT JOIN obras ob ON e.Obra_id = ob.Obra_id
-        LEFT JOIN frente fr ON e.id_frente = fr.Frente_id
-        LEFT JOIN status st ON eq.Status_id = st.Status_id
-        LEFT JOIN subcategoria sc ON eq.Id_subcategoria = sc.Subcategoria_id
-        LEFT JOIN marca_del_equipo m ON eq.Id_marca = m.Id_Marca
-        LEFT JOIN usuarios u1 ON r.User_id = u1.User_id
-        LEFT JOIN usuarios u2 ON d.User_id = u2.User_id
-        ORDER BY r.Fecha_autorizacion DESC";
-
+    $sql = "SELECT de.*, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, 
+    er.Empresa_id, er.Obra_id, er.id_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, 
+    ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios, 
+    ei.Status_id, ei.miId, re.Fecha_autorizacion AS Fecha_inicio, re.User_id AS UsuarioResguardo, 
+    de.Fecha_autorizacion AS Fecha_terminacion, de.User_id AS UsuarioDevolucion, 
+    ur.Nombre AS NombreUsuarioResguardo, ur.Primer_apellido AS ApellidoUsuarioResguardo, 
+    ur.Segundo_apellido AS SegundoApellidoUsuarioResguardo, ud.Nombre AS NombreUsuarioDevolucion, 
+    ud.Primer_apellido AS ApellidoUsuarioDevolucion, ud.Segundo_apellido AS SegundoApellidoUsuarioDevolucion,
+    ob.Nombre_obra, ob.Num_obra, em.Nom_empresa, em.Nom_corto, fr.Nom_frente, fr.numero_frente
+    FROM devolucion_de_equipos de
+    LEFT JOIN empleados_resguardantes er ON de.Empleado_id = er.Empleado_id
+    LEFT JOIN equipos_informaticos ei ON de.Equipo_id = ei.Equipo_id
+    LEFT JOIN resguardos_de_equipos re ON de.Equipo_id = re.Equipo_id
+    LEFT JOIN usuarios ur ON re.User_id = ur.User_id
+    LEFT JOIN usuarios ud ON de.User_id = ud.User_id
+    LEFT JOIN obras ob ON er.Obra_id = ob.Obra_id
+    LEFT JOIN empresas em ON er.Empresa_id = em.Empresa_id
+    LEFT JOIN frente fr ON er.id_frente = fr.Frente_id";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $result = [];
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $Empleado_id = $row['Empleado_id'];
-        $Equipo_id = $row['Equipo_id'];
-        $fechaInicio = date("d-m-Y", strtotime($row['Fecha_inicio']));
-        $fechaTerminacion = date("d-m-Y", strtotime($row['Fecha_terminacion']));
-        $result[] = [
-            'Empleado_id' => $Empleado_id,
-            'Nombre' => $row['Nombre'],
-            'Primer_apellido' => $row['Primer_apellido'],
-            'Segundo_apellido' => $row['Segundo_apellido'],
-            'Num_seguro_social' => $row['Num_seguro_social'],
-            'Empresa' => $row['Nom_empresa'],
-            'Nom_corto_empresa' => $row['Nom_corto_empresa'],
-            'Obra' => $row['Nombre_obra'],
-            'Num_obra' => $row['Num_obra'],
-            'Frente' => $row['Nom_frente'],
-            'Correo_electronico' => $row['Correo_electronico'],
-            'Equipo' => [
-                'Equipo_id' => $Equipo_id,
-                'Subcategoria' => $row['Nom_subcategoria'],
-                'Marca' => $row['Nom_marca'],
-                'Modelo' => $row['Modelo'],
-                'Num_serie' => $row['Num_serie'],
-                'Especificacion' => $row['Especificacion'],
-                'Fecha_compra' => $row['Fecha_compra'],
-                'Fecha_garantia' => $row['Fecha_garantia'],
-                'Importe' => $row['Importe'],
-                'Direccion_mac_wifi' => $row['Direccion_mac_wifi'],
-                'Direccion_mac_ethernet' => $row['Direccion_mac_ethernet'],
-                'Num_ref_compaq' => $row['Num_ref_compaq'],
-                'Service_tag' => $row['Service_tag'],
-                'Comentarios' => $row['Comentarios'],
-                'Status' => $row['Nom_Status'],
-                'miId' => $row['miId'],
-                'Fecha de inicio' => $fechaInicio,
-                'Fecha de terminacion' => $fechaTerminacion,
-                'Autorizacion_de_resguardo' => $row['Autorizacion_de_resguardo'],
-                'Autorizacion_de_devolucion' => $row['Autorizacion_de_devolucion']
-            ]
+    $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $datosFinales = [];
+    foreach ($resultados as $resultado) {
+        unset($resultado['Fecha_autorizacion']);
+        
+        $datosEmpleado = [
+            'Nombre' => $resultado['Nombre'],
+            'Primer_apellido' => $resultado['Primer_apellido'],
+            'Segundo_apellido' => $resultado['Segundo_apellido'],
+            'Num_seguro_social' => $resultado['Num_seguro_social'],
+            'Correo_electronico' => $resultado['Correo_electronico'],
+            'Empresa_id' => $resultado['Empresa_id'],
+            'Nom_empresa' => $resultado['Nom_empresa'],
+            'Nom_corto' => $resultado['Nom_corto'],
+            'Obra_id' => $resultado['Obra_id'],
+            'Nombre_obra' => $resultado['Nombre_obra'],
+            'Num_obra' => $resultado['Num_obra'],
+            'id_frente' => $resultado['id_frente'],
+            'Nom_frente' => $resultado['Nom_frente'],
+            'numero_frente' => $resultado['numero_frente']
         ];
+        $datosEquipo = [
+            'Modelo' => $resultado['Modelo'],
+            'Num_serie' => $resultado['Num_serie'],
+            'Especificacion' => $resultado['Especificacion'],
+            'Fecha_compra' => $resultado['Fecha_compra'],
+            'Fecha_garantia' => $resultado['Fecha_garantia'],
+            'Importe' => $resultado['Importe'],
+            'Direccion_mac_wifi' => $resultado['Direccion_mac_wifi'],
+            'Direccion_mac_ethernet' => $resultado['Direccion_mac_ethernet'],
+            'Num_ref_compaq' => $resultado['Num_ref_compaq'],
+            'Service_tag' => $resultado['Service_tag'],
+            'Comentarios' => $resultado['Comentarios'],
+            'Status_id' => $resultado['Status_id'],
+            'miId' => $resultado['miId'],
+        ];
+
+
+        unset($resultado['Nombre'], $resultado['Primer_apellido'], $resultado['Segundo_apellido'], $resultado['Num_seguro_social'], $resultado['Correo_electronico'], $resultado['Empresa_id'], $resultado['Obra_id'], $resultado['id_frente'], $resultado['Modelo'], $resultado['Num_serie'], $resultado['Especificacion'], $resultado['Fecha_compra'], $resultado['Fecha_garantia'], $resultado['Importe'], $resultado['Direccion_mac_wifi'], $resultado['Direccion_mac_ethernet'], $resultado['Num_ref_compaq'], $resultado['Service_tag'], $resultado['Comentarios'], $resultado['Status_id'], $resultado['miId']);
+
+        // Adicionalmente, eliminar los campos duplicados de obra, empresa y frente
+        unset($resultado['Nombre_obra'], $resultado['Num_obra'], $resultado['Nom_empresa'], $resultado['Nom_corto'], $resultado['Nom_frente'], $resultado['numero_frente']);
+
+        $resultado['DatosEmpleado'] = $datosEmpleado;
+        $resultado['DatosEquipo'] = $datosEquipo;
+        $datosFinales[] = $resultado;
     }
 
     header('Content-Type: application/json');
-    echo json_encode($result);
+    echo json_encode($datosFinales);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

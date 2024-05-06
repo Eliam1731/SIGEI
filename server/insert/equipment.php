@@ -1,4 +1,7 @@
 <?php
+
+var_dump($_POST);
+
 include '../config/connection_db.php';
 
 
@@ -8,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'status' => 'error',
         'message' => 'No se recibió ninguna petición POST'
     );
-    
+
     $data = [
         'select_category' => $_POST['select__category'],
         'brandDevices' => $_POST['brandDevices'],
@@ -51,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         
         // Verificar si la dirección MAC ya existe, pero solo si no es nula
-        if ($data['addressMacWifi'] ) {
+        if ($data['addressMacWifi']) {
             $stmt = $conn->prepare("SELECT Direccion_mac_wifi FROM equipos_informaticos WHERE Direccion_mac_wifi = :addressMacWifi");
             $stmt->bindParam(':addressMacWifi', $data['addressMacWifi']);
             $stmt->execute();
@@ -64,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         
             // Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
-            if ($data['addressEthernet'] ) {
+            if ($data['addressEthernet']) {
                 $stmt = $conn->prepare("SELECT Direccion_mac_ethernet FROM equipos_informaticos WHERE Direccion_mac_ethernet = :addressEthernet");
                 $stmt->bindParam(':addressEthernet', $data['addressEthernet']);
                 $stmt->execute();

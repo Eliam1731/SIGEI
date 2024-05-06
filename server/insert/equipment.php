@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         
         // Verificar si la dirección MAC ya existe, pero solo si no es nula
-        if ($data['addressMacWifi'] !== null) {
+        if ($data['addressMacWifi']) {
             $stmt = $conn->prepare("SELECT Direccion_mac_wifi FROM equipos_informaticos WHERE Direccion_mac_wifi = :addressMacWifi");
             $stmt->bindParam(':addressMacWifi', $data['addressMacWifi']);
             $stmt->execute();
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         
             // Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
-            if ($data['addressEthernet'] !== null) {
+            if ($data['addressEthernet']) {
                 $stmt = $conn->prepare("SELECT Direccion_mac_ethernet FROM equipos_informaticos WHERE Direccion_mac_ethernet = :addressEthernet");
                 $stmt->bindParam(':addressEthernet', $data['addressEthernet']);
                 $stmt->execute();

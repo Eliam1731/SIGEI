@@ -1,14 +1,6 @@
 <?php
-
-var_dump($_POST);
-echo json_encode($_POST);
-
 include '../config/connection_db.php';
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-
 
     $data = [
         'select_category' => $_POST['select__category'],
@@ -209,5 +201,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 header('Content-Type: application/json');
-print json_encode($response);
+print json_encode($data);
 ?>

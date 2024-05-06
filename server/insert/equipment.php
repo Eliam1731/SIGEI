@@ -1,12 +1,14 @@
 <?php
 include '../config/connection_db.php';
 
-$response = array(
-    'status' => 'error',
-    'message' => 'No se recibió ninguna petición POST'
-);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $response = array(
+        'status' => 'error',
+        'message' => 'No se recibió ninguna petición POST'
+    );
+    
     $data = [
         'select_category' => $_POST['select__category'],
         'brandDevices' => $_POST['brandDevices'],
@@ -85,27 +87,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($row) {
                 $response['status'] = 'error';
                 $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
-            } else {
-                // Verificar si el Service tag ya existe
-                $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
-                $stmt->bindParam(':serviceTag', $data['serviceTag']);
-                $stmt->execute();
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($row) {
-                    $response['status'] = 'error';
-                    $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
                 } else {
-                    //Aqui realice la validacion del Codigo OPCIC espero este bien:(
+                    // Verificar si el Service tag ya existe
+                    $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
+                    $stmt->bindParam(':serviceTag', $data['serviceTag']);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($row) {
+                        $response['status'] = 'error';
+                        $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
+                        } else {
+                        //Aqui realice la validacion del Codigo OPCIC espero este bien:(
                         $codigoCompleto = 'OPCIC-COM-' . $data['codigo'];
                         $stmt = $conn->prepare("SELECT miId FROM equipos_informaticos WHERE miId = :codigo");
                         $stmt->bindParam(':codigo', $codigoCompleto);
                         $stmt->execute();
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                        
-                        if ($row) {
-                            $response['status'] = 'error';
-                            $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
+                            
+                            if ($row) {
+                                $response['status'] = 'error';
+                                $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
                         } else {
 
                     // Si todas las verificaciones son exitosas, entonces insertar los datos

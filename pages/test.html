@@ -1,79 +1,344 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    body {
-      height: 100vh;
-      width: 100vw;
-      border: 0;
-      margin: 0;
-    }
+<h2>Registrar nuevo equipo informático</h2>
+<div class="line-horizontal__decoration"></div>
 
-    header {
-      height: 10%;
-      width: 100%;
-      background: red;
-    }
+<form id="form-equipment">
+    <section> 
+        <div> 
+            <label for="select__category">Elija la categoría</label>
+            <div class="container-category">
+                <select id="select__category">
+                    <option value='No se ha seleccionado una categoría'>No se ha seleccionado una categoría</option>
+                </select>
 
-    main {
-      height: 90%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: cadetblue;
-    }
+                <button id="addCategory" type="button" title="Agregar nueva categoría">
+                    <img src="../images/images-devices/add_circle.svg">
+                </button>
+            </div>
 
-    main div:first-child {
-      height: 100%;
-      width: 80%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: pink;
-    }
+            <label for="brandDevices">Marca</label>
+            <div class="container-brand">
+                <select id="brandDevices">
+                    <option value='No se ha seleccionado una marca'>No se ha seleccionado una marca</option>
+                </select>
 
-    main div:first-child section:first-child {
-      height: 50%;
-      width: 90%;
-      background: brown;
-    }
+                <button id="addBrand" type="button" title="Agregar nueva marca">
+                    <img src="../images/images-devices/add_circle.svg">
+                </button>
+            </div>
 
-    main div:first-child section:last-child {
-      height: 50%;
-      width: 90%;
-      background: blue;
-    }
+            <label for="codeEquipment">Coloque el código solo si el equipo ya cuenta con uno</label>
+            <div class="containe__codeequipment">
+                <div><span>OPCIC-COM-</span></div>
+                <input type="text" placeholder="Ejemplo: 00012" id="codeEquipment">
+            </div>
 
-    main nav {
-      height: 100%;
-      width: 20%;
-      background: black;
-    }
-  </style>
-</head>
-<body>
-  <header>
+            <label for="modelDevices">Modelo</label>
+            <input id="modelDevices" type="text" placeholder="Ejemplo: SNL-002" class="input-forms">
+        </div>
 
-  </header>
+        <div> 
+            <label for="serialNumber">Número de serie</label>
+            <input id="serialNumber" type="text" placeholder="Ejemplo: 080145780123" class="input-forms">
 
-  <main>
-    <div>
-      <section>
+            <label for="dateBuy">Fecha de compra</label>
+            <input type="date" id="dateBuy" class="input-forms">
 
-      </section>
+            <label for="dateExpiresWarranty">Fecha en la que expira la garantía</label>
+            <input type="date" id="dateExpiresWarranty" class="input-forms">
 
-      <section>
+            <label for="amountDevices">Importe del equipo</label>
+            <input id="amountDevices" type="text" placeholder="Ejemplo: 20,000.00 MXN" class="input-forms">
+        </div>
 
-      </section>
-    </div>
+        <div> 
+            <button id="nextSectionDevices" class="button-action" type="button">
+                <span>Siguiente</span>
+                <img src="../images/images-devices/arrow_next.svg">
+            </button>
+        </div>
+    </section>
 
-    <nav>
+    <section id='section-two'> 
+        <div>
+            <label for="imageDevices">Subir imagenes del equipo</label>
+            <input type="file" id="imageDevices" accept="image/*" multiple>
 
-    </nav>
-  </main>
-</body>
-</html>
+            <label for="specificationDevices">Especificación del equipo</label>
+            <textarea id="specificationDevices" class="textareaDevices" placeholder="Ejemplo: 8 de RAM, 500GB de espacio, etc."></textarea>
+
+            <label for="detailsExtraDevices">Comentarios acerca del equipo</label>
+            <textarea id="detailsExtraDevices" class="textareaDevices" placeholder="Colocar detalles extras sobre el equipo informático que se está registrando."></textarea>
+        </div>
+
+        <div class='second-container__section'>
+            <label for="serviceTag" class='modify-label'>Service tag del equipo</label>
+            <input id="serviceTag" type="text" placeholder="Ejemplo: 029SN01201J" class="input-forms modify">
+
+            <label for="invoiceDevices" class='modify-label'>Subir factura del equipo</label>
+            <input id="invoiceDevices" type="file" accept=".pdf,.xml" class='modify' multiple>
+
+            <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compras</label>
+            <input id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" class="input-forms modify">
+
+            <div id='openWindowAddress' class="container_messageAddress">
+                <span>Agregar direcciones MAC</span>
+                <img src="../images/images-devices/ads_click.svg" alt="">
+            </div>
+        </div>
+
+        <section class="window_address">
+            <label for="addressEthernet" class='modify-label'>Dirección MAC Ethernet</label>
+            <input id="addressEthernet" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" class="input-forms modify">
+
+            <label for="addressMacWifi">Dirección MAC WI-FI</label>
+            <input id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" class="input-forms">
+
+            <div>
+                <button class='button-action' id="accept_address" type='button'>Aceptar</button>
+            </div>
+        </section>
+
+        <div>
+            <button id="sendDataDevices" type="button" class="button-action">Registrar equipo</button>
+        </div>
+    </section>
+
+    
+<button id='returnSectionEquipment'>
+  <img src='../images/images-records/return.svg'>
+</button>
+
+
+
+
+
+
+
+
+
+#form-equipment section:first-child {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+#form-equipment section:first-child div {
+  height: 80%;
+  width: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#form-equipment section:first-child div:last-child {
+  height: 20%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#form-equipment section:first-child div:last-child button {
+  height: 40%;
+  width: 25%;
+  font-size: 1em;
+  font-weight: 500;
+}
+#form-equipment section:first-child .container-category {
+  height: 10%;
+  width: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+  margin-bottom: 5%;
+  box-sizing: border-box;
+}
+#form-equipment section:first-child .container-category #select__category {
+  height: 100%;
+  width: 85.5%;
+  background: #F5F5F5;
+  border: 2px solid #EEEEEE;
+  border-radius: 5px;
+}
+#form-equipment section:first-child .container-category #addCategory {
+  height: 100%;
+  width: 10%;
+  background: #F5F5F5;
+  border: 2px solid #EEEEEE;
+  border-radius: 5px;
+}
+#form-equipment section:first-child .container-brand {
+  height: 10%;
+  width: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+  margin-bottom: 5%;
+  box-sizing: border-box;
+}
+#form-equipment section:first-child .containe__codeequipment {
+  height: 10%;
+  width: 88.9%;
+  margin-bottom: 5%;
+  background: #F5F5F5;
+  border: 2px solid #EEEEEE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 5px;
+}
+#form-equipment section:first-child .containe__codeequipment div {
+  height: 100%;
+  width: 30%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid #EEEEEE;
+  color: #757575;
+}
+#form-equipment section:first-child .containe__codeequipment div { user-select: none; }
+#form-equipment section:first-child .containe__codeequipment input {
+  height: 100%;
+  width: 70%;
+  padding: 5%;
+  position: relative;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background: none;
+}
+#form-equipment section:first-child .container-brand select {
+  height: 100%;
+  width: 85.5%;
+}
+#form-equipment section:first-child .container-brand button {
+  height: 100%;
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F5F5F5;
+  border: 2px solid #EEEEEE;
+  border-radius: 5px;
+}
+#form-equipment section:first-child div:last-child button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#form-equipment section:first-child div:last-child button span { padding-right: 4%; }
+/* Estilos de la segunda seccion del formulario de equipos informaticos */
+#form-equipment #section-two {
+  top: 0;
+  left: -200%;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  background: #FFFFFF;
+  transition: left 1s;
+}
+#form-equipment #section-two div {
+  height: 90%;
+  width: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#form-equipment #section-two div:first-child label { margin-left: 0px; }
+#form-equipment #section-two div:first-child input { margin-bottom: 5%; }
+#form-equipment #section-two div:first-child #specificationDevices {
+  margin-bottom: 5%; 
+}
+#form-equipment #section-two div:first-child textarea {
+  height: 19%;
+  background: #F5F5F5;
+  border: 2px solid #EEEEEE;
+  border-radius: 5px;
+  resize: none;
+}
+#form-equipment #section-two .second-container__section .modify, .modify-label { margin-left: 5%; }
+#form-equipment #section-two .second-container__section .modify { height: 8%; width: 80%; }
+#form-equipment #section-two div:last-child {
+  height: 10%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#form-equipment #section-two div:last-child button {
+  height: 80%;
+  width: 40%;
+}
+#form-equipment #section-two .second-container__section .container_messageAddress {
+  height: 9%;
+  width: 85%;
+  margin-left: 5%;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  background: #F5F5F5;
+  border: 2px solid #EEEEEE;
+  border-radius: 5px;
+}
+#form-equipment #section-two .second-container__section .container_messageAddress span {
+  padding-right: 3%;
+}
+.window_address {
+  height: 60%;
+  width: 50%;
+  position: absolute;
+  display: none;
+  justify-content: center;
+  flex-direction: column;
+  top: 10%;
+  left: 20%;
+  background: #FFFFFF;
+  border: 2px solid #E0E0E0;
+  border-radius: 5px;
+  box-shadow: 0px 0px 15px 0px #424242;
+}
+.window_address label { margin-left: 5%; }
+.window_address input {
+  margin-left: 5%;
+  height: 13%;
+}
+.window_address div {
+  height: 15% !important;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.window_address div #accept_address {
+  height: 100%;
+  width: 50%;
+  position: relative;
+}
+#returnSectionEquipment {
+  top: 3%;
+  right: 200%;
+  height: 5%;
+  width: 6%;
+  background: #F5F5F5;
+  border-radius: 5px;
+  border: 2px solid #EEEEEE;
+  position: absolute;
+  transition: right 1s;
+  z-index: 400;
+}

@@ -10,23 +10,137 @@ const formsEquipment = {
     Maquinaria: equipmentMachineryHTML,
 }
 
+export const devicesWithAddresses = [
+    'Laptop',
+    'Computadora de escritorio',
+    'All In One',
+    'Impresora',
+    'Servidor',
+    'Teléfono',
+    'Teléfonos IP',
+    'Router',
+    'Modem',
+    'Switch',
+    'Acesspoint',
+    'Fortinet',
+];
+
 const elementsDOM = {
     selectBrand: 'brandDevices',
     selectCategories: 'select__category',
     calendaryBuy: 'dateBuy',
-    buttonNextSection: 'nextSectionDevices',
     secondSection: 'section-two',
-    buttonReturnSection: 'returnSectionEquipment',
     buttonRegister: 'sendDataDevices',
     inputImage: 'imageDevices',
     inputFile: 'invoiceDevices',
     imageQR: 'imageCodeQR',
-    buttonAddress: 'accept_address',
-    windowAddress: '.window_address',
-    divOpenWindowAddress: 'openWindowAddress'
+    inputsHiden: '.hiden-inputs',
+}
+
+const validateInputs = () => {
+    const regexPrice = /^\d+(\.\d{2})?$/;
+    const inputCodeDevice = document.getElementById('codeEquipment');
+    const inputModelDevice = document.getElementById('modelDevices');
+    const inputSerialNumber = document.getElementById('serialNumber');
+    const inputServiceTag = document.getElementById('serviceTag');
+    const inputDateBuy = document.getElementById('dateBuy');
+    const inputDateExpiresWarranty = document.getElementById('dateExpiresWarranty');
+    const inputAmountDevices = document.getElementById('amountDevices');
+    const inputInvoice = document.getElementById('invoiceDevices');
+
+    inputCodeDevice.addEventListener('change', (event) => {
+        const valueInput = event.target.value;
+
+        if(valueInput.trim() === '') return;
+        
+        if(valueInput.length !== 5 ) {
+            alert('El código del equipo debe tener exactamente 5 números.');
+            inputCodeDevice.focus();
+            return;
+        }
+
+        if(isNaN(valueInput)) {
+            alert('El código del equipo debe ser numérico.');
+            inputCodeDevice.focus();
+            return;
+        }
+    });
+
+    inputModelDevice.addEventListener('change', (event) => {
+        const valueInput = event.target.value;
+
+        if(valueInput.trim() === '') return;
+
+        if(valueInput.length < 4 || valueInput.length > 15) {
+            alert('El modelo del equipo debe tener mínimo 4 caracteres y un maximo de 15 caracteres.');
+            inputModelDevice.focus();
+            return;
+        }
+    });
+
+    inputSerialNumber.addEventListener('change', (event) => {
+        const valueInput = event.target.value;
+
+        if(valueInput.trim() === '') return;
+
+        if(valueInput.length < 8 || valueInput.length > 20) {
+            alert('El número de serie del equipo debe tener mínimo 10 caracteres y un maximo de 20 caracteres.');
+            inputSerialNumber.focus();
+            return;
+        }
+    });
+
+    inputServiceTag.addEventListener('change', (event) => {
+        const valueInput = event.target.value;
+
+        if(valueInput.trim() === '') return;
+
+        if(valueInput.length < 8 || valueInput.length > 20) {
+            alert('El service tag del equipo debe tener mínimo 10 caracteres y un maximo de 20 caracteres.');
+            inputServiceTag.focus();
+            return;
+        }
+    });
+
+    inputDateExpiresWarranty.addEventListener('focus', () => {
+        if(inputDateBuy.value.trim() === '') {
+            alert('Primero debe seleccionar la fecha de compra.');
+            inputDateBuy.focus();
+            return;
+        }
+    });
+
+    inputDateExpiresWarranty.addEventListener('change', (event) => {
+        const dateBuy = new Date(inputDateBuy.value);
+        const dateExpiresWarranty = new Date(event.target.value);
+
+        if(dateExpiresWarranty < dateBuy) {
+            alert('La fecha de expiración de la garantía no puede ser menor a la fecha de compra.');
+            inputDateExpiresWarranty.focus();
+            return;
+        }
+    });
+
+    inputAmountDevices.addEventListener('change', (event) => {
+        const valueInput = event.target.value;
+
+        if(valueInput.trim() === '') return;
+
+        if(!regexPrice.test(valueInput)) {
+            alert('Formato inválido. Asegúrate de ingresar un número sin comas, que puede ser entero o un decimal con dos dígitos después del punto. Ejemplo válido: 20000.00; ejemplo no válido: 20,000.00.');
+            inputAmountDevices.focus();
+            return;
+        }
+    });
+
+
+    inputInvoice.addEventListener('change', (event) => {
+        console.log('popo');
+    });
 }
 
 const functionalitiesRegisterEquipment = async() => {
+    const form = document.getElementById('form-equipment');
     const inputCodeEquipment = document.getElementById('codeEquipment');
     const imageQR = document.getElementById('imageCodeQR');
     const selectBrandEquipment = document.getElementById(elementsDOM.selectBrand);
@@ -34,15 +148,9 @@ const functionalitiesRegisterEquipment = async() => {
     const selectCategories = document.getElementById(elementsDOM.selectCategories);
     const everyCategories = await getDataServer('../server/data/categories.php');
     const calendaryBuy = document.getElementById(elementsDOM.calendaryBuy);
-    const buttonNextSection = document.getElementById(elementsDOM.buttonNextSection);
-    const secondSection = document.getElementById(elementsDOM.secondSection);
-    const buttonReturnSection = document.getElementById(elementsDOM.buttonReturnSection);
-    const buttonRegisterEquipment = document.getElementById(elementsDOM.buttonRegister);
     const inputImageDevices = document.getElementById(elementsDOM.inputImage);
     const inputFileEquipment = document.getElementById(elementsDOM.inputFile);  
-    const buttonAddress = document.getElementById( elementsDOM.buttonAddress );
-    const windowAddres = document.querySelector( elementsDOM.windowAddress );
-    const openWindowAddress = document.getElementById( elementsDOM.divOpenWindowAddress );
+    const inputsHiden = document.querySelectorAll(elementsDOM.inputsHiden);
     let imagesFormData;
     let fileFormData;
     let imageCount = 0;
@@ -57,12 +165,36 @@ const functionalitiesRegisterEquipment = async() => {
                 option.textContent = element;
                 option.value = element;
 
+                if(element === 'Laptop') option.selected = true;
+
                 optgroup.appendChild(option);
             })
 
             selectCategories.appendChild(optgroup);
         }
     }
+
+    selectCategories.addEventListener('change', (event) => {
+        const value = event.target.value;
+        const inputAddressEthernet = document.getElementById('addressEthernet');   
+        const inputAddressWifi = document.getElementById('addressMacWifi');
+
+        if(devicesWithAddresses.includes(value)) {
+            inputsHiden.forEach(element => {
+                element.style.display = 'flex';
+                inputAddressEthernet.setAttribute('required', '');
+                inputAddressWifi.setAttribute('required', '');
+            });
+
+            return;
+        }
+
+        inputsHiden.forEach(element => {
+            element.style.display = 'none';
+            inputAddressEthernet.removeAttribute('required');
+            inputAddressWifi.removeAttribute('required');
+        });
+    });
 
     everyBrand.forEach(element => {
         const option = document.createElement('option');
@@ -80,16 +212,6 @@ const functionalitiesRegisterEquipment = async() => {
     });
 
     setCurrentDateCalendary(calendaryBuy);
-
-    buttonNextSection.addEventListener('click', () => {
-        secondSection.style.left = 0;
-        buttonReturnSection.style.right = '3%';
-    });
-
-    buttonReturnSection.addEventListener('click', () => {
-        secondSection.style.left = '-200%';
-        buttonReturnSection.style.right = '200%';
-    });
 
     inputImageDevices.addEventListener('change', (event) => {
         const images = event.target.files;
@@ -109,20 +231,22 @@ const functionalitiesRegisterEquipment = async() => {
             fileFormData.append('invoices[]', file);
         });
     });
-    
-    buttonRegisterEquipment.addEventListener('click', async() => {
+
+    validateInputs();
+
+    form.addEventListener('submit', async(event) => {
+        event.preventDefault();
+
         if(imageCount === 0) {
             alert('Tiene que colocar mínimo una imagen del equipo.');
             return;
         }
+
         const data = await gettingDataInputsEquipment(imagesFormData, fileFormData);
         const result = await sendDataServerEquipment('../server/insert/equipment.php', data);
 
         if(result.status === 'success') {
             alert(result.message);
-
-            secondSection.style.left = '-200%';
-            buttonReturnSection.style.right = '200%';
 
             if(inputCodeEquipment.value.trim() === '' ) {
                 generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
@@ -133,9 +257,6 @@ const functionalitiesRegisterEquipment = async() => {
         }
         alert(result.message);
     });
-
-    buttonAddress.addEventListener('click', ()=> windowAddres.style.display = 'none');
-    openWindowAddress.addEventListener('click', () => windowAddres.style.display = 'flex');
 }
 
 export const formRegisterEquipment = ( foreheadCurrent ) => {

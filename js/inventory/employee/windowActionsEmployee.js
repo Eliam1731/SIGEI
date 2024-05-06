@@ -5,6 +5,7 @@ import { updateInformationEmployee } from "./updateSection.js";
 const closeWindowActionsEmployee = ( elementHTML ) => elementHTML.remove();
 
 const createWindowActionsEmployee = ( employee ) => {
+    
     const root = document.createElement('div');
     const container = document.createElement('div');
     const html = `

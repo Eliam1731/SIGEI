@@ -1,0 +1,49 @@
+Formulario de resgistrar nuevos equipos
+
+Campos para todas las categorias
+
+-Categoria 
+- Marca 
+- Codigo OPC 
+- Modelo 
+- Numero de serie 
+- fecha de compra 
+- fecha en la que expira la garantia 
+- Importe del equipo 
+- Subir Imagenes 
+- Especificación del equipo
+- Comentarios acerca del equipo
+- Service tag (Es lo mismo que el numero de serie)
+- Factura del equipo 
+- Numero de referencias de compras 
+
+Direccion MAC Ethernet
+Direccion MAC wifi
+
+
+
+Codigo JavaScript de la seccion de registrar nuevo equipo informatico 
+
+    // buttonRegisterEquipment.addEventListener('click', async() => {
+    //     // if(imageCount === 0) {
+    //     //     alert('Tiene que colocar mínimo una imagen del equipo.');
+    //     //     return;
+    //     // }
+    //     const data = await gettingDataInputsEquipment(imagesFormData, fileFormData);
+    //     const result = await sendDataServerEquipment('../server/insert/equipment.php', data);
+
+    //     if(result.status === 'success') {
+    //         alert(result.message);
+
+    //         secondSection.style.left = '-200%';
+    //         buttonReturnSection.style.right = '200%';
+
+    //         if(inputCodeEquipment.value.trim() === '' ) {
+    //             generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
+    //         }
+    //         cleanInputsForm('imageDevices', 'invoiceDevices');
+
+    //         return;
+    //     }
+    //     alert(result.message);
+    // });

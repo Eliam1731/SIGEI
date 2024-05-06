@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="../css/components/button.css">
     <link rel="stylesheet" href="../css/components/forms-account.css">
     <link rel="stylesheet" href="../css/components/forms-company.css">
-    <link rel="stylesheet" href="../css/components/forms-equipment.css">
     <link rel="stylesheet" href="../css/components/label.css">
     <link rel="stylesheet" href="../css/components/inputs.css">
     <link rel="stylesheet" href="../css/components/select.css">
     <link rel="stylesheet" href="../css/components/forms-employee.css">
     <link rel="stylesheet" href="../css/pages/records.css">
+    <link rel="stylesheet" href="../css/components/forms-equipment.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">

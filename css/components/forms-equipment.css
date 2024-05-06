@@ -1,234 +1,197 @@
+#root-forms .line-horizontal__modify { margin-bottom: 5%; }
+
 #form-equipment {
     height: 77%;
     width: 95%;
     position: relative;
     margin: 0 0 0 5%;
+    overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
-    overflow: hidden;
 }
-#form-equipment section:first-child {
-    height: 100%;
-    width: 100%;
+
+.containerInput__flex {
+    height: 5em;
+    width: 95%;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
-    position: relative;
+    align-items: center;
+    border-top: 1px solid #E0E0E0;
+    margin-bottom: 0%;
+    box-sizing: border-box;
 }
-#form-equipment section:first-child div {
-    height: 80%;
-    width: 50%;
-    position: relative;
+
+.containerInput__flex label { padding: 0; font-size: 1em; font-weight: 500; color: #111827; }
+
+.container-category, .container-brand {
+    height: 90%;
+    width: auto;
+    position: absolute;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    align-items: center;
+    right: 30.5%;
+    display: flex;
 }
-#form-equipment section:first-child div:last-child {
-    height: 20%;
-    width: 100%;
-    position: relative;
+
+.container-category select, .container-brand select {
+    height: 60%;
+    width: 25em;
+    color: #212121;
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    margin-right: 1em;
+    box-sizing: border-box;
+}
+
+.container-category button, .container-brand button {
+    height: 60%;
+    width: 3.5em;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-#form-equipment section:first-child div:last-child button {
-    height: 40%;
-    width: 25%;
-    font-size: 1em;
-    font-weight: 500;
-}
-#form-equipment section:first-child .container-category {
-    height: 10%;
-    width: 90%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    align-items: center;
-    margin-bottom: 5%;
+    background: none;
+    border: 1px solid #BDBDBD;
     box-sizing: border-box;
+    border-radius: .4em;
 }
-#form-equipment section:first-child .container-category #select__category {
-    height: 100%;
-    width: 85.5%;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    border-radius: 5px;
-}
-#form-equipment section:first-child .container-category #addCategory {
-    height: 100%;
-    width: 10%;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    border-radius: 5px;
-}
-#form-equipment section:first-child .container-brand {
-    height: 10%;
-    width: 90%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    align-items: center;
-    margin-bottom: 5%;
-    box-sizing: border-box;
-}
-#form-equipment section:first-child .containe__codeequipment {
-    height: 10%;
-    width: 88.9%;
-    margin-bottom: 5%;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
+
+.container-category button:hover, .container-brand button:hover { background: #FAFAFA; } 
+
+.containerInput__flex:nth-child(3) .containe__codeequipment {
+    height: 56%;
+    width: 25em;
+    position: absolute;
+    right: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: row;
     box-sizing: border-box;
+    border: 1px solid #BDBDBD;
+    border-radius: .3em;
     overflow: hidden;
-    border-radius: 5px;
 }
-#form-equipment section:first-child .containe__codeequipment div {
+
+.containerInput__flex:nth-child(3) .containe__codeequipment div {
     height: 100%;
     width: 30%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-right: 2px solid #EEEEEE;
-    color: #757575;
+    border-right: 1px solid #BDBDBD;
+    background: #FAFAFA;
+} 
+
+.containerInput__flex:nth-child(3) .containe__codeequipment div span {
+    font-size: .9em;
+    color: #212121;
+    user-select: none;
 }
-#form-equipment section:first-child .containe__codeequipment div { user-select: none; }
-#form-equipment section:first-child .containe__codeequipment input {
+
+.containerInput__flex:nth-child(3) .containe__codeequipment input {
     height: 100%;
     width: 70%;
-    padding: 5%;
     position: relative;
+    outline: none;
     box-sizing: border-box;
     border: none;
-    outline: none;
-    background: none;
+    padding-left: 3%;
 }
-#form-equipment section:first-child .container-brand select {
-    height: 100%;
-    width: 85.5%;
-}
-#form-equipment section:first-child .container-brand button {
-    height: 100%;
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    border-radius: 5px;
-}
-#form-equipment section:first-child div:last-child button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#form-equipment section:first-child div:last-child button span { padding-right: 4%; }
-/* Estilos de la segunda seccion del formulario de equipos informaticos */
-#form-equipment #section-two {
-    top: 0;
-    left: -200%;
-    height: 100%;
-    width: 100%;
+
+.containerInput__flex > input {
+    height: 54%;
+    width: 30em;
     position: absolute;
-    display: flex;
-    flex-wrap: wrap;
-    background: #FFFFFF;
-    transition: left 1s;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #BDBDBD;
+    border-radius: .3em;
+    padding-left: 2%;
 }
-#form-equipment #section-two div {
-    height: 90%;
+
+.containerInput__flex > input:focus { border: 2px solid #616161; }
+
+.containerInput__flex:nth-child(4) input,
+.containerInput__flex:nth-child(5) input,
+.containerInput__flex:nth-child(6) input,
+.containerInput__flex:nth-child(7) input,
+.containerInput__flex:nth-child(9) input { right: 30%; }
+
+.containerInput__flex:nth-child(8) input {  right: 25%;}
+
+.containerInput__flex:nth-child(10), 
+.containerInput__flex:nth-child(16) { height: 10em; }
+.containerInput__flex:nth-child(16) { border-bottom: 1px solid #E0E0E0; }
+
+.containerInput__flex:nth-child(10) label, .containerInput__flex:nth-child(16) label { position: absolute; top: 20%; }
+.containerInput__flex:nth-child(10) textarea, .containerInput__flex:nth-child(16) textarea {
+    top: 20%;
+    right: 16.5%;
+    height: 65%;
     width: 50%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
+    padding: 1%;
+    resize: none;
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid #BDBDBD;
+    border-radius: .3em;
+}
+
+.containerInput__flex:nth-child(11) input { right: 25%; }
+.containerInput__flex:nth-child(12) input, .containerInput__flex:nth-child(13) input { right: 30%; }
+
+.containerInput__flex:nth-child(14), 
+.containerInput__flex:nth-child(15) {
+    height: 15em;
+} 
+
+.containerInput__flex:nth-child(14) .container__inputfile,
+.containerInput__flex:nth-child(15) .container__inputfile {
+    right: 6.5%;
+    height: 80%;
+    width: 60%;
+    position: absolute;
+    border: 1px dashed #BDBDBD;
+    box-sizing: border-box;
     overflow: hidden;
 }
-#form-equipment #section-two div:first-child label { margin-left: 0px; }
-#form-equipment #section-two div:first-child input { margin-bottom: 5%; }
-#form-equipment #section-two div:first-child #specificationDevices {
-    margin-bottom: 5%; 
-}
-#form-equipment #section-two div:first-child textarea {
-    height: 19%;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    border-radius: 5px;
-    resize: none;
-}
-#form-equipment #section-two .second-container__section .modify, .modify-label { margin-left: 5%; }
-#form-equipment #section-two .second-container__section .modify { height: 8%; width: 80%; }
-#form-equipment #section-two div:last-child {
-    height: 10%;
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#form-equipment #section-two div:last-child button {
-    height: 80%;
-    width: 40%;
-}
-#form-equipment #section-two .second-container__section .container_messageAddress {
-    height: 9%;
-    width: 85%;
-    margin-left: 5%;
-    position: relative;
+
+.containerInput__flex:nth-child(14) .container__inputfile input,
+.containerInput__flex:nth-child(15) .container__inputfile input {
     box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    border-radius: 5px;
-}
-#form-equipment #section-two .second-container__section .container_messageAddress span {
-    padding-right: 3%;
-}
-.window_address {
-    height: 60%;
-    width: 50%;
-    position: absolute;
-    display: none;
-    justify-content: center;
-    flex-direction: column;
-    top: 10%;
-    left: 20%;
-    background: #FFFFFF;
-    border: 2px solid #E0E0E0;
-    border-radius: 5px;
-    box-shadow: 0px 0px 15px 0px #424242;
-}
-.window_address label { margin-left: 5%; }
-.window_address input {
-    margin-left: 5%;
-    height: 13%;
-}
-.window_address div {
-    height: 15% !important;
+    height: 100%;
     width: 100%;
     position: relative;
+}
+
+.containerInput__flex:nth-child(14) .container__inputfile label,
+.containerInput__flex:nth-child(15) .container__inputfile label {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: #FFFFFF;
 }
-.window_address div #accept_address {
-    height: 100%;
-    width: 50%;
-    position: relative;
+
+.containerInput__flex:nth-child(14) .container__inputfile label svg,
+.containerInput__flex:nth-child(15) .container__inputfile label svg {
+    height: 25%;
+    width: 25%;
+    margin-bottom: 3%;
+    fill: #000;
+    display: block;
 }
-#returnSectionEquipment {
-    top: 3%;
-    right: 200%;
-    height: 5%;
-    width: 6%;
-    background: #F5F5F5;
-    border-radius: 5px;
-    border: 2px solid #EEEEEE;
-    position: absolute;
-    transition: right 1s;
-    z-index: 400;
+
+#sendDataDevices {
+    padding: 1% 0;
+    width: 10%;
+    display: block;
+    margin: 2% 0 1.5% 85%;
+    box-sizing: border-box;
 }

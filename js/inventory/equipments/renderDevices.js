@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         data = await getDataServer('../server/data/equipmentvisualization.php');
 
         devicesArray = Object.values(data).flat();
-        console.log(devicesArray, 'Todos los equipos informaticos');
         renderDevices(data);
     } catch (error) {
         console.error('Error:', error);
@@ -102,12 +101,19 @@ buttonSearch.addEventListener('click', async() => {
             opcicCode: `${codeOpc}${search}`
         });
 
+        console.log('Response:', response.enresguardo);
         if (response.length === 0) {
             alert('No se encontro el equipo');
             return;
         }
 
         inputSearch.value = '';
+        
+       if(response.disponible !== undefined) {
+            windowActionsDevices(response.disponible);
+
+            return;
+       }
         windowActionsDevices(response.enresguardo);
     } catch (error) {
         console.error('Error:', error);
@@ -155,6 +161,7 @@ export const renderDevices = (devices) => {
             const devicesID = buttonActions.getAttribute('data-id');
             const filterDevice = devicesArray.filter(device => device.idEquipo === Number(devicesID));
 
+            console.log('Filter test:', filterDevice);
             windowActionsDevices(filterDevice);
             console.log('ID:', idEquipo);   
         })

@@ -1,7 +1,9 @@
 <?php
 include '../config/connection_db.php';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'select_category' => $_POST['select__category'],
         'brandDevices' => $_POST['brandDevices'],
@@ -32,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $data['subcategoryId'] = $row['Subcategoria_id'];
 
-    // Verificar si el número de serie ya existe
+//    // Verificar si el número de serie ya existe
     $stmt = $conn->prepare("SELECT Num_serie FROM equipos_informaticos WHERE Num_serie = :serialNumber");
     $stmt->bindParam(':serialNumber', $data['serialNumber']);
     $stmt->execute();
@@ -43,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['message'] = 'El número de serie ya está en uso. Intenta con otro número de serie.';
     } else {
         
-        // Verificar si la dirección MAC ya existe, pero solo si no es nula
-        if ($data['addressMacWifi']) {
+//        // Verificar si la dirección MAC ya existe, pero solo si no es nula
+        if ($data['addressMacWifi'] !== null) {
             $stmt = $conn->prepare("SELECT Direccion_mac_wifi FROM equipos_informaticos WHERE Direccion_mac_wifi = :addressMacWifi");
             $stmt->bindParam(':addressMacWifi', $data['addressMacWifi']);
             $stmt->execute();
@@ -54,10 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $response['status'] = 'error';
                 $response['message'] = 'La dirección MAC WIFI ya está en uso. Intenta con otra dirección MAC WIFI.';
             }
-
-                        
-            // Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
-            if ($data['addressEthernet']) {
+             //Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
+            if ($data['addressEthernet'] !== null) {
                 $stmt = $conn->prepare("SELECT Direccion_mac_ethernet FROM equipos_informaticos WHERE Direccion_mac_ethernet = :addressEthernet");
                 $stmt->bindParam(':addressEthernet', $data['addressEthernet']);
                 $stmt->execute();
@@ -67,40 +67,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['status'] = 'error';
                     $response['message'] = 'La dirección MAC Ethernet ya está en uso. Intenta con otra dirección MAC Ethernet.';
                 }
-            }
 
-
-        } else {
-            // Verificar si el número de referencia de Compaq ya existe
+//            // Verificar si el número de referencia de Compaq ya existe
             $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");
             $stmt->bindParam(':referenceCompaq', $data['referenceCompaq']);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($row) {
-                $response['status'] = 'error';
-                $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
-                } else {
-                    // Verificar si el Service tag ya existe
-                    $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
-                    $stmt->bindParam(':serviceTag', $data['serviceTag']);
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $response['status'] = 'error';              $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
+            } else {
+                // Verificar si el Service tag ya existe
+                $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
+                $stmt->bindParam(':serviceTag', $data['serviceTag']);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                    if ($row) {
-                        $response['status'] = 'error';
-                        $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
-                        } else {
-                        //Aqui realice la validacion del Codigo OPCIC espero este bien:(
+                if ($row) {
+                    $response['status'] = 'error';
+                    $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
+                } else {
+                    //Aqui realice la validacion del Codigo OPCIC espero este bien:(
                         $codigoCompleto = 'OPCIC-COM-' . $data['codigo'];
                         $stmt = $conn->prepare("SELECT miId FROM equipos_informaticos WHERE miId = :codigo");
                         $stmt->bindParam(':codigo', $codigoCompleto);
                         $stmt->execute();
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                            
-                            if ($row) {
-                                $response['status'] = 'error';
-                                $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
+                        
+                        if ($row) {
+                            $response['status'] = 'error';
+                            $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
                         } else {
 
                     // Si todas las verificaciones son exitosas, entonces insertar los datos
@@ -199,7 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+}
 
 header('Content-Type: application/json');
-print json_encode($data);
+print json_encode($response);
 ?>

@@ -44,15 +44,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['status'] = 'error';
         $response['message'] = 'El número de serie ya está en uso. Intenta con otro número de serie.';
     } else {
-        // Verificar si la dirección MAC ya existe
-        $stmt = $conn->prepare("SELECT Direccion_mac_wifi FROM equipos_informaticos WHERE Direccion_mac_wifi = :addressMacWifi");
-        $stmt->bindParam(':addressMacWifi', $data['addressMacWifi']);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Verificar si la dirección MAC ya existe, pero solo si no es nula
+        if ($data['addressMacWifi'] !== null) {
+            $stmt = $conn->prepare("SELECT Direccion_mac_wifi FROM equipos_informaticos WHERE Direccion_mac_wifi = :addressMacWifi");
+            $stmt->bindParam(':addressMacWifi', $data['addressMacWifi']);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($row) {
-            $response['status'] = 'error';
-            $response['message'] = 'La dirección MAC WIFI ya está en uso. Intenta con otra dirección MAC WIFI.';
+            if ($row) {
+                $response['status'] = 'error';
+                $response['message'] = 'La dirección MAC WIFI ya está en uso. Intenta con otra dirección MAC WIFI.';
+            }
+
+                        
+            // Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
+            if ($data['addressEthernet'] !== null) {
+                $stmt = $conn->prepare("SELECT Direccion_mac_ethernet FROM equipos_informaticos WHERE Direccion_mac_ethernet = :addressEthernet");
+                $stmt->bindParam(':addressEthernet', $data['addressEthernet']);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($row) {
+                    $response['status'] = 'error';
+                    $response['message'] = 'La dirección MAC Ethernet ya está en uso. Intenta con otra dirección MAC Ethernet.';
+                }
+            }
+
+
         } else {
             // Verificar si el número de referencia de Compaq ya existe
             $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");

@@ -176,9 +176,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $stmt->execute([$invoiceContent, $equipment_id]);
                                 }
                             }
-
                             $conn->commit();
-
+                            
                             $response['status'] = 'success';
                             $response['message'] = 'El registro se realizó correctamente.';
                             $response['equipment_id'] = $equipment_id;

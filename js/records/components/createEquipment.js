@@ -37,6 +37,177 @@ const elementsDOM = {
     inputsHiden: '.hiden-inputs',
 }
 
+const deleteCategoryAndBrand = () => {
+    const root = document.getElementById('root__category-brand');
+    root.remove();
+}
+
+const windowCategoryAndBrand = () => {
+    const root = document.createElement('div');
+    const container = document.createElement('div');
+
+    root.id = 'root__category-brand';
+    container.classList.add('container-category-brand');
+
+    root.addEventListener('click', (event) => {
+        if(event.target === root) root.remove();
+    });
+
+    document.body.appendChild(root);
+    root.appendChild(container);
+}
+
+const addCategoryDevice = () => {
+    const addCategory = document.getElementById('addCategory');
+    const html = `
+        <div class='containerTitle__category-brand'>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 11L12 2L17.5 11H6.5ZM17.5 22C16.25 22 15.1875 21.5625 14.3125 20.6875C13.4375 19.8125 13 18.75 13 17.5C13 16.25 13.4375 15.1875 14.3125 14.3125C15.1875 13.4375 16.25 13 17.5 13C18.75 13 19.8125 13.4375 20.6875 14.3125C21.5625 15.1875 22 16.25 22 17.5C22 18.75 21.5625 19.8125 20.6875 20.6875C19.8125 21.5625 18.75 22 17.5 22ZM3 21.5V13.5H11V21.5H3ZM17.5 20C18.2 20 18.7917 19.7583 19.275 19.275C19.7583 18.7917 20 18.2 20 17.5C20 16.8 19.7583 16.2083 19.275 15.725C18.7917 15.2417 18.2 15 17.5 15C16.8 15 16.2083 15.2417 15.725 15.725C15.2417 16.2083 15 16.8 15 17.5C15 18.2 15.2417 18.7917 15.725 19.275C16.2083 19.7583 16.8 20 17.5 20ZM5 19.5H9V15.5H5V19.5ZM10.05 9H13.95L12 5.85L10.05 9Z" fill="black"/></svg>
+
+            <h2 class='title-category'>Agregar una nueva categoría</h2>
+
+            <button class='close-category-brand'>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="black"/></svg>
+            </button>
+        </div>
+
+        <p>
+            Seleccione la categoría en la que se va agregar el nuevo elemento o haga click en el boton de + para agregar una nueva categoría. 
+        </p>
+
+        <form class='form-category-brand' id='form-add__category'>
+            <label for='addCategoryWindow'>Elija la categoría</label>
+
+            <div class='containerCategory__flex'>
+                <select id='addCategoryWindow' name='addCategory' required>
+                    <option value=''>No se ha seleccionado una categoría</option>
+                </select>
+
+                <button id='addCategoryWindow' class='addCategory' title='Crear nueva categoría' type='button'>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.75 16.5833H12.6944V12.6944H16.5833V10.75H12.6944V6.86111H10.75V10.75H6.86111V12.6944H10.75V16.5833ZM11.7222 21.4444C10.3773 21.4444 9.11343 21.1892 7.93056 20.6788C6.74769 20.1684 5.71875 19.4757 4.84375 18.6007C3.96875 17.7257 3.27604 16.6968 2.76563 15.5139C2.25521 14.331 2 13.0671 2 11.7222C2 10.3773 2.25521 9.11343 2.76563 7.93056C3.27604 6.74769 3.96875 5.71875 4.84375 4.84375C5.71875 3.96875 6.74769 3.27604 7.93056 2.76563C9.11343 2.25521 10.3773 2 11.7222 2C13.0671 2 14.331 2.25521 15.5139 2.76563C16.6968 3.27604 17.7257 3.96875 18.6007 4.84375C19.4757 5.71875 20.1684 6.74769 20.6788 7.93056C21.1892 9.11343 21.4444 10.3773 21.4444 11.7222C21.4444 13.0671 21.1892 14.331 20.6788 15.5139C20.1684 16.6968 19.4757 17.7257 18.6007 18.6007C17.7257 19.4757 16.6968 20.1684 15.5139 20.6788C14.331 21.1892 13.0671 21.4444 11.7222 21.4444ZM11.7222 19.5C13.8935 19.5 15.7326 18.7465 17.2396 17.2396C18.7465 15.7326 19.5 13.8935 19.5 11.7222C19.5 9.55093 18.7465 7.71181 17.2396 6.20486C15.7326 4.69792 13.8935 3.94444 11.7222 3.94444C9.55093 3.94444 7.71181 4.69792 6.20486 6.20486C4.69792 7.71181 3.94444 9.55093 3.94444 11.7222C3.94444 13.8935 4.69792 15.7326 6.20486 17.2396C7.71181 18.7465 9.55093 19.5 11.7222 19.5Z" fill="#BDBDBD"/></svg>
+                </button>
+            </div>
+
+            <label for='addSubCategory'>Escriba el nombre de las nuevas subcategorías</label>
+
+            <div class='containerCategory__flex'>
+                <input type='text' id='addSubCategory' name='addSubCategory' placeholder='Ejemplo: Laptop'>
+
+                <button id='addSubCategoryWindow' class='addCategory' type='button'>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C13.0833 2 14.1083 2.15833 15.075 2.475C16.0417 2.79167 16.9333 3.23333 17.75 3.8L16.3 5.275C15.6667 4.875 14.9917 4.5625 14.275 4.3375C13.5583 4.1125 12.8 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 14.2167 4.77917 16.1042 6.3375 17.6625C7.89583 19.2208 9.78333 20 12 20C14.2167 20 16.1042 19.2208 17.6625 17.6625C19.2208 16.1042 20 14.2167 20 12C20 11.7 19.9833 11.4 19.95 11.1C19.9167 10.8 19.8667 10.5083 19.8 10.225L21.425 8.6C21.6083 9.13333 21.75 9.68333 21.85 10.25C21.95 10.8167 22 11.4 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM10.6 16.6L6.35 12.35L7.75 10.95L10.6 13.8L20.6 3.775L22 5.175L10.6 16.6Z" fill="#BDBDBD"/></svg>
+                </button>
+            </div>
+
+            <ul id='listSubcategory'>
+
+            </ul>
+
+            <button type='submit' class='button__category'>Guardar</button>
+        </form>
+    `;
+
+    addCategory.addEventListener('click', async() => {
+        windowCategoryAndBrand();
+        const container = document.querySelector('.container-category-brand');
+        container.innerHTML = html;
+
+        const butonClose = container.querySelector('.close-category-brand');
+        const selectCategory = document.getElementById('addCategoryWindow');
+        const listSubcategory = document.getElementById('listSubcategory');
+        const inputAddSubCategory = document.getElementById('addSubCategory');
+        const buttonAddSubCategory = document.getElementById('addSubCategoryWindow');
+        const form = document.getElementById('form-add__category');
+
+        butonClose.addEventListener('click', () => { deleteCategoryAndBrand() });
+
+        try {
+            const response = await getDataServer('../server/data/categories.php');
+    
+            for(let category in response) {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+    
+                selectCategory.appendChild(option);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        buttonAddSubCategory.addEventListener('click', () => {
+            const subcategory = inputAddSubCategory.value;
+
+            if(selectCategory.value === '') {
+                alert('Primero debes seleccionar una categoría.');
+                return;
+            }
+
+            if(subcategory.trim() === '') {
+                alert('El campo de subcategoría no puede estar vacío.');
+                return;
+            }
+
+            const listItem = `<li>
+                <div class='circle-subcategory'></div> 
+                <span>${subcategory}</span>
+                
+                <button class='delete-subcategory' type='button'>x</button>
+            </li>`;
+
+            listSubcategory.innerHTML += listItem;
+            inputAddSubCategory.value = '';
+
+            const buttonDeleteSubcategory = document.querySelectorAll('.delete-subcategory');
+
+            buttonDeleteSubcategory.forEach(button => button.addEventListener('click', () => button.parentElement.remove()));
+        });
+
+        form.addEventListener('submit', async(event) => {
+            event.preventDefault();
+
+            const itemList = listSubcategory.querySelectorAll('li');
+            const category = selectCategory.value;
+            const subcategories = [...itemList].map(item => item.querySelector('span').textContent);
+
+            if(subcategories.length === 0) {
+                alert('Debes agregar al menos una subcategoría.');
+                return;
+             }
+            
+            alert('Se ha guardado la categoría correctamente.');
+
+            selectCategory.value = '';
+            listSubcategory.innerHTML = '';
+            subcategories.length = 0;
+        });
+
+
+    });
+}
+
+const addBrandDevice = () => {
+    const addBrand = document.getElementById('addBrand');
+    const html = `
+        <div class='containerTitle__category-brand'>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_147_20)"><path d="M3 21V7H7V3H17V11H21V21H13V17H11V21H3ZM5 19H7V17H5V19ZM5 15H7V13H5V15ZM5 11H7V9H5V11ZM9 15H11V13H9V15ZM9 11H11V9H9V11ZM9 7H11V5H9V7ZM13 15H15V13H13V15ZM13 11H15V9H13V11ZM13 7H15V5H13V7ZM17 19H19V17H17V19ZM17 15H19V13H17V15Z" fill="black"/></g><defs><clipPath id="clip0_147_20"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+
+            <h2 class='title-category'>Agregar una nueva marca</h2>
+
+            <button class='close-category-brand'>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="black"/></svg>
+            </button>
+        </div>
+    `;
+
+    addBrand.addEventListener('click', () => {
+        windowCategoryAndBrand();
+        const container = document.querySelector('.container-category-brand');
+        container.innerHTML = html;
+
+        const butonClose = container.querySelector('.close-category-brand');
+        butonClose.addEventListener('click', () => { deleteCategoryAndBrand() });
+    });
+}
+
 const validateInputs = () => {
     const regexPrice = /^\d+(\.\d{2})?$/;
     const inputCodeDevice = document.getElementById('codeEquipment');
@@ -47,6 +218,9 @@ const validateInputs = () => {
     const inputDateExpiresWarranty = document.getElementById('dateExpiresWarranty');
     const inputAmountDevices = document.getElementById('amountDevices');
     const inputInvoice = document.getElementById('invoiceDevices');
+    const spanInvoice = document.getElementById('spanInputFile');
+    const inputImageDevices = document.getElementById('imageDevices');
+    const spanImageDevices = document.getElementById('spanInputImage');
 
     inputCodeDevice.addEventListener('change', (event) => {
         const valueInput = event.target.value;
@@ -133,9 +307,33 @@ const validateInputs = () => {
         }
     });
 
-
     inputInvoice.addEventListener('change', (event) => {
-        console.log('popo');
+        const numberFiles = event.target.files.length;
+
+        if(numberFiles === 1) {
+            spanInvoice.textContent = `${numberFiles} archivo seleccionado.`;
+            return;
+        }
+
+        spanInvoice.textContent = `No hay facturas seleccionadas.`;
+    });
+
+    inputImageDevices.addEventListener('change', (event) => {
+        const numberFiles = event.target.files.length;
+
+        if(numberFiles > 3) {
+            alert('Sólo puedes seleccionar hasta 3 imágenes.');
+            inputImageDevices.value = '';
+
+            return;
+        }
+
+        if(numberFiles > 0) {
+            spanImageDevices.textContent = `${numberFiles} archivo seleccionado.`;
+            return;
+        }
+
+        spanImageDevices.textContent = `No hay imágenes seleccionadas.`;
     });
 }
 
@@ -255,6 +453,7 @@ const functionalitiesRegisterEquipment = async() => {
 
             return;
         }
+        console.log(result);
         alert(result.message);
     });
 }
@@ -262,4 +461,6 @@ const functionalitiesRegisterEquipment = async() => {
 export const formRegisterEquipment = ( foreheadCurrent ) => {
     document.getElementById('root-forms').innerHTML = formsEquipment[foreheadCurrent];
     functionalitiesRegisterEquipment();
+    addCategoryDevice();
+    addBrandDevice();
 }

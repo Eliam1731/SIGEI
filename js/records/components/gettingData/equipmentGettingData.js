@@ -53,6 +53,8 @@ export const gettingDataInputsEquipment = async(images, invoice) => {
         return acc;
     }, {});
 
+    console.log(objectDataInputs);
+
     const formData = new FormData();
 
     for (let key in objectDataInputs) {

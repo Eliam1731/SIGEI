@@ -15,7 +15,7 @@ try {
     $existingMarca = $stmt->fetch();
 
     if($existingMarca){
-        echo json_encode(["erro" => "La marca '$nom_marca' ya existe. Por favor, ingrese otra."]);
+        echo json_encode(["error" => "La marca '$nom_marca' ya existe. Por favor, ingrese otra."]);
         return;
     }
 

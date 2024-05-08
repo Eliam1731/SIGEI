@@ -32,7 +32,7 @@ try {
         $subcategoria_id = $stmt->fetchColumn();
 
         if($subcategoria_id){
-            echo "La subcategoría '$nom_subcategoria' ya existe. Por favor, ingrese otra.";
+            echo json_encode(["message" => "La subcategoría '$nom_subcategoria' ya existe. Por favor, ingrese otra."]);
             return;
         }
 
@@ -43,12 +43,12 @@ try {
     $conn->commit();
 
     if($isNewCategory){
-        echo "La categoría y las subcategorías han sido insertadas exitosamente.";
+        echo json_encode(["message" => "La categoría y las subcategorías han sido insertadas exitosamente."]);
     } else {
-        echo "La subcategoría ha sido agregada exitosamente.";
+        echo json_encode(["message" => "La subcategoría ha sido agregada exitosamente."]);
     }
 } catch (PDOException $e) {
     $conn->rollback();
-    echo "Error: " . $e->getMessage();
+    echo json_encode(["message" => "Error: " . $e->getMessage()]);
 }
 ?>

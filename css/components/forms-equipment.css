@@ -250,6 +250,19 @@
     box-sizing: border-box;
 }
 
+.form-category-brand input {
+    height: 9%;
+    width: 90%;
+    position: relative;
+    outline: none;
+    border: 1px solid #EEEEEE;
+    background: #F5F5F5;
+    margin-left: 5%;
+    border-radius: .3em;
+    padding-left: 3%;
+    box-sizing: border-box;
+}
+
 .form-category-brand label { padding-left: 5%; }
 
 .containerCategory__flex {

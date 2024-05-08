@@ -1,5 +1,6 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
 import { sendDataServerEquipment } from "../../utilities/sendDataEquipment.js";
+import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { setCurrentDateCalendary } from "../../utilities/setCurrentDate.js";
 import { equipmentMachineryHTML, equipmentStoreHTML, equipmentSystemsHTML } from "../content-html/equipmentHTML.js";
 import { cleanInputsForm, generateCodeQR, gettingDataInputsEquipment } from "./gettingData/equipmentGettingData.js";
@@ -172,12 +173,24 @@ const addCategoryDevice = () => {
                 alert('Debes agregar al menos una subcategoría.');
                 return;
              }
-            
-            alert('Se ha guardado la categoría correctamente.');
 
-            selectCategory.value = '';
-            listSubcategory.innerHTML = '';
-            subcategories.length = 0;
+             try {
+                const response = await sendDataServer('../server/insert/category_subcategory.php', { 
+                    nom_categoria: category, 
+                    subcategorias: subcategories 
+                });
+
+                if(response.message) {
+                    alert(response.message);
+                    window.location.reload();
+                    
+                    return;
+                }
+
+                alert(response.error);
+             } catch (error) {
+                 console.log(error);
+             }
         });
 
 
@@ -196,6 +209,15 @@ const addBrandDevice = () => {
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="black"/></svg>
             </button>
         </div>
+
+        <p>Asegurese de colocar el nombre de una marca existente para evitar errores en los datos.</p>
+
+        <form class='form-category-brand' id='form-add__brand'>
+            <label for='addBrandWindow'>Escriba el nombre de la marca</label>
+            <input type='text' id='addBrandWindow' name='addBrand' placeholder='Ejemplo: SAMSUNG' required>
+
+            <button type='submit' class='button__category'>Guardar</button>
+        </form>
     `;
 
     addBrand.addEventListener('click', () => {
@@ -205,6 +227,35 @@ const addBrandDevice = () => {
 
         const butonClose = container.querySelector('.close-category-brand');
         butonClose.addEventListener('click', () => { deleteCategoryAndBrand() });
+
+        const form = document.getElementById('form-add__brand');
+
+        form.addEventListener('submit', async(event) => {
+            event.preventDefault();
+            const inputBrand = document.getElementById('addBrandWindow');
+            const brand = inputBrand.value;
+
+            if(brand.trim() === '') {
+                alert('El campo de marca no puede estar vacío.');
+                return;
+            }
+
+            try {
+                const response = await sendDataServer('../server/insert/brand.php', { nom_marca: brand });
+
+                console.log(response);
+                if(response.message) {
+                    alert(response.message);
+                    window.location.reload();
+                    
+                    return;
+                }
+
+                alert(response.error);
+             } catch (error) {
+                 console.log(error);
+             }
+        });
     });
 }
 

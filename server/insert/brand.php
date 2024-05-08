@@ -15,7 +15,7 @@ try {
     $existingMarca = $stmt->fetch();
 
     if($existingMarca){
-        echo "La marca '$nom_marca' ya existe. Por favor, ingrese otra.";
+        echo json_encode(["erro" => "La marca '$nom_marca' ya existe. Por favor, ingrese otra."]);
         return;
     }
 
@@ -25,9 +25,9 @@ try {
 
     $conn->commit();
 
-    echo "La marca del equipo ha sido insertada exitosamente.";
+    echo json_encode(["message" => "La marca del equipo ha sido insertada exitosamente."]);
 } catch (PDOException $e) {
     $conn->rollback();
-    echo "Error: " . $e->getMessage();
+    echo json_encode(["error" => "Error: " . $e->getMessage()]);
 }
 ?>

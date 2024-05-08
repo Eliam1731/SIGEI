@@ -32,7 +32,7 @@ try {
         $subcategoria_id = $stmt->fetchColumn();
 
         if($subcategoria_id){
-            echo json_encode(["message" => "La subcategoría '$nom_subcategoria' ya existe. Por favor, ingrese otra."]);
+            echo json_encode(["error" => "La subcategoría '$nom_subcategoria' ya existe. Por favor, ingrese otra."]);
             return;
         }
 
@@ -49,6 +49,6 @@ try {
     }
 } catch (PDOException $e) {
     $conn->rollback();
-    echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    echo json_encode(["error" => "Error: " . $e->getMessage()]);
 }
 ?>

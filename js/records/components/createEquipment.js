@@ -493,6 +493,8 @@ const functionalitiesRegisterEquipment = async() => {
 
         const data = await gettingDataInputsEquipment(imagesFormData, fileFormData);
         const result = await sendDataServerEquipment('../server/insert/equipment.php', data);
+        const spanFile = document.getElementById('spanInputFile');
+        const spanImage = document.getElementById('spanInputImage');
 
         if(result.status === 'success') {
             alert(result.message);
@@ -501,6 +503,9 @@ const functionalitiesRegisterEquipment = async() => {
                 generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
             }
             cleanInputsForm('imageDevices', 'invoiceDevices');
+            
+            spanFile.textContent = 'No hay facturas seleccionadas.';
+            spanImage.textContent = 'No hay imágenes seleccionadas.';
 
             return;
         }

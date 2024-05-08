@@ -110,8 +110,7 @@ foreach ($rows as $row) {
     
     $equipment['expenses'] = $expenses;
 
-    $statusKey = lcfirst(str_replace(' ', '', $row['status']));
-    $equipment_data[$statusKey][] = $equipment;
+    $equipment_data[] = $equipment;
 }
 
 $json_response = json_encode($equipment_data, JSON_PRETTY_PRINT);

@@ -69,4 +69,3 @@ ALTER TABLE equipos_informaticos MODIFY Fecha_garantia date DEFAULT NULL;
 
 sincronia en los php
 
-

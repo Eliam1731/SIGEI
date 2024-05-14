@@ -159,6 +159,18 @@ export const renderingEquipmentInTable = (equipment) => {
 };
 
 buttonAuth.addEventListener('click', async() => {
+  if(safeguardsData.equipments.length === 0) {
+    alert('No hay equipos en la tabla.');
+
+    return;
+  }
+
+  if(!selectEmployeeClean.value) {
+    alert('Seleccione un empleado.');
+
+    return;
+  }
+
   try {
     const response = await sendDataServer('../server/data/numberwork.php', {
       obra_id: selectWorkClean.value,

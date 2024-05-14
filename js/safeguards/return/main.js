@@ -76,6 +76,7 @@ buttonSearchEquipmentReturn.addEventListener('click', () => {
 
     requestDeviceGuard(valueInputCode).then(( data ) => {
         if(data && employeCurrent === undefined) {
+            console.log(data);
             employeCurrent = data.empleado.empleado_id;
             nameEmployeCurrent = data.empleado.nombreResguardante_completo;
         }

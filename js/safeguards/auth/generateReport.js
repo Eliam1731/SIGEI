@@ -37,63 +37,64 @@ const sendReportToBackend = async( file, emailUser) => {
     }
 }
 
-export const generateReportSafeguards = ( work, amount, code, description, employee, email) => {
+export const generateReportSafeguards = async (work, amount, code, description, employee, email) => {
     const now = new Date();
     const date = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
-    console.log(date)
 
-    fetch(pathFile).then( res => res.arrayBuffer()).then( async arrayBuffer => {
-        const { PDFDocument, StandardFonts, rgb } = PDFLib;
-        const pdfDoc = await PDFDocument.load(arrayBuffer);
-        const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-        const pages = pdfDoc.getPages();
-        const firstPage = pages[0];
-        const secondPage = pages[1];
+    const { PDFDocument, StandardFonts, rgb } = PDFLib;
+    const pdfDoc = await PDFDocument.create();
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-        firstPage.drawText( date.toString(), { x: 198, y: 737,  size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
-        firstPage.drawText( date.toString(), { x: 198,  y: 345, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
-        firstPage.drawText( work.toString(), { x: 300, y: 737, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
-        firstPage.drawText( work.toString(), { x: 300, y: 345, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+    const maxItemsPerPage = 15;
+    const pagesCount = Math.ceil(code.length / maxItemsPerPage);
 
-        for (let i = 0; i < code.length; i++) {
-            const y1 = 737 - i * 13.5; // Ajusta el '30' según la separación que quieras entre registros
+    for (let pageIndex = 0; pageIndex < pagesCount; pageIndex++) {
+        const start = pageIndex * maxItemsPerPage;
+        const end = start + maxItemsPerPage;
+        const pageCodes = code.slice(start, end);
+        const pageDescriptions = description.slice(start, end);
+
+        const arrayBuffer = await fetch(pathFile).then(res => res.arrayBuffer());
+        const srcDoc = await PDFDocument.load(arrayBuffer);
+        const [firstPage, secondPage] = await pdfDoc.copyPages(srcDoc, [0, 1]);
+
+        firstPage.drawText(date.toString(), { x: 198, y: 737, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        firstPage.drawText(work.toString(), { x: 300, y: 737, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+
+        for (let i = 0; i < pageCodes.length; i++) {
+            const y1 = 737 - i * 13.5;
             const y2 = 345 - i * 14;
 
-            firstPage.drawText( amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-            firstPage.drawText( code[i].toString(), { x: 90, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-            firstPage.drawText( description[i].toString(), { x: 200, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-
-            firstPage.drawText( amount.toString(), { x: 37, y: y2 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-            firstPage.drawText( code[i].toString(), { x: 90, y: y2 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-            firstPage.drawText( description[i].toString(), { x: 200, y: y2 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            firstPage.drawText(amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            firstPage.drawText(pageCodes[i].toString(), { x: 90, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            firstPage.drawText(pageDescriptions[i].toString(), { x: 200, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
         }
 
-        secondPage.drawText( date.toString(), { x: 198, y: 727,  size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
-        secondPage.drawText( work.toString(), { x: 300, y: 727, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        secondPage.drawText(date.toString(), { x: 198, y: 727, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        secondPage.drawText(work.toString(), { x: 300, y: 727, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
 
-        for (let i = 0; i < code.length; i++) {
-            const y1 = 727 - i * 13.5; // Ajusta el '30' según la separación que quieras entre registros
+        for (let i = 0; i < pageCodes.length; i++) {
+            const y1 = 727 - i * 13.5;
 
-            secondPage.drawText( amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-            secondPage.drawText( code[i].toString(), { x: 90, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
-            secondPage.drawText( description[i].toString(), { x: 200, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            secondPage.drawText(amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            secondPage.drawText(pageCodes[i].toString(), { x: 90, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            secondPage.drawText(pageDescriptions[i].toString(), { x: 200, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
         }
 
-
-        firstPage.drawText( employee.toString(), { x: 35, y: 425, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
-        firstPage.drawText( employee.toString(), { x: 35, y: 32, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        firstPage.drawText(employee.toString(), { x: 35, y: 425, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
         secondPage.drawText(employee.toString(), { x: 35, y: 417, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
 
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], {type: "application/pdf"});
-        const link = document.createElement('a');
+        pdfDoc.addPage(firstPage);
+        pdfDoc.addPage(secondPage);
+    }
 
-        link.href = URL.createObjectURL(blob);
-        link.download = `${work}-${employee}-${date}.pdf`;
-        link.click();
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], {type: "application/pdf"});
+    const link = document.createElement('a');
 
-        const response = await sendReportToBackend(blob, email);
+    link.href = URL.createObjectURL(blob);
+    link.download = `${work}-${employee}-${date}.pdf`;
+    link.click();
 
-        console.log(response);
-    })
+    const response = await sendReportToBackend(blob, email);
 };

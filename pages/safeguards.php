@@ -78,30 +78,34 @@
                 </div>
 
                 <div class="second_div">
-                    <table id="tableAuthSafeguards">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Código
-                                </th>
+                    <div class="root-container-table">
+                        <div class="container-title__safeguards">
+                            <h2>Equipos informáticos</h2>
 
-                                <th>
-                                    Equipo
-                                </th>
+                            <p>
+                                Equipos que se le entreguen al empleado en resguardo físico.
+                            </p>
+                        </div>
 
-                                <th>
-                                    Acciones
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="bodyTableAuthSafeguards">
+                        <div class="container-table-devices__authSafeguards">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Equipos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyTableAuthSafeguards">
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                    <div class="container-button__auth">
-                        <button id="cancel__button">Cancelar resguardo</button>
+                    <div class="container-safeguards__button">
                         <button id="observation_button">Añadir observaciones</button>
+                        <button id="cancel__button">Cancelar resguardo</button>
                         <button id="auth__button">Autorizar resguardo</button>
                     </div>
 
@@ -137,28 +141,32 @@
                 </div>
 
                 <div class="second_div">
-                    <table id="tableReturnSafeguards">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Código
-                                </th>
+                    <div class="root-container-table">
+                        <div class="container-title__safeguards">
+                            <h2>Equipos informáticos</h2>
 
-                                <th>
-                                    Equipo
-                                </th>
+                            <p>
+                                El empleado devolverá los equipos físicos en persona.
+                            </p>
+                        </div>
 
-                                <th>
-                                    Acciones
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="bodyTableReturnSafeguards">
+                        <div class="container-table-devices__authSafeguards">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Equipo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyTableReturnSafeguards">
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                    <div class="container-button__auth">
+                    <div class="container-safeguards__button">
                         <button id="cancel__button-return">Cancelar resguardo</button>
                         <button id="observation_button-return">Añadir observaciones</button>
                         <button id="auth__button-return">Autorizar devolución</button>

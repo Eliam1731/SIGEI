@@ -69,3 +69,31 @@ ALTER TABLE equipos_informaticos MODIFY Fecha_garantia date DEFAULT NULL;
 
 sincronia en los php
 
+mi front me mandara este objeto:
+
+    const maintenanceInit = {
+      fechaInicio: currentDate,
+      horaInicio: currentTime,
+      resguardante: protective,
+      equipo: device,
+      materialRequerido: { herramientas: tools, otros: othersToolValue },
+      usuario: user,
+    }
+
+Ejemplo de información:
+
+{
+    "fechaInicio": "15/05/2024",
+    "horaInicio": "10:50 AM",
+    "resguardante": null,
+    "equipo": 13,
+    "materialRequerido": {
+        "herramientas": [
+            "material1",
+            "material2"
+        ],
+        "otros": "Martillo de goma"
+    },
+    "usuario": "jperezhidalgo@grupoopc.com"
+}
+

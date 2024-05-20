@@ -161,9 +161,7 @@ export const renderDevices = (devices) => {
             const devicesID = buttonActions.getAttribute('data-id');
             const filterDevice = devicesArray.filter(device => device.idEquipo === Number(devicesID));
 
-            console.log('Filter test:', filterDevice);
             windowActionsDevices(filterDevice);
-            console.log('ID:', idEquipo);   
         })
     });
 }

@@ -1,49 +1,475 @@
-Formulario de resgistrar nuevos equipos
+Para iniciar un mantenimiento preventivo 
 
-Campos para todas las categorias
+Datos que enviare al server 
 
--Categoria 
-- Marca 
-- Codigo OPC 
-- Modelo 
-- Numero de serie 
-- fecha de compra 
-- fecha en la que expira la garantia 
-- Importe del equipo 
-- Subir Imagenes 
-- Especificación del equipo
-- Comentarios acerca del equipo
-- Service tag (Es lo mismo que el numero de serie)
-- Factura del equipo 
-- Numero de referencias de compras 
-
-Direccion MAC Ethernet
-Direccion MAC wifi
+Fecha 
+Hora
+resguardante | Numero seguro social(id)
+Material
+usuario | Cidorreo (id)
 
 
+#form-update-device {
+    height: auto;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
 
-Codigo JavaScript de la seccion de registrar nuevo equipo informatico 
+#form-update-device label {
+    font-size: 1em;
+    font-weight: 700;
+    color: #424242;
+    padding-bottom: 3%;
+    padding-left: 5%;
+}
 
-    // buttonRegisterEquipment.addEventListener('click', async() => {
-    //     // if(imageCount === 0) {
-    //     //     alert('Tiene que colocar mínimo una imagen del equipo.');
-    //     //     return;
-    //     // }
-    //     const data = await gettingDataInputsEquipment(imagesFormData, fileFormData);
-    //     const result = await sendDataServerEquipment('../server/insert/equipment.php', data);
+#form-update-device select {
+    height: 45px;
+    width: 70%;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    background: #F5F5F5;
+    box-sizing: border-box;
+    border: 1px solid #EEEEEE;
+}
 
-    //     if(result.status === 'success') {
-    //         alert(result.message);
+#form-update-device input {
+    margin-left: 5%;
+    margin-bottom: 3%;
+    height: 45px;
+    width: 70%;
+    box-sizing: border-box;
+    background: #F5F5F5;
+    border: 1px solid #EEEEEE;
+}
 
-    //         secondSection.style.left = '-200%';
-    //         buttonReturnSection.style.right = '200%';
+#form-update-device textarea {
+    margin-left: 5%;
+    margin-bottom: 3%;
+    height: 100px;
+    width: 70%;
+    padding: 1%;
+    resize: none;
+    background: #F5F5F5;
+    border: 1px solid #EEEEEE;
+    outline: none;
+}
+#form-update-device textarea:focus { border: 1px solid #BDBDBD; }
 
-    //         if(inputCodeEquipment.value.trim() === '' ) {
-    //             generateCodeQR(imageQR, result.equipment_id, result.formatted_equipment_id);
-    //         }
-    //         cleanInputsForm('imageDevices', 'invoiceDevices');
+/* Estilos del carrusel de imagenes */
+.container-image {
+    height: 550px;
+    width: 90%;
+    position: relative;
+    margin: 0 0 3% 5%;
+    box-sizing: border-box;
+}
 
-    //         return;
-    //     }
-    //     alert(result.message);
-    // });
+.image-device {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    box-sizing: border-box;
+} 
+
+.root-image {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    flex: none;
+}
+
+.root-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    user-select: none;
+}
+
+.root-image button {
+    top: 3%;
+    left: 50%;
+    position: absolute;
+}
+
+.container-navigation__images {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    box-sizing: border-box;
+} 
+
+.container-navigation__images button {
+    height: 9%;
+    width: 5%;
+    border-radius: 100%;
+    background: rgba(245, 245, 245, 0.5);
+    border: 1px solid #EEEEEE;
+}
+
+.container-input__image {
+    margin: 0 0 5% 5%;
+    height: 4em;
+    width: 90%;
+    position: relative;
+    background: #212121;
+    box-sizing: border-box;
+}
+
+#imageInput {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#label-image {
+    top: 0;
+    height: 100%;
+    width: 100% ;
+    position: absolute;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 0 0 5% !important;
+}
+
+#left-image { position: absolute; left: 2%; } 
+#right-image { position: absolute; right: 2%; }
+#delete-image2 { position: absolute; top: 2%; left: 50%;}
+#imageInput {
+    display: none;
+}
+
+#update-data {
+    height: 4em;
+    width: 90%;
+    display: block;
+    margin: 5% auto 5%;
+    background: #833F0E;
+    border: 0;
+    color: #F5F5F5;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.container-file__bill {
+    height: 5em;
+    width: 90%;
+    margin: 0 0 0 5%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: #F5F5F5;
+    border: 2px solid #EEEEEE;
+}
+ 
+.file-bill {
+    height: 100%;
+    width: 50%;
+    position: relative;
+    box-sizing: border-box;
+    border-right: 2px solid #EEEEEE;
+}
+
+.file-bill input {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.file-bill label {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 5% !important;
+    background: #F5F5F5;
+    box-sizing: border-box;
+}
+
+.control__bill {
+    height: 100%;
+    width: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.control__bill button {
+    padding: 3%;
+    border: 1px solid #E0E0E0;
+    background: #F5F5F5;
+    box-sizing: border-box;
+}
+
+.description_action-bill {
+    padding: 0 0 3% 5%;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 550;
+    font-style: normal;
+    color: #6B7280;
+}
+
+
+
+
+const html = `
+            <h2>Actualizar datos del equipo</h2>
+
+            <form id='form-update-device'>
+                <label for='category'>Elija la categoría del equipo (opcional).</label>
+                <select id='category' name='category' required>
+                    <option value='${data.subcategoria}' selected>${data.subcategoria}</option>
+                </select>
+
+                <label for='brand'>Elija la marca del equipo (opcional).</label>
+                <select id='brand' name='brand' required>
+                    <option value='${data.marca}' selected>${data.marca}</option>
+                </select>
+
+                <label for='model'>Actualice el modelo del equipo (opcional).</label>
+                <input type='text' id='model' name='model' value='${data.modelo}' required>
+
+                <label for='serial'>Actualice el número de serie del equipo (opcional).</label>
+                <input type='text' id='serial' name='serial' value='${data.numSerie}' required>
+
+                <label for='dateBuys'>Actualice la fecha de compra del equipo (opcional).</label>
+                <input type='date' id='dateBuys' name='dateBuys' value=${data.fechaCompra} required>
+
+                <label for='dateWarranty'>Actualice la fecha en la que expira la garantía (opcional).</label>
+                <input type='date' id='dateWarranty' name='dateWarranty' value='${data.fechaGarantia}' required>
+
+                <label for='price'>Actualice el importe del equipo (opcional).</label>
+                <input type='number' id='price' name='price' value='${data.importe}' required>
+
+                <label for='specification'>Actualice la especificación del equipo (opcional).</label>
+                <textarea id='specification' name='specification' required>${data.especificacion}</textarea>
+
+                <label for='comments'>Actualice los comentarios del equipo (opcional).</label>
+                <textarea id='comments' name='comments' required>${data.comentarios}</textarea>
+
+                <label for='serviceTag'>Actualice el service tag del equipo (opcional).</label>
+                <input type='text' id='serviceTag' name='serviceTag' value='${data.serviceTag}' required>
+
+                <label for='numberReferencePurchases'>Actualice el numero de referencia de compras (opcional).</label>
+                <input type='text' id='numberReferencePurchases' name='numberReferencePurchases' value='${data.referenciaCompaq}' required>
+
+                <label for='macEthernet'>Actualice la dirección MAC Ethernet (opcional).</label>
+                <input type='text' id='macEthernet' name='macEthernet' value='${data.direccionMacEthernet}'>
+
+                <label for='macWifi'>Actualice la dirección MAC Wifi (opcional).</label>
+                <input type='text' id='macWifi' name='macWifi' value='${data.direccionMacWifi}'>
+            
+                <h3 class='title-images'>Imagenes del equipo</h3>
+                
+                <div class='container-image'>
+                    <div class='image-device'>
+                      <div class='root-image'>
+                        <img class='html-image' src="" alt='Imagen del equipo'>
+                      </div>
+                    </div>
+
+                    <div class='container-navigation__images'>
+                        <button id='left-image' type='button'>
+                            <img src='../images/arrowPrev.svg' alt='Flecha izquierda'>
+                        </button>
+
+                        <button id='delete-image2' class='delete-image' type='button'>
+                            <img src='../images/delete_image.svg' alt='Eliminar imagen'>
+                        </button>
+
+                        <button id='right-image' type='button'>
+                            <img src='../images/arrowNext.svg' alt='Flecha derecha'>
+                        </button>
+                    </div>
+                </div>
+
+                <div class='container-input__image'>
+                    <input type='file' id='imageInput' name='image' accept='image/*' multiple>
+                    <label for='imageInput' id='label-image'>No hay imagenes seleccionadas</label>
+                </div>
+
+                <h3 class='title-images'>Factura del equipo</h3>
+
+                <p class='description_action-bill'>
+                    Al elegir una factura, se reemplazará la factura actual del equipo.
+                </p>
+
+                <div class='container-file__bill'>
+                    <div class='file-bill'>
+                        <input type='file' id='billInput' name='bill' accept='application/pdf, text/xml'>
+                        <label for='billInput' id='label-bill'>Cargar nueva factura del equipo</label>
+                    </div>
+                    
+                    <div class='control__bill'>
+                        <button id='download-bill' type='button'>Ver factura del equipo</button>
+                    </div>
+                </div>
+
+                <button id='update-data' type='submit'>Actualizar datos del equipo</button>
+            </form>
+    `;
+
+  rootActions.innerHTML = html;
+  const deleteImage = document.querySelector('.delete-image');
+  const image = document.querySelector('.html-image');
+  const leftImage = document.getElementById('left-image');
+  const rightImage = document.getElementById('right-image');
+  const controlerImage = document.querySelector('.container-navigation__images');
+  const imagesDeleteArray = [];
+  let currentImage = 0;
+  const imageInput = document.getElementById('imageInput');
+  const formUpdateDevice = document.getElementById('form-update-device');
+  const downloadBill = document.getElementById('download-bill');
+
+
+  
+
+  
+
+  
+  downloadBill.addEventListener('click', (event) => {
+    event.preventDefault();
+  
+    const pdfBytes = decodeBase64ToBytes(data.invoices[0].Factura_file);
+    const blob = createBlobFromBytes(pdfBytes);
+    const url = URL.createObjectURL(blob);
+  
+    configureDownloadLink(url);
+  });
+  
+
+  formUpdateDevice.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    console.log(data.images, 'data.images en el submit');
+  });
+
+  if (data.images.length < 3) {
+    imageInput.style.display = 'block';
+  }
+
+  const updateImageInputValue = () => {
+    const newFiles = new DataTransfer();
+  
+    data.images.forEach((image) => {
+      if (!image.isNew) {
+        return;
+      }
+  
+      const file = new File([image.Datos_imagen], image.Nombre, { type: image.Tipo_mime });
+      newFiles.items.add(file);
+    });
+  
+    if (newFiles.items.length === 0) {
+      imageInput.value = '';
+      console.log('El input de archivo está vacío');
+    } else {
+      imageInput.files = newFiles.files;
+      console.log('El input de archivo no está vacío');
+    }
+  };
+
+  imageInput.addEventListener('change', function () {
+    const files = this.files;
+  
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+  
+      reader.onloadend = function () {
+        const newImage = {
+          Datos_imagen: reader.result.split(',')[1], 
+          Imagen_id: Date.now(), 
+          Nombre: file.name,
+          Tipo_mime: file.type,
+          isNew: true 
+        };
+  
+        data.images.push(newImage);
+        updateImage();
+        controlerImage.style.display = 'flex';
+      }
+  
+      reader.readAsDataURL(file);
+    }
+  });
+
+deleteImage.addEventListener('click', async () => {
+  const imageDelete = parseInt(image.id);
+  const imageToDelete = data.images.find((image) => image.Imagen_id === imageDelete);
+
+  if (!imageToDelete.isNew) {
+    imagesDeleteArray.push(imageDelete);
+  }
+
+  const updateImageCarousel = data.images.filter((image) => image.Imagen_id !== imageDelete);
+
+  data.images = updateImageCarousel;
+  currentImage = 0;
+
+  console.log(imagesDeleteArray, 'imagesDeleteArray');
+
+  if (data.images.length === 0) {
+    image.src = '../images/notImage.png';
+    image.id = '';
+    controlerImage.style.display = 'none';
+
+    return;
+  }
+
+  updateImage();
+  updateImageInputValue(); 
+});
+
+  leftImage.addEventListener('click', () => {
+    if (currentImage === 0) {
+      currentImage = data.images.length - 1;
+    } else {
+      currentImage--;
+    }
+
+    updateImage();
+  });
+
+  rightImage.addEventListener('click', () => {
+    if (currentImage === data.images.length - 1) {
+      currentImage = 0;
+    } else {
+      currentImage++;
+    }
+
+    updateImage();
+  });
+
+  const updateImage = () => {
+    image.src = `data:${data.images[currentImage].Tipo_mime};base64,${data.images[currentImage].Datos_imagen}`;
+    image.id = data.images[currentImage].Imagen_id;
+  };
+
+  updateImage();
+

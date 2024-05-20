@@ -15,6 +15,9 @@ const devicesSection = document.querySelector("#navigation-ul li:nth-child(1)");
 const employeesSection = document.querySelector("#navigation-ul li:nth-child(2)");
 const firstSection = document.getElementById('equipments_section');
 const secondSection = document.getElementById('employee_section');
+const redirectionRecords = document.getElementById('redirectionRecords');
+
+redirectionRecords.addEventListener('click', () => window.location.href = '../pages/records.php');
 
 devicesSection.addEventListener('click', () => {
     if (firstSection.style.display === 'none') firstSection.style.display = 'block';

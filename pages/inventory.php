@@ -74,7 +74,7 @@
                         </div>
 
                         <div>
-                            <button>Agregar equipo</button>
+                            <button id="redirectionRecords">Agregar equipo</button>
                         </div>
                     </div>
 

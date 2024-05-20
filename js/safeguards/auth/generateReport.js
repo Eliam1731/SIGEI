@@ -42,24 +42,31 @@ export const generateReportSafeguards = async (work, amount, code, description, 
     const date = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
 
     const { PDFDocument, StandardFonts, rgb } = PDFLib;
-    const pdfDoc = await PDFDocument.create();
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    const arrayBuffer = await fetch(pathFile).then(res => res.arrayBuffer());
 
     const maxItemsPerPage = 15;
     const pagesCount = Math.ceil(code.length / maxItemsPerPage);
 
+    const finalPdf = await PDFDocument.create();
+
     for (let pageIndex = 0; pageIndex < pagesCount; pageIndex++) {
+        const pdfDoc = await PDFDocument.load(arrayBuffer);
+        const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
         const start = pageIndex * maxItemsPerPage;
         const end = start + maxItemsPerPage;
         const pageCodes = code.slice(start, end);
         const pageDescriptions = description.slice(start, end);
 
-        const arrayBuffer = await fetch(pathFile).then(res => res.arrayBuffer());
-        const srcDoc = await PDFDocument.load(arrayBuffer);
-        const [firstPage, secondPage] = await pdfDoc.copyPages(srcDoc, [0, 1]);
+        const pages = pdfDoc.getPages();
+        const firstPage = pages[0];
+        const secondPage = pages[1];
 
         firstPage.drawText(date.toString(), { x: 198, y: 737, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        firstPage.drawText(date.toString(), { x: 198, y: 345, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
         firstPage.drawText(work.toString(), { x: 300, y: 737, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        firstPage.drawText(work.toString(), { x: 300, y: 345, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
 
         for (let i = 0; i < pageCodes.length; i++) {
             const y1 = 737 - i * 13.5;
@@ -68,6 +75,10 @@ export const generateReportSafeguards = async (work, amount, code, description, 
             firstPage.drawText(amount.toString(), { x: 37, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
             firstPage.drawText(pageCodes[i].toString(), { x: 90, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
             firstPage.drawText(pageDescriptions[i].toString(), { x: 200, y: y1 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+
+            firstPage.drawText(amount.toString(), { x: 37, y: y2 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            firstPage.drawText(pageCodes[i].toString(), { x: 90, y: y2 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
+            firstPage.drawText(pageDescriptions[i].toString(), { x: 200, y: y2 - 33, size: 10, font: helveticaFont, color: rgb(0, 0, 0) });
         }
 
         secondPage.drawText(date.toString(), { x: 198, y: 727, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
@@ -82,13 +93,14 @@ export const generateReportSafeguards = async (work, amount, code, description, 
         }
 
         firstPage.drawText(employee.toString(), { x: 35, y: 425, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
+        firstPage.drawText(employee.toString(), { x: 35, y: 32, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
         secondPage.drawText(employee.toString(), { x: 35, y: 417, size: 11, font: helveticaFont, color: rgb(0, 0, 0) });
 
-        pdfDoc.addPage(firstPage);
-        pdfDoc.addPage(secondPage);
+        const copiedPages = await finalPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+        copiedPages.forEach(page => finalPdf.addPage(page));
     }
 
-    const pdfBytes = await pdfDoc.save();
+    const pdfBytes = await finalPdf.save();
     const blob = new Blob([pdfBytes], {type: "application/pdf"});
     const link = document.createElement('a');
 
@@ -98,3 +110,4 @@ export const generateReportSafeguards = async (work, amount, code, description, 
 
     const response = await sendReportToBackend(blob, email);
 };
+

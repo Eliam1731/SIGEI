@@ -195,56 +195,6 @@ main {
     font-style: normal;
 }
 
-#form-update-device {
-    height: auto;
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-
-#form-update-device label {
-    font-size: 1em;
-    font-weight: 700;
-    color: #424242;
-    padding-bottom: 3%;
-    padding-left: 5%;
-}
-
-#form-update-device select {
-    height: 45px;
-    width: 70%;
-    margin-left: 5%;
-    margin-bottom: 3%;
-    background: #F5F5F5;
-    box-sizing: border-box;
-    border: 1px solid #EEEEEE;
-}
-
-#form-update-device input {
-    margin-left: 5%;
-    margin-bottom: 3%;
-    height: 45px;
-    width: 70%;
-    box-sizing: border-box;
-    background: #F5F5F5;
-    border: 1px solid #EEEEEE;
-}
-
-#form-update-device textarea {
-    margin-left: 5%;
-    margin-bottom: 3%;
-    height: 100px;
-    width: 70%;
-    padding: 1%;
-    resize: none;
-    background: #F5F5F5;
-    border: 1px solid #EEEEEE;
-    outline: none;
-}
-#form-update-device textarea:focus { border: 1px solid #BDBDBD; }
-
 /* Estilo de la barra de navagacion de las acciones */
 #nav-actions {
     height: 100%;
@@ -439,180 +389,6 @@ main {
     font-weight: 700;
     font-style: normal;
     color: #424242;
-}
-/* Estilos del carrusel de imagenes */
-.container-image {
-    height: 550px;
-    width: 90%;
-    position: relative;
-    margin: 0 0 3% 5%;
-    box-sizing: border-box;
-}
-
-.image-device {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    display: flex;
-    overflow: hidden;
-    box-sizing: border-box;
-} 
-
-.root-image {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    flex: none;
-}
-
-.root-image img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    user-select: none;
-}
-
-.root-image button {
-    top: 3%;
-    left: 50%;
-    position: absolute;
-}
-
-.container-navigation__images {
-    top: 0;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    box-sizing: border-box;
-} 
-
-.container-navigation__images button {
-    height: 9%;
-    width: 5%;
-    border-radius: 100%;
-    background: rgba(245, 245, 245, 0.5);
-    border: 1px solid #EEEEEE;
-}
-
-.container-input__image {
-    margin: 0 0 5% 5%;
-    height: 4em;
-    width: 90%;
-    position: relative;
-    background: #212121;
-    box-sizing: border-box;
-}
-
-#imageInput {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    box-sizing: border-box;
-}
-
-#label-image {
-    top: 0;
-    height: 100%;
-    width: 100% ;
-    position: absolute;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 0 0 5% !important;
-}
-
-#left-image { position: absolute; left: 2%; } 
-#right-image { position: absolute; right: 2%; }
-#delete-image2 { position: absolute; top: 2%; left: 50%;}
-#imageInput {
-    display: none;
-}
-
-#update-data {
-    height: 4em;
-    width: 90%;
-    display: block;
-    margin: 5% auto 5%;
-    background: #833F0E;
-    border: 0;
-    color: #F5F5F5;
-    font-size: 1em;
-    border-radius: 5px;
-}
-
-.container-file__bill {
-    height: 5em;
-    width: 90%;
-    margin: 0 0 0 5%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    background: #F5F5F5;
-    border: 2px solid #EEEEEE;
-}
- 
-.file-bill {
-    height: 100%;
-    width: 50%;
-    position: relative;
-    box-sizing: border-box;
-    border-right: 2px solid #EEEEEE;
-}
-
-.file-bill input {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    box-sizing: border-box;
-}
-
-.file-bill label {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    padding: 0 0 0 5% !important;
-    background: #F5F5F5;
-    box-sizing: border-box;
-}
-
-.control__bill {
-    height: 100%;
-    width: 50%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-.control__bill button {
-    padding: 3%;
-    border: 1px solid #E0E0E0;
-    background: #F5F5F5;
-    box-sizing: border-box;
-}
-
-.description_action-bill {
-    padding: 0 0 3% 5%;
-    font-family: "Montserrat", sans-serif;
-    font-size: .9em;
-    text-align: left;
-    font-optical-sizing: auto;
-    font-weight: 550;
-    font-style: normal;
-    color: #6B7280;
 }
 
 /* Estilos de la seccion de resguardantes */
@@ -1185,3 +961,191 @@ main {
     position: absolute;
     right: 5%;
 }
+
+/* Estilos del mantenimiento preventivo */
+
+#form-preventive-maintenance {
+    height: 80%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+#form-preventive-maintenance .container-checkboc-maintenance {
+    height: 7%;
+    width: 95%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 5%;
+    box-sizing: border-box;
+}
+
+#form-preventive-maintenance .container-checkboc-maintenance:nth-child(5) { margin-top: 1%; }
+#form-preventive-maintenance .container-checkboc-maintenance > [type='checkbox'] { margin-right: 1%; box-sizing: border-box; } 
+#form-preventive-maintenance .container-checkboc-maintenance > [type='text'] {
+    margin-left: 3%;
+    height: 90%;
+    width: 50%;
+    border: 1px solid #BDBDBD;
+    position: relative;
+    box-sizing: border-box;
+    padding-left: 1%;
+    outline: none;
+}
+
+#form-preventive-maintenance .container-checkboc-maintenance > label { color: #111827; user-select: none; }
+#form-preventive-maintenance .container-checkboc-maintenance > label span { color: #6B7280; }
+
+.container-title-maintenance {
+    height: 7%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: .5% 0 2% 5%;
+    position: relative;
+    background: #F1F5F9;
+    box-sizing: border-box;
+    border-radius: .3em;
+}
+
+.container-title-maintenance h3 {
+    color: #334155;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+} 
+
+#add-preventive-maintenance {
+    margin: 25% auto 0;
+    padding: 1.5% 0;
+    width: 25%;
+    display: block;
+    box-sizing: border-box;
+    background: #0F172A;
+    color: #FAFAFA;
+    border-radius: .3em;
+    border: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+/* Estilos para ver toda la informacion de los equipos informaticos */
+.container-info__device {
+    height: 80%;
+    width: 93%;
+    margin: 0 0 0 5%;
+    overflow-y: auto;
+    overflow-x: none;
+    border-top: 1px solid #EEEEEE ;
+}
+
+.container-info__device dl {
+    height: auto;
+    width: 100%;
+    position: relative;
+}
+
+.row-info__device {
+    height: 5em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.row-info__device:nth-child(15) { height: auto; }
+
+.row-info__device dt {
+    height: auto;
+    width: 35%;
+    position: relative;
+    box-sizing: border-box;
+    color: #0F172A;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.row-info__device dd {
+    height: auto;
+    width: 65%;
+    position: relative;
+    box-sizing: border-box;
+} 
+
+#download-invoice {
+    height: 3.5em;
+    width: 60%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: 1px solid #E0E0E0;
+}
+
+#download-invoice span {
+    color: #0F172A;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    margin-left: 3%;
+}
+
+#download-invoice svg { transform: rotate(45deg); }
+ 
+.list-image-device {
+    width: 90%;
+    margin: 2em 0 2em 0;
+    border: 1px solid #E0E0E0;
+    border-radius: .3em;
+    box-sizing: border-box;
+}
+
+.list-image-device li {
+    height: 3em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.list-image-device li svg { transform: rotate(45deg); margin-left: 3%; }
+.list-image-device span {
+    color: #111827;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    position: absolute;
+    left: 10%;
+}
+.list-image-device li button {
+    color: #1A73E8;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    background: none;
+    border: 0;
+    margin-right: 3%;
+}
+
+.list-image-device li:last-child { border-bottom: none; }

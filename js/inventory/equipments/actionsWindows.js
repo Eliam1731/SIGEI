@@ -1,258 +1,152 @@
+import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from "../../utilities/decodeBase64ToBytes.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenance.js";
 
 const firstSectionActions = (dataOriginal) => {
   const rootActions = document.getElementById("root-actions");
   const data = dataOriginal[0];
 
+  console.log(data, "data");
+
   const html = `
-            <h2>Actualizar datos del equipo</h2>
+      <h2>Información detallada del equipo</h2>
 
-            <form id='form-update-device'>
-                <label for='category'>Elija la categoría del equipo (opcional).</label>
-                <select id='category' name='category' required>
-                    <option value='${data.subcategoria}' selected>${data.subcategoria}</option>
-                </select>
+      <div class='container-info__device'>
+          <dl>
+              <div class='row-info__device'>
+                  <dt>Subcategoría del equipo</dt>
+                  <dd>${data.subcategoria}</dd>
+              </div>
 
-                <label for='brand'>Elija la marca del equipo (opcional).</label>
-                <select id='brand' name='brand' required>
-                    <option value='${data.marca}' selected>${data.marca}</option>
-                </select>
+              <div class='row-info__device'>
+                  <dt>Marca del equipo</dt>
+                  <dd>${data.marca}</dd>
+              </div>
 
-                <label for='model'>Actualice el modelo del equipo (opcional).</label>
-                <input type='text' id='model' name='model' value='${data.modelo}' required>
+              <div class='row-info__device'>
+                  <dt>Código OPC</dt>
+                  <dd>${data.codeOpc}</dd>
+              </div>
 
-                <label for='serial'>Actualice el número de serie del equipo (opcional).</label>
-                <input type='text' id='serial' name='serial' value='${data.numSerie}' required>
+              <div class='row-info__device'>
+                  <dt>Modelo del equipo</dt>
+                  <dd>${data.modelo}</dd>
+              </div>
 
-                <label for='dateBuys'>Actualice la fecha de compra del equipo (opcional).</label>
-                <input type='date' id='dateBuys' name='dateBuys' value=${data.fechaCompra} required>
+              <div class='row-info__device'>
+                  <dt>Número de serie</dt>
+                  <dd>${data.numSerie}</dd>
+              </div>
 
-                <label for='dateWarranty'>Actualice la fecha en la que expira la garantía (opcional).</label>
-                <input type='date' id='dateWarranty' name='dateWarranty' value='${data.fechaGarantia}' required>
+              <div class='row-info__device'>
+                  <dt>Service tag del equipo</dt>
+                  <dd>${data.serviceTag}</dd>
+              </div>
 
-                <label for='price'>Actualice el importe del equipo (opcional).</label>
-                <input type='number' id='price' name='price' value='${data.importe}' required>
+              <div class='row-info__device'>
+                  <dt>Fecha de compra</dt>
+                  <dd>${data.fechaCompra}</dd>
+              </div>
 
-                <label for='specification'>Actualice la especificación del equipo (opcional).</label>
-                <textarea id='specification' name='specification' required>${data.especificacion}</textarea>
+              <div class='row-info__device'>
+                  <dt>Fecha en la que expira la garantía</dt>
+                  <dd>${data.fechaGarantia}</dd>
+              </div>
 
-                <label for='comments'>Actualice los comentarios del equipo (opcional).</label>
-                <textarea id='comments' name='comments' required>${data.comentarios}</textarea>
+              <div class='row-info__device'>
+                  <dt>Importe del equipo</dt>
+                  <dd>$${data.importe}</dd>
+              </div>
+              
+              <div class='row-info__device'>
+                  <dt>Especificación del equipo</dt>
+                  <dd>${data.especificacion}</dd>
+              </div>
 
-                <label for='serviceTag'>Actualice el service tag del equipo (opcional).</label>
-                <input type='text' id='serviceTag' name='serviceTag' value='${data.serviceTag}' required>
+              <div class='row-info__device'>
+                  <dt>Numero de referencia de Compras</dt>
+                  <dd>${data.referenciaCompaq}</dd>
+              </div>
 
-                <label for='numberReferencePurchases'>Actualice el numero de referencia de compras (opcional).</label>
-                <input type='text' id='numberReferencePurchases' name='numberReferencePurchases' value='${data.referenciaCompaq}' required>
+              <div class='row-info__device'>
+                  <dt>Dirección MAC Ethernet</dt>
+                  <dd>${data.direccionMacEthernet}</dd>
+              </div>
 
-                <label for='macEthernet'>Actualice la dirección MAC Ethernet (opcional).</label>
-                <input type='text' id='macEthernet' name='macEthernet' value='${data.direccionMacEthernet}'>
+              <div class='row-info__device'>
+                  <dt>Dirección MAC Wi-Fi</dt>
+                  <dd>${data.direccionMacWifi}</dd>
+              </div>
 
-                <label for='macWifi'>Actualice la dirección MAC Wifi (opcional).</label>
-                <input type='text' id='macWifi' name='macWifi' value='${data.direccionMacWifi}'>
-            
-                <h3 class='title-images'>Imagenes del equipo</h3>
-                
-                <div class='container-image'>
-                    <div class='image-device'>
-                      <div class='root-image'>
-                        <img class='html-image' src="" alt='Imagen del equipo'>
-                      </div>
-                    </div>
+              <div class='row-info__device'>
+                  <dt>Factura del equipo</dt>
+                  <dd>
+                      <button id='download-invoice'>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
+                          <span>Descargar factura</span>
+                      </button>
+                  </dd>
+              </div>
 
-                    <div class='container-navigation__images'>
-                        <button id='left-image' type='button'>
-                            <img src='../images/arrowPrev.svg' alt='Flecha izquierda'>
-                        </button>
+              <div class='row-info__device'>
+                  <dt>Imagenes del equipo</dt>
+                  <dd>
+                      <ul class='list-image-device'>
+                          ${data.images.map((image) => {
+                            return `<li data-image-blob='${image.Datos_imagen}' data-type-image='${image.Tipo_mime}' data-name-image='${image.Nombre}' class='listItemImageDevice'>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
+                                <span>${image.Nombre}</span>
+                                <button>Descargar</button>
+                            </li>`;
+                          }).join('')}
+                      </ul>
+                  </dd>
+              </div>
+          </dl>
+      </div>
+  `;
 
-                        <button id='delete-image2' class='delete-image' type='button'>
-                            <img src='../images/delete_image.svg' alt='Eliminar imagen'>
-                        </button>
-
-                        <button id='right-image' type='button'>
-                            <img src='../images/arrowNext.svg' alt='Flecha derecha'>
-                        </button>
-                    </div>
-                </div>
-
-                <div class='container-input__image'>
-                    <input type='file' id='imageInput' name='image' accept='image/*' multiple>
-                    <label for='imageInput' id='label-image'>No hay imagenes seleccionadas</label>
-                </div>
-
-                <h3 class='title-images'>Factura del equipo</h3>
-
-                <p class='description_action-bill'>
-                    Al elegir una factura, se reemplazará la factura actual del equipo.
-                </p>
-
-                <div class='container-file__bill'>
-                    <div class='file-bill'>
-                        <input type='file' id='billInput' name='bill' accept='application/pdf, text/xml'>
-                        <label for='billInput' id='label-bill'>Cargar nueva factura del equipo</label>
-                    </div>
-                    
-                    <div class='control__bill'>
-                        <button id='download-bill' type='button'>Ver factura del equipo</button>
-                    </div>
-                </div>
-
-                <button id='update-data' type='submit'>Actualizar datos del equipo</button>
-            </form>
-    `;
 
   rootActions.innerHTML = html;
-  const deleteImage = document.querySelector('.delete-image');
-  const image = document.querySelector('.html-image');
-  const leftImage = document.getElementById('left-image');
-  const rightImage = document.getElementById('right-image');
-  const controlerImage = document.querySelector('.container-navigation__images');
-  const imagesDeleteArray = [];
-  let currentImage = 0;
-  const imageInput = document.getElementById('imageInput');
-  const formUpdateDevice = document.getElementById('form-update-device');
-  const downloadBill = document.getElementById('download-bill');
+  const downloadInvoice = document.getElementById("download-invoice");
+  const buttonsDownloadImage = document.querySelectorAll('.listItemImageDevice button');
+  const spansViewImage = document.querySelectorAll('.listItemImageDevice span');
 
-  const decodeBase64ToBytes = (base64) => {
-    const bytes = atob(base64);
-    const byteNumbers = new Array(bytes.length);
-  
-    for (let i = 0; i < bytes.length; i++) {
-      byteNumbers[i] = bytes.charCodeAt(i);
-    }
-  
-    return byteNumbers;
-  }
-  
-  const createBlobFromBytes = (bytes) => {
-    const blob = new Blob([new Uint8Array(bytes)], {type: 'application/pdf'});
-    return blob;
-  }
-  
-  const configureDownloadLink = (url) => {
-    window.open(url, '_blank');
-  };
-  
-  downloadBill.addEventListener('click', (event) => {
-    event.preventDefault();
-  
-    const pdfBytes = decodeBase64ToBytes(data.invoices[0].Factura_file);
+  spansViewImage.forEach( span => {
+    span.addEventListener('click', () => {
+      const closeWindow = document.createElement('div');
+      const rootImage = document.createElement('div');
+      
+
+      closeWindow.appendChild(rootImage);
+    });
+  });
+
+  buttonsDownloadImage.forEach( button => {
+    button.addEventListener('click', () => {
+      const image = button.parentElement.getAttribute('data-image-blob');
+      const type = button.parentElement.getAttribute('data-type-image');
+      const name = button.parentElement.getAttribute('data-name-image');
+      const imagedata = `data:${type};base64,${image}`;
+      const link = document.createElement('a');
+
+      link.href = imagedata;
+      link.download = name;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    })
+  });
+
+  downloadInvoice.addEventListener("click", async () => {
+    const invoice = data.invoices[0].Factura_file;
+    const pdfBytes = decodeBase64ToBytes(invoice);
     const blob = createBlobFromBytes(pdfBytes);
     const url = URL.createObjectURL(blob);
-  
+
     configureDownloadLink(url);
   });
-  
-
-  formUpdateDevice.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    console.log(data.images, 'data.images en el submit');
-  });
-
-  if (data.images.length < 3) {
-    imageInput.style.display = 'block';
-  }
-
-  const updateImageInputValue = () => {
-    const newFiles = new DataTransfer();
-  
-    data.images.forEach((image) => {
-      if (!image.isNew) {
-        return;
-      }
-  
-      const file = new File([image.Datos_imagen], image.Nombre, { type: image.Tipo_mime });
-      newFiles.items.add(file);
-    });
-  
-    if (newFiles.items.length === 0) {
-      imageInput.value = '';
-      console.log('El input de archivo está vacío');
-    } else {
-      imageInput.files = newFiles.files;
-      console.log('El input de archivo no está vacío');
-    }
-  };
-
-  imageInput.addEventListener('change', function () {
-    const files = this.files;
-  
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const reader = new FileReader();
-  
-      reader.onloadend = function () {
-        const newImage = {
-          Datos_imagen: reader.result.split(',')[1], 
-          Imagen_id: Date.now(), 
-          Nombre: file.name,
-          Tipo_mime: file.type,
-          isNew: true 
-        };
-  
-        data.images.push(newImage);
-        updateImage();
-        controlerImage.style.display = 'flex';
-      }
-  
-      reader.readAsDataURL(file);
-    }
-  });
-
-deleteImage.addEventListener('click', async () => {
-  const imageDelete = parseInt(image.id);
-  const imageToDelete = data.images.find((image) => image.Imagen_id === imageDelete);
-
-  if (!imageToDelete.isNew) {
-    imagesDeleteArray.push(imageDelete);
-  }
-
-  const updateImageCarousel = data.images.filter((image) => image.Imagen_id !== imageDelete);
-
-  data.images = updateImageCarousel;
-  currentImage = 0;
-
-  console.log(imagesDeleteArray, 'imagesDeleteArray');
-
-  if (data.images.length === 0) {
-    image.src = '../images/notImage.png';
-    image.id = '';
-    controlerImage.style.display = 'none';
-
-    return;
-  }
-
-  updateImage();
-  updateImageInputValue(); 
-});
-
-  leftImage.addEventListener('click', () => {
-    if (currentImage === 0) {
-      currentImage = data.images.length - 1;
-    } else {
-      currentImage--;
-    }
-
-    updateImage();
-  });
-
-  rightImage.addEventListener('click', () => {
-    if (currentImage === data.images.length - 1) {
-      currentImage = 0;
-    } else {
-      currentImage++;
-    }
-
-    updateImage();
-  });
-
-  const updateImage = () => {
-    image.src = `data:${data.images[currentImage].Tipo_mime};base64,${data.images[currentImage].Datos_imagen}`;
-    image.id = data.images[currentImage].Imagen_id;
-  };
-
-  updateImage();
 };
 
 const secondSectionActions = (data) => { 
@@ -624,17 +518,56 @@ const fourthSectionActions = (data) => {
 
 const fiveSectionActions = (data) => {
   const rootActions = document.getElementById('root-actions');
+  const statusMaintenance = true;
 
-  const html = `
+  const htmlInitMaintenance = `
       <h2>Mantenimiento preventivo</h2>
+
+      <form id='form-preventive-maintenance'>
+          <div class='container-title-maintenance'><h3>Material requerido</h3></div>
+
+          <div class='container-checkboc-maintenance'>
+              <input type='checkbox' id='tool-1' name='material1' value='material1' data-tools-checkbox>
+              <label for='tool-1'>HERRAMIENTAS <span>(PINZAS, DESARMADORES, ETC)</span></label>
+          </div>
+
+          <div class='container-checkboc-maintenance'>
+              <input type='checkbox' id='tool-2' name='material2' value='material2' data-tools-checkbox>
+              <label for='tool-2'>KIT DE LIMPIEZA <span>(ASPIRADORA, LIMPIADORES DE TECLADO, DE MONITORES, DE EQUIPO ELECTRONICO)</span></label>
+          </div>
+
+          <div class='container-checkboc-maintenance'>
+              <input type='checkbox' id='tool-3' name='material3' value='material3' data-tools-checkbox>
+              <label for='tool-3'>CONSUMIBLES DE COMPUTO <span>(TORNILLOS, CONECTORES, CABLES, ETC)</span></label>
+          </div>
+
+          <div class='container-checkboc-maintenance'>
+              <label for='tool-4'>Otros (Especificar)</label>   
+              <input type='text' id='tool-4' name='material4'>         
+          </div>
+
+          <button id='add-preventive-maintenance' type='submit'>Iniciar mantenimiento preventivo</button>
+      </form>
+  `;
+
+  const htmlFinishMaintenance = `
+      <h2>Finalizar mantenimiento preventivo</h2>
+
+      <div id='root-finish-maintenance'></div>
   `;
 
 
-  rootActions.innerHTML = html;
+  rootActions.innerHTML = (statusMaintenance) ?  htmlFinishMaintenance : htmlInitMaintenance;
+
+  if(!statusMaintenance) {
+    initMaintenanceDevice( data );
+    return;
+  };
+  
+  finishMaintenanceDevice( data );
 }
 
 export const windowActionsDevices = (data) => {
-  console.log(data, 'data')
   const containerClose = document.createElement("div");
   const containerActions = document.createElement("div");
   const html = `

@@ -106,8 +106,10 @@ foreach ($rows as $row) {
         'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado'],
         'nombreEmpresa' => $row['nombreEmpresa'],
         'nombreObra' => $row['nombreObra'],
-        'nombreFrente' => $row['nombreFrente']
+        'nombreFrente' => $row['nombreFrente'],
+        'estaAResguardo' => $row['status'] !== 'Disponible'
     ];
+
 
 
     $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");

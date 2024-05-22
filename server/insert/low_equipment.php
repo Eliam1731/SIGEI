@@ -3,7 +3,7 @@ include '../config/connection_db.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 try {
     $data = json_decode(file_get_contents('php://input'), true);

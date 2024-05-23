@@ -93,7 +93,7 @@ const firstSectionActions = (dataOriginal) => {
                   <dd>
                       <ul class='list-image-device'>
                           ${data.images.map((image) => {
-                            return `<li data-image-blob='${image.Datos_imagen}' data-type-image='${image.Tipo_mime}' data-name-image='${image.Nombre}' class='listItemImageDevice'>
+                            return `<li data-image-blob='${image.Datos_imagen}' data-type-image='${image.Tipo_mime}' data-name-image='${image.Nombre}' data-imagen-id='${image.Imagen_id}' class='listItemImageDevice'>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
                                 <span>${image.Nombre}</span>
                                 <button>Descargar</button>
@@ -101,6 +101,20 @@ const firstSectionActions = (dataOriginal) => {
                           }).join('')}
                       </ul>
                   </dd>
+              </div>
+
+              <div class='row-info__device'>
+                <dt>Comentario acerca del equipo</dt>
+                <dd>${data.comentarios}</dd>
+              </div>
+
+              <div class='row-info__device'>
+                <dt>Estado</dt>
+                <dd>
+                    <span>${data.status}</span>
+
+                    <button id='change-status__device'>Dar de baja</button>
+                </dd>
               </div>
           </dl>
       </div>
@@ -111,14 +125,104 @@ const firstSectionActions = (dataOriginal) => {
   const downloadInvoice = document.getElementById("download-invoice");
   const buttonsDownloadImage = document.querySelectorAll('.listItemImageDevice button');
   const spansViewImage = document.querySelectorAll('.listItemImageDevice span');
+  const changeStatusDevice = document.getElementById('change-status__device');
+  const detailsDevice = document.querySelector('.container-info__device');
+  const rootFormLow = document.createElement('div');
+
+  changeStatusDevice.addEventListener('click', () => {
+    const existenceFormLow = document.getElementById('form-device-low');
+
+    if(existenceFormLow) return;
+
+    const formDeviceLow = `
+        <form id='form-device-low'>
+            <label for=''>Comentario acerca de la baja del equipo</label>
+            <textarea id='commentary-device-low' name='comentario' placeholder='Escriba el comentario...' required></textarea>
+
+            <div class='container-buttons-device-low'>
+                <button id='cancel-device-low' type='button'>Cancelar</button>
+                <button id='low-device' type='submit'>Aceptar</button>
+            </div>
+        </form>
+    `;
+
+    detailsDevice.appendChild(rootFormLow).innerHTML = formDeviceLow;
+    rootFormLow.setAttribute('class', 'root-form-device-low');
+    const cancelDeviceLow = document.getElementById('cancel-device-low');
+    const commentaryDeviceLow = document.getElementById('commentary-device-low');
+    const formEquipmentLow = document.getElementById('form-device-low');
+
+    formEquipmentLow.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const comments = commentaryDeviceLow.value;
+      const low = {
+        equipo_id: data.idEquipo,
+        correo: sessionStorage.getItem('email'),
+        comentario: comments,
+      }
+      const confirmLow = confirm('¿Estás seguro de dar de baja el equipo?');
+
+      if(!confirmLow) return;
+
+      const response = await sendDataServer('../server/insert/low_equipment.php', low);
+      console.warn(response, 'response');
+      console.log(low, 'data');
+    });
+
+    commentaryDeviceLow.addEventListener('focus', () => formEquipmentLow.style.border = '2px solid #1A73E8');
+    commentaryDeviceLow.addEventListener('blur', () => formEquipmentLow.style.border = '2px solid #EEEEEE');
+
+    cancelDeviceLow.addEventListener('click', () => {
+      const existenceFormLow = document.getElementById('form-device-low');
+      const elementParent = existenceFormLow.parentElement;
+  
+      elementParent.remove();
+    });
+  });
 
   spansViewImage.forEach( span => {
     span.addEventListener('click', () => {
       const closeWindow = document.createElement('div');
       const rootImage = document.createElement('div');
-      
+      const image = document.createElement('img');
+      const imageBlob = span.parentElement.getAttribute('data-image-blob');
+      const type = span.parentElement.getAttribute('data-type-image');
+      const imagedata = `data:${type};base64,${imageBlob}`;
+      const deleteImage = document.createElement('div');
+      const iconDelete = `
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9E9E9E"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+      `;
+
+      closeWindow.setAttribute('class', 'close-window-image');
+      rootImage.setAttribute('class', 'root-image');
+      deleteImage.setAttribute('class', 'delete-image__device');
+      image.src = imagedata;
+      deleteImage.innerHTML = iconDelete;
 
       closeWindow.appendChild(rootImage);
+      rootImage.appendChild(image);
+      rootImage.appendChild(deleteImage);
+      document.body.appendChild(closeWindow);
+
+      closeWindow.addEventListener('click', event => { if(event.target === closeWindow) closeWindow.remove() });
+      deleteImage.addEventListener('click', async() => {
+        const confirmDelete = confirm('¿Estás seguro de eliminar la imagen?');
+        const imageId = span.parentElement.getAttribute('data-imagen-id');
+        const device = data.idEquipo;
+
+        if(confirmDelete) {
+          const response = await sendDataServer('../server/insert/delete_img.php', { Imagen_id: imageId, Equipo_id: device });
+      
+          if(response.message === 'No puede dejar sin imágenes el equipo') {
+            alert('No puede dejar sin imágenes el equipo');
+            return;
+          }
+
+          alert(response.message);
+          closeWindow.remove();
+          span.parentElement.remove();
+        }
+      });
     });
   });
 
@@ -518,7 +622,7 @@ const fourthSectionActions = (data) => {
 
 const fiveSectionActions = (data) => {
   const rootActions = document.getElementById('root-actions');
-  const statusMaintenance = true;
+  const statusMaintenance = false;
 
   const htmlInitMaintenance = `
       <h2>Mantenimiento preventivo</h2>

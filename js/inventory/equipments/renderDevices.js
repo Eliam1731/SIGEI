@@ -101,20 +101,15 @@ buttonSearch.addEventListener('click', async() => {
             opcicCode: `${codeOpc}${search}`
         });
 
-        console.log('Response:', response.enresguardo);
+        console.log('Response:', response);
         if (response.length === 0) {
             alert('No se encontro el equipo');
             return;
         }
 
         inputSearch.value = '';
-        
-       if(response.disponible !== undefined) {
-            windowActionsDevices(response.disponible);
-
-            return;
-       }
-        windowActionsDevices(response.enresguardo);
+ 
+        windowActionsDevices(response);
     } catch (error) {
         console.error('Error:', error);
     }

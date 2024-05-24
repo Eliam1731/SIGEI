@@ -133,6 +133,10 @@ const firstSectionActions = (dataOriginal) => {
     const existenceFormLow = document.getElementById('form-device-low');
 
     if(existenceFormLow) return;
+    if(data.status === 'De baja') {
+      alert('El equipo ya se encuentra de baja.');
+      return;
+    };
 
     const formDeviceLow = `
         <form id='form-device-low'>
@@ -165,8 +169,16 @@ const firstSectionActions = (dataOriginal) => {
       if(!confirmLow) return;
 
       const response = await sendDataServer('../server/insert/low_equipment.php', low);
-      console.warn(response, 'response');
-      console.log(low, 'data');
+      console.log(response, 'response');  
+      
+      if(response.message) {
+        alert(response.message);
+        window.location.reload();
+
+        return;
+      }
+
+      alert('No se pudo dar de baja el equipo');
     });
 
     commentaryDeviceLow.addEventListener('focus', () => formEquipmentLow.style.border = '2px solid #1A73E8');

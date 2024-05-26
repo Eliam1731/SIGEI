@@ -1,4 +1,5 @@
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { windowDeviceInformation } from "../auth/allDataDevice.js";
 
 const elementsSectionReturnEquipmentDOM = {
     inputCode: 'codeEquipmentReturn',
@@ -55,7 +56,8 @@ const renderNameEmployee = (name) => {
     paragraphName.textContent = name;
 }
 
-const renderDeviceGuard = ({codigo, subcategoria, marca, modelo, serie, equipo_id }) => {
+const renderDeviceGuard = (data) => {
+    const {codigo, subcategoria, marca, modelo, serie, equipo_id } = data;
     const tr = document.createElement('tr');
     tr.setAttribute('id', equipo_id);
 
@@ -63,20 +65,32 @@ const renderDeviceGuard = ({codigo, subcategoria, marca, modelo, serie, equipo_i
         <td>${codigo}</td>
         <td>${subcategoria} ${marca} ${modelo} NS: ${serie}</td>
         <td>
-            <button class="btn btn-danger">Devolver</button>
+            <button' class="btn btn-danger">Detalles</button>
         </td>
     `;
 
     bodyTableReturnSafeguards.appendChild(tr);
+    const button = tr.querySelector('.btn-danger');
     
+    button.addEventListener('click', event => {
+        const id = event.target.parentElement.parentElement.getAttribute('id');
+        // windowDeviceInformation(data);
+
+        console.log(id, 'ID del equipo a devolver');
+        console.log(data, 'Datos del equipo a devolver');
+    });
 }
 
 buttonSearchEquipmentReturn.addEventListener('click', () => {
     const valueInputCode = inputCodeEquipmentReturn.value.trim();
 
     requestDeviceGuard(valueInputCode).then(( data ) => {
+        if(data.status === 'error') {
+            alert(data.message);
+            return;
+        }
+
         if(data && employeCurrent === undefined) {
-            console.log(data);
             employeCurrent = data.empleado.empleado_id;
             nameEmployeCurrent = data.empleado.nombreResguardante_completo;
         }
@@ -122,7 +136,6 @@ buttonReturnAuth.addEventListener('click', async() => {
         if(response) {
             alert('Los equipos se han devuelto correctamente!');
             cleanSectionReturnEquipment();
-            console.log(response);
         }
     } catch (error) {
         console.error('Error:', error);

@@ -1,4 +1,5 @@
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { windowDeviceInformation } from "./allDataDevice.js";
 import { generateReportSafeguards } from "./generateReport.js";
 
 const bodyTable = document.getElementById('bodyTableAuthSafeguards');
@@ -112,6 +113,7 @@ const modalActions = ( equipment, buttonActions) => {
     parentDiv.addEventListener('click', () => parentDiv.remove());
     containerItemsModal.addEventListener('click', (event) => event.stopPropagation());
     buttonDelete.addEventListener('click', () => deleteItemTable(buttonActions, parentDiv));
+    buttonDetails.addEventListener('click', () => windowDeviceInformation(equipment, parentDiv));
 
     containerTitle.append(title);
     containerButtons.append(buttonDelete, buttonDetails)

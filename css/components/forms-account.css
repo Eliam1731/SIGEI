@@ -122,3 +122,9 @@
     transition: right 1s;
     z-index: 400;
 }
+
+#spanPasswordView1,
+#spanPasswordView2 {
+    user-select: none;
+    cursor: pointer;
+}

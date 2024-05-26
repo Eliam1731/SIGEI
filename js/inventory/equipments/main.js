@@ -49,15 +49,15 @@ elementsEquipmentsDOM.filterBtn.addEventListener('click', () => {
     
     container.innerHTML = `
         <div class="filter">         
-            <label for='1'><input type='checkbox' id='disponible' ${checkboxStates.available ? 'checked' : ''}><span>Disponible</span></label>
+            <label for='disponible'><input type='checkbox' id='disponible' ${checkboxStates.available ? 'checked' : ''}><span>Disponible</span></label>
         </div>
 
         <div class="filter">
-            <label for='2'><input type='checkbox' id='enResguardo' ${checkboxStates.inResguardo ? 'checked' : ''}><span>En resguardo</span></label>    
+            <label for='enResguardo'><input type='checkbox' id='enResguardo' ${checkboxStates.inResguardo ? 'checked' : ''}><span>En resguardo</span></label>    
         </div>
 
         <div class="filter">    
-            <label for='3'><input type='checkbox' id='enMantenimiento' ${checkboxStates.inMaintenance ? 'checked' : ''}><span>En mantenimiento</span></label>
+            <label for='enMantenimiento'><input type='checkbox' id='enMantenimiento' ${checkboxStates.inMaintenance ? 'checked' : ''}><span>En mantenimiento</span></label>
         </div>
     `;
 

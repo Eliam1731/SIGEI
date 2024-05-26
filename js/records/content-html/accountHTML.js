@@ -41,7 +41,7 @@ export const accountSystemsHTML = `
             <div>
                 <label for='new-emailUser' class='label-account'>Correo electrónico</label>
                 <div id='container-inputAccount'>
-                    <input id='newEmailUser' type='email' placeholder='Ejemplo: fernandoherrera23'>
+                    <input id='newEmailUser' type='text' placeholder='Ejemplo: fernandoherrera23'>
                     <div class='domain-email'>
                         <span>@grupoopc.com</span>
                     </div>
@@ -49,7 +49,7 @@ export const accountSystemsHTML = `
 
                 <label for='confirm-emailUser' class='label-account'>Confirmar correo electrónico</label>
                 <div id='container-inputAccount'>
-                    <input id='confirmEmailUser' type='email' placeholder='Ejemplo: fernandoherrera23'>
+                    <input id='confirmEmailUser' type='text' placeholder='Ejemplo: fernandoherrera23'>
                     <div class='domain-email'>
                         <span>@grupoopc.com</span>
                     </div>
@@ -61,7 +61,7 @@ export const accountSystemsHTML = `
                 <div id='container-inputAccount'>
                     <input id='newPasswordUser' type='password' placeholder='Ejemplo: AxS&24L%asd' data-password='input'>
                     <div class='domain-email' data-pass='view'>
-                        <span>Ver contraseña</span>
+                        <span id='spanPasswordView1'>Ver contraseña</span>
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@ export const accountSystemsHTML = `
                 <div id='container-inputAccount'>
                     <input id='confirmPasswordUser' type='password' placeholder='Ejemplo: AxS&24L%asd' data-password='input'>
                     <div class='domain-email' data-pass='view'>
-                        <span>Ver contraseña</span>
+                        <span id='spanPasswordView2'>Ver contraseña</span>
                     </div>
                 </div>
             </div>

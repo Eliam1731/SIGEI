@@ -1,3 +1,4 @@
+import { viewPassword } from "../../utilities/viewPassword.js";
 import { accountMachineryHTML, accountStoreHTML, accountSystemsHTML, notPermissionCreateAccount } from "../content-html/accountHTML.js";
 import { gettingDataAccountSystems } from "./gettingData/accountGettingData.js";
 
@@ -25,10 +26,35 @@ const functionalitiesSystemsForm = ( root ) => {
     const nextSectionButton = document.getElementById('nextSectionAccount');
     const prevSectionButton = document.getElementById('returnSection');
     const sendDataAccountButton = document.getElementById('accountSendData');
+    const validateEmail = /@/;
+    const inputEmail = document.getElementById('newEmailUser');
+    const inputEmailConfirm = document.getElementById('confirmEmailUser');
+    const inputNewPassword = document.getElementById('newPasswordUser');
+    const inputConfirmPassword = document.getElementById('confirmPasswordUser');
+    const spanPasswordView1 = document.getElementById('spanPasswordView1');
+    const spanPasswordView2 = document.getElementById('spanPasswordView2');
 
     nextSectionButton.addEventListener('click', () => nextSectionAccount(secondSectionAccount, prevSectionButton ));
     prevSectionButton.addEventListener('click', () => prevSectionAccount( secondSectionAccount, prevSectionButton ));
     sendDataAccountButton.addEventListener('click', () => gettingDataAccountSystems());
+
+
+    inputEmail.addEventListener('change', () => {
+        if(validateEmail.test(inputEmail.value)) {
+            alert('No es necesario agregar el dominio @grupoopc.com, este se agregará automáticamente.');
+            inputEmail.value = inputEmail.value.replace(/@.*/, '');
+        }
+    });
+
+    inputEmailConfirm.addEventListener('change', () => {
+        if(validateEmail.test(inputEmailConfirm.value)) {
+            alert('No es necesario agregar el dominio @grupoopc.com, este se agregará automáticamente.');
+            inputEmailConfirm.value = inputEmailConfirm.value.replace(/@.*/, '');
+        }
+    }); 
+
+   spanPasswordView1.addEventListener('click', () => viewPassword(inputNewPassword));
+    spanPasswordView2.addEventListener('click', () => viewPassword(inputConfirmPassword));
 }
 
 const functionalitiesStoreForm = ( root ) => {

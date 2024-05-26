@@ -2,6 +2,7 @@ import { getDataServer } from "../../utilities/getDataServer.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { windowActionsDevices } from "./actionsWindows.js";
 import { checkboxStates } from "./main.js";
+import { messageTableDevice } from "./messageTable.js";
 
 let data;
 let indexTable = 1;
@@ -10,9 +11,9 @@ const buttonSearch = document.getElementById('buttonSearchEquipment');
 let paragraphMessageIndex = document.getElementById('textIndexCurrent');
 const deleteFiltersTable = document.getElementById('deleteFiltrosDevices');
 const messageTable = document.getElementById('none-equipment');
-const tableDevices = document.getElementById('renderDataEquipments');
+const tableDevices = document.getElementById('renderDataEquipments'); //Tbody de la tabla de dispositivos
 let devicesArray;
-let devicesFilter = [];
+let devicesFilter = []; // Array que almacena los dispositivos filtrados
 const filters = {
     disponible: 'Disponible',
     enResguardo: 'En Resguardo',
@@ -42,19 +43,22 @@ deleteFiltersTable.addEventListener('click', () => {
 export const checkboxAvailableEvent = (checkboxAvailable) => {
     checkboxStates.available = checkboxAvailable.checked;
     updateDevicesFilter();
+    messageTableDevice( tableDevices, devicesFilter, checkboxStates );
 }
 
 export const checkboxInResguardoEvent = (checkboxInResguardo) => {
     checkboxStates.inResguardo = checkboxInResguardo.checked;
     updateDevicesFilter();
+    messageTableDevice( tableDevices, devicesFilter, checkboxStates );
 }
 
 export const checkboxInMaintenanceEvent = (checkboxInMaintenance) => {
     checkboxStates.inMaintenance = checkboxInMaintenance.checked;
     updateDevicesFilter();
+    messageTableDevice( tableDevices, devicesFilter, checkboxStates );
 }
 
-const updateDevicesFilter = () => {
+export const updateDevicesFilter = () => {
     if (!checkboxStates.available && !checkboxStates.inResguardo && !checkboxStates.inMaintenance) {
         devicesFilter = [];
     } else {

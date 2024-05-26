@@ -1293,3 +1293,50 @@ main {
     padding: 0 1em 0 1em;
     border-radius: .3em;
 }
+
+/* Estilos de la ventana de filtros */
+
+.filter-container {
+    top: 18%;
+    right: 20%;
+    position: absolute;
+    background: #FFFFFF;
+    border: 2px solid #0277BD;
+    border-radius: .2em;
+}
+
+.filter-container .filter {
+    height: 2em;
+    width: 15em;
+    display: flex;
+    align-items: center;
+}
+
+.filter-container .filter label { user-select: none; }
+
+/* Estilos del mensaje en la tabla */
+
+.message-table {
+    height: auto;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+} 
+
+.message-table h3 {
+    padding-top: 1em;
+    color: #0277BD;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.message-table img {
+    margin-top: 5em;
+    width: 20%;
+}

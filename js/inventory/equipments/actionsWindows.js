@@ -1,3 +1,4 @@
+import { currentYearUser } from "../../utilities/MaximumYearCurrent.js";
 import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from "../../utilities/decodeBase64ToBytes.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenance.js";
@@ -5,8 +6,6 @@ import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenan
 const firstSectionActions = (dataOriginal) => {
   const rootActions = document.getElementById("root-actions");
   const data = dataOriginal[0];
-
-  console.log(data, "data");
 
   const html = `
       <h2>Información detallada del equipo</h2>
@@ -70,12 +69,12 @@ const firstSectionActions = (dataOriginal) => {
 
               <div class='row-info__device'>
                   <dt>Dirección MAC Ethernet</dt>
-                  <dd>${data.direccionMacEthernet}</dd>
+                  <dd>${ (!data.direccionMacEthernet) ? 'El equipo no cuenta con una dirección MAC Ethernet.' : data.direccionMacEthernet }</dd>
               </div>
 
               <div class='row-info__device'>
                   <dt>Dirección MAC Wi-Fi</dt>
-                  <dd>${data.direccionMacWifi}</dd>
+                  <dd>${ (!data.direccionMacWifi) ? 'El equipo no cuenta con una dirección MAC WI-FI.' : data.direccionMacWifi }</dd>
               </div>
 
               <div class='row-info__device'>
@@ -105,7 +104,7 @@ const firstSectionActions = (dataOriginal) => {
 
               <div class='row-info__device'>
                 <dt>Comentario acerca del equipo</dt>
-                <dd>${data.comentarios}</dd>
+                <dd>${(!data.comentarios) ? 'El equipo no tienen comentarios.' : data.comentarios}</dd>
               </div>
 
               <div class='row-info__device'>
@@ -327,32 +326,60 @@ const secondSectionActions = (data) => {
 
   rootActions.innerHTML = html;
   const formAddExpenses = document.getElementById('form-add-expenses');
+  const inputPdf = document.getElementById('pdf');
+  const messageCountFile = document.getElementById('message-file');
+  const inputDate = document.getElementById('date');
+  const inputPrice = document.getElementById('unitPrice');
+  const regexPrice = /^\d+(\.\d{0,2})?$/;
+
+  inputPrice.addEventListener('change', (event) => {
+    const valueInput = event.target.value;
+
+    if(valueInput.trim() === '') return;
+
+    if(!regexPrice.test(valueInput)) {
+        alert('Formato inválido. Asegúrate de ingresar un número sin comas, que puede ser entero o un decimal con dos dígitos después del punto. Ejemplo válido: 20000.00; ejemplo no válido: 20,000.00.');
+        inputPrice.focus();
+
+
+        return;
+    }
+  });
+
+  inputDate.max = currentYearUser(new Date());
+
+  inputPdf.addEventListener('change', () => {
+    const file = inputPdf.files[0];
+    const name = file.name;
+
+    messageCountFile.textContent = name;
+  });
 
   formAddExpenses.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if(!regexPrice.test(inputPrice.value)) {
+      alert('Formato inválido. Asegúrate de ingresar un número sin comas, que puede ser entero o un decimal con dos dígitos después del punto. Ejemplo válido: 20000.00; ejemplo no válido: 20,000.00.');
+      inputPrice.focus();
+
+      return;
+    } 
+
     const data = new FormData(formAddExpenses);
     data.append('Equipo_id', device);
 
     try {
-      const response = await fetch('../server/insert/equipment_expense.php', {
-        method: 'POST',
-        body: data,
-      });
-
-      // if (response === 'false') {
-      //   alert('No se pudo añadir el gasto');
-      //   return;
-      // }
-
+      const response = await fetch('../server/insert/equipment_expense.php', { method: 'POST', body: data });
       const responseText = await response.text();
 
-      console.log(responseText, 'response');  
+     if( responseText === 'Los gastos fueron subidos con éxito') {
+        alert(responseText);
 
-      formAddExpenses.reset();
-      alert('Gasto añadido correctamente');
-    } catch (error) {
-      console.log(error);
-    }
+        formAddExpenses.reset();
+        return;
+     }
+
+      alert('No se pudo añadir el gasto');
+    } catch (error) { console.log(error); }
   });
 };
 
@@ -687,13 +714,11 @@ export const windowActionsDevices = (data) => {
   const containerClose = document.createElement("div");
   const containerActions = document.createElement("div");
   const html = `
-        <section id='root-actions'>
-        
-        </section> 
+        <section id='root-actions'></section> 
 
         <nav id='nav-actions'>
             <ul>
-                <li class='selected-actions__li'>Actualizar datos del equipo</li>
+                <li class='selected-actions__li'>Información detallada del equipo</li>
                 <li>Añadir gastos al equipo</li>
                 <li>Gatos del equipo</li>
                 <li>Resguardante</li>
@@ -710,37 +735,50 @@ export const windowActionsDevices = (data) => {
   containerClose.appendChild(containerActions);
 
   containerClose.addEventListener("click", (event) => {
-    if (event.target === containerClose) {
-      containerClose.remove();
-    }
+    if (event.target === containerClose) containerClose.remove();
   });
 
-  const updateDevice = document.querySelector("#nav-actions li:nth-child(1)");
+  const detailsDevice = document.querySelector("#nav-actions li:nth-child(1)");
   const addExpenses = document.querySelector("#nav-actions li:nth-child(2)");
   const expensesDevice = document.querySelector("#nav-actions li:nth-child(3)");
   const resguardante = document.querySelector("#nav-actions li:nth-child(4)");
   const preventiveMaintenance = document.querySelector("#nav-actions li:nth-child(5)");
-  
+  const childrenNav = document.querySelectorAll("#nav-actions ul li");
 
   firstSectionActions(data);
 
-  updateDevice.addEventListener("click", () => {
+  detailsDevice.addEventListener( "click", () => {
+    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+    detailsDevice.classList.add("selected-actions__li");
+
     firstSectionActions(data);
   });
 
   addExpenses.addEventListener("click", () => {
+    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+    addExpenses.classList.add("selected-actions__li");
+
     secondSectionActions(data);
   });
 
   expensesDevice.addEventListener("click", () => {
+    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+    expensesDevice.classList.add("selected-actions__li");
+
     thirdSectionActions(data);
   });
 
   resguardante.addEventListener("click", () => {
+    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+    resguardante.classList.add("selected-actions__li");
+
     fourthSectionActions(data);
   });
 
   preventiveMaintenance.addEventListener("click", () => {
+    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+    preventiveMaintenance.classList.add("selected-actions__li");
+
     fiveSectionActions(data);
   });
 };

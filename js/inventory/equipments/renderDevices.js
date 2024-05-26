@@ -8,12 +8,10 @@ let data;
 let indexTable = 1;
 const inputSearch = document.getElementById('inputSearchEquipment');
 const buttonSearch = document.getElementById('buttonSearchEquipment');
-let paragraphMessageIndex = document.getElementById('textIndexCurrent');
 const deleteFiltersTable = document.getElementById('deleteFiltrosDevices');
-const messageTable = document.getElementById('none-equipment');
-const tableDevices = document.getElementById('renderDataEquipments'); //Tbody de la tabla de dispositivos
+const tableDevices = document.getElementById('renderDataEquipments');
 let devicesArray;
-let devicesFilter = []; // Array que almacena los dispositivos filtrados
+let devicesFilter = []; 
 const filters = {
     disponible: 'Disponible',
     enResguardo: 'En Resguardo',
@@ -42,18 +40,21 @@ deleteFiltersTable.addEventListener('click', () => {
 
 export const checkboxAvailableEvent = (checkboxAvailable) => {
     checkboxStates.available = checkboxAvailable.checked;
+    
     updateDevicesFilter();
     messageTableDevice( tableDevices, devicesFilter, checkboxStates );
 }
 
 export const checkboxInResguardoEvent = (checkboxInResguardo) => {
     checkboxStates.inResguardo = checkboxInResguardo.checked;
+
     updateDevicesFilter();
     messageTableDevice( tableDevices, devicesFilter, checkboxStates );
 }
 
 export const checkboxInMaintenanceEvent = (checkboxInMaintenance) => {
     checkboxStates.inMaintenance = checkboxInMaintenance.checked;
+
     updateDevicesFilter();
     messageTableDevice( tableDevices, devicesFilter, checkboxStates );
 }
@@ -83,8 +84,8 @@ export const updateDevicesFilter = () => {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         data = await getDataServer('../server/data/equipmentvisualization.php');
-
         devicesArray = Object.values(data).flat();
+
         renderDevices(data);
     } catch (error) {
         console.error('Error:', error);
@@ -101,9 +102,7 @@ buttonSearch.addEventListener('click', async() => {
     }
 
     try {
-        const response = await sendDataServer('../server/data/searcher_equipment.php', {
-            opcicCode: `${codeOpc}${search}`
-        });
+        const response = await sendDataServer('../server/data/searcher_equipment.php', { opcicCode: `${codeOpc}${search}` });
 
         console.log('Response:', response);
         if (response.length === 0) {
@@ -112,23 +111,18 @@ buttonSearch.addEventListener('click', async() => {
         }
 
         inputSearch.value = '';
- 
         windowActionsDevices(response);
     } catch (error) {
         console.error('Error:', error);
     }
-
-    console.log('Search');
 });
 
 export const renderDevices = (devices) => {
     tableDevices.innerHTML = '';
 
     const devicesArray = Object.values(devices).flat();
-
     const start = (indexTable - 1) * 8;
     const end = indexTable * 8;
-
     const slicedDevices = devicesArray.slice(start, end);
 
     slicedDevices.forEach(device => {
@@ -166,7 +160,6 @@ export const renderDevices = (devices) => {
 }
 
 document.addEventListener('keydown', (event) => {
-    
     if (event.key === 'ArrowRight') {
         const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
         if (indexTable === Math.ceil(devicesToRender.length / 8)) return;
@@ -176,9 +169,7 @@ document.addEventListener('keydown', (event) => {
     }
 
     if (event.key === 'ArrowLeft') {
-        if (indexTable === 1) {
-            return;
-        };
+        if (indexTable === 1) return;
 
         indexTable--;
         const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;

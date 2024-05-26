@@ -13,6 +13,7 @@ export const messageTableDevice = ( root, data, checkbox ) => {
             <h3>No hay dispositivos en esta categoría.</h3>
         </div>
     `;
+    
     root.innerHTML = '';
     root.insertAdjacentHTML('beforeend', message);
 }

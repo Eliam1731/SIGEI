@@ -222,7 +222,6 @@ main {
 
 .selected-actions__li { color: #1A73E8; }
 
-
 /* Estilos de la tabla de equipos informaticos */
 .container-table__devices {
     height: 85%;
@@ -606,6 +605,7 @@ main {
     outline: none;
     border: 2px solid #EEEEEE;
     border-radius: .5em;
+    padding-left: 3%;
 }
 
 .firstInputs__expends .last-div {
@@ -648,6 +648,7 @@ main {
     width: 75%;
     border: none;
     outline: none;
+    padding-left: 3%;
 }
 
 .container-quantity {
@@ -718,6 +719,7 @@ main {
     width: 75%;
     border: none;
     outline: none;
+    padding-left: 3%;
     box-sizing: border-box;
 }
 
@@ -1336,7 +1338,4 @@ main {
     font-style: normal;
 }
 
-.message-table img {
-    margin-top: 5em;
-    width: 20%;
-}
+.message-table img { margin-top: 5em; width: 20%; }

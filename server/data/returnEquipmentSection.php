@@ -1,4 +1,4 @@
-php:
+
 <?php
 include '../config/connection_db.php';
 $data = json_decode(file_get_contents("php://input"));

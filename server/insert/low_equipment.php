@@ -14,12 +14,15 @@ try {
     $correo = $data['correo'];
     $comentario = $data['comentario'];
 
-    // Verifica si el equipo ya está en baja
+    // Verifica si el equipo ya está en baja o si su estado es distinto de 1
     $stmt = $conn->prepare("SELECT Status_id FROM equipos_informaticos WHERE Equipo_id = :equipo_id");
     $stmt->execute(['equipo_id' => $equipo_id]);
     $row = $stmt->fetch();
     if ($row['Status_id'] == 4) {
         echo json_encode(['error' => 'El equipo ya se encuentra en baja']);
+        exit();
+    } elseif ($row['Status_id'] != 1) {
+        echo json_encode(['error' => 'El equipo no está disponible para dar de baja']);
         exit();
     }
 

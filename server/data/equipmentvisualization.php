@@ -67,6 +67,7 @@ $sql = $conn->prepare("
     LEFT JOIN empresas ON empleados_resguardantes.Empresa_id = empresas.Empresa_id
     LEFT JOIN obras ON empleados_resguardantes.Obra_id = obras.Obra_id
     LEFT JOIN frente ON empleados_resguardantes.id_frente = frente.Frente_id
+    WHERE status.Nom_Status != 'Baja' AND status.Status_id != 4 
     GROUP BY equipos_informaticos.Equipo_id
     ORDER BY equipos_informaticos.Equipo_id DESC
 ");

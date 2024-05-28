@@ -3,8 +3,13 @@ include '../config/connection_db.php';
 
 $data = $_POST;
 
+$sql_subcategoria = "SELECT Subcategoria_id FROM subcategoria WHERE Nom_subcategoria = :subcategoria";
+$stmt_subcategoria = $conn->prepare($sql_subcategoria);
+$stmt_subcategoria->execute(['subcategoria' => $data['Subcategoria']]);
+$subcategoria_id = $stmt_subcategoria->fetchColumn();
+
 $sql_equipos = "UPDATE equipos_informaticos SET 
-    Id_subcategoria = :subcategoria, 
+    Id_subcategoria = :subcategoria_id, 
     Id_marca = :marca, 
     Modelo = :modelo, 
     Num_serie = :n_serie, 
@@ -30,7 +35,7 @@ try {
     $conn->beginTransaction();
 
     $stmt_equipos->execute([
-        'subcategoria' => $data['Subcategoria'], 
+        'subcategoria_id' => $subcategoria_id, 
         'marca' => $data['Marca'], 
         'modelo' => $data['Modelo'], 
         'n_serie' => $data['N_serie'], 

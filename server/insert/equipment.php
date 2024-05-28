@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'addressEthernet' => $_POST['addressEthernet'],
         'status' => '1',
         'codigo' => $_POST['codeEquipment'],
+        'num_telefono' => $_POST['num_telefono'],
     ];
 
     // Verificar si 'amountDevices' es numérico
@@ -125,7 +126,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     Service_tag,
                                     Comentarios,
                                     Status_id
-                                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                    num_telefono
+                                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                                 $executeResult = $stmt->execute([
                                     $data['subcategoryId'],
@@ -142,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $data['serviceTag'],
                                     $data['detailsExtraDevices'],
                                     $data['status'],
+                                    $data['num_telefono']
                                 ]);
 
                                 if (!$executeResult) {

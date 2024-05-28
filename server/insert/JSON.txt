@@ -104,3 +104,8 @@ Crear un php donde haga una cuenta de los que estan en mantenimiento (listo)
 Crear un php donde haga una cuenta de los que estan en Disponible (listo)
 
 Crear un php donde haga una cuenta de los que estan en resguardo (listo)
+
+
+codigo sql para la nueva columna:
+ALTER TABLE `equipos_informaticos`
+ADD `num_telefono` varchar(15) DEFAULT NULL;

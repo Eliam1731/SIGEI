@@ -51,10 +51,12 @@ try {
         'equipo_id' => $data['Equipo_id']
     ]);
 
-    $stmt_facturas->execute([
-        'factura_file' => file_get_contents($_FILES['Factura']['tmp_name']), 
-        'equipo_id' => $data['Equipo_id']
-    ]);
+    if (isset($_FILES['Factura']) && file_exists($_FILES['Factura']['tmp_name'])) {
+        $stmt_facturas->execute([
+            'factura_file' => file_get_contents($_FILES['Factura']['tmp_name']), 
+            'equipo_id' => $data['Equipo_id']
+        ]);
+    }
 
     $conn->commit();
     echo json_encode(["message" => "Su actualización fue exitosa"]);

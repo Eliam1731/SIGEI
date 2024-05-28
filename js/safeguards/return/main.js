@@ -1,5 +1,5 @@
 import { sendDataServer } from "../../utilities/sendDataServer.js";
-import { windowDeviceInformation } from "../auth/allDataDevice.js";
+import { windowDeviceInformation } from "./windowInformation.js";
 
 const elementsSectionReturnEquipmentDOM = {
     inputCode: 'codeEquipmentReturn',
@@ -72,13 +72,7 @@ const renderDeviceGuard = (data) => {
     bodyTableReturnSafeguards.appendChild(tr);
     const button = tr.querySelector('.btn-danger');
     
-    button.addEventListener('click', event => {
-        const id = event.target.parentElement.parentElement.getAttribute('id');
-        // windowDeviceInformation(data);
-
-        console.log(id, 'ID del equipo a devolver');
-        console.log(data, 'Datos del equipo a devolver');
-    });
+    button.addEventListener('click', () => {windowDeviceInformation(data);});
 }
 
 buttonSearchEquipmentReturn.addEventListener('click', () => {

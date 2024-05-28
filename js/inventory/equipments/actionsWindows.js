@@ -1,7 +1,11 @@
 import { currentYearUser } from "../../utilities/MaximumYearCurrent.js";
 import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from "../../utilities/decodeBase64ToBytes.js";
+import { getDataServer } from "../../utilities/getDataServer.js";
+import { sendDataServerEquipment } from "../../utilities/sendDataEquipment.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenance.js";
+
+let billsDevice = [];
 
 const firstSectionActions = (dataOriginal) => {
   const rootActions = document.getElementById("root-actions");
@@ -364,6 +368,31 @@ const secondSectionActions = (data) => {
       return;
     } 
 
+    //Obtener base64 del pdf
+    function getBase64(file) {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+      });
+    }
+
+    const dataUrl = await getBase64(inputPdf.files[0]);
+    const Recibo_pdf = dataUrl.split(',')[1];
+
+    //Obtener los value de los inputs
+    const objectExpenses = {
+      Fecha: inputDate.value,
+      Importe: inputPrice.value,
+      Piezas: document.getElementById('product').value,
+      Recibo_pdf: Recibo_pdf,
+      orden_compra: document.getElementById('quantity').value,
+    }
+    //Colocar el objeto en el array de expenses 
+    billsDevice.push(objectExpenses);
+    console.log(billsDevice, 'billsDevice');
+
     const data = new FormData(formAddExpenses);
     data.append('Equipo_id', device);
 
@@ -383,9 +412,9 @@ const secondSectionActions = (data) => {
   });
 };
 
-const thirdSectionActions = (data) => { 
+const thirdSectionActions = () => { 
   const rootActions = document.getElementById('root-actions');
-  const expenses = data[0].expenses;
+  const expenses = billsDevice;
   let totalBuy = 0;
   let countBuy = 0;
 
@@ -710,7 +739,258 @@ const fiveSectionActions = (data) => {
   finishMaintenanceDevice( data );
 }
 
+const sixSectionActions = async( dataOriginal ) => {
+  const rootActions = document.getElementById("root-actions");
+  const data = dataOriginal[0];
+
+  const html = `
+      <h2>Actualizar datos del equipo</h2>
+
+
+      <form id="form-equipment">
+        <div class='containerInput__flex'>
+            <label for="select__category">Elija la categoría</label>
+
+            <div class="container-category">
+                <select id="select__category" required name='Subcategoria'>
+                    <option value=''>No se ha seleccionado una categoría</option>
+                </select>
+            </div>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="brandDevices">Marca</label>
+
+            <div class="container-brand">
+                <select id="brandDevices" required name='Marca'>
+                    <option value=''>No se ha seleccionado una marca</option>
+                </select>
+            </div>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="codeEquipment">Pegue el código aquí si ya conoce el código del equipo.</label>
+
+            <div class="containe__codeequipment">
+                <div><span>OPCIC-COM-</span></div>
+                <input type="text" placeholder="Ejemplo: 00012" id="codeEquipment" value='${ data.codeOpc.slice(-5) }' required disabled>
+            </div>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="modelDevices">Modelo</label>
+
+            <input name='Modelo' id="modelDevices" type="text" placeholder="Ejemplo: SNL-002" required value='${ data.modelo }'>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="serialNumber">Número de serie</label>
+
+            <input name='N_serie' id="serialNumber" type="text" placeholder="Ejemplo: 080145780123" required value='${ data.numSerie }'>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="serviceTag">Service tag del equipo</label>
+            <input name='Service_tag' id="serviceTag" type="text" placeholder="Ejemplo: 029SN01201J" required value='${ data.serviceTag }'>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="dateBuy">Fecha de compra</label>
+
+            <input name='Fecha_compra' type="date" id="dateBuy" required value='${ data.fechaCompra }'>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="dateExpiresWarranty">Fecha en la que expira la garantía</label>
+
+            <input name='Fecha_garantía' type="date" id="dateExpiresWarranty" required value='${ data.fechaGarantia }'>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="amountDevices">Importe del equipo</label>
+
+            <input name='Importe' id="amountDevices" type="text" placeholder="Ejemplo: 20,000.00 MXN" required value='${ data.importe }' >
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="specificationDevices">Especificación del equipo</label>
+
+            <textarea name='Especificación' id="specificationDevices" placeholder="Ejemplo: 8 de RAM, 500GB de espacio, etc." required title="Por favor, separe las especificaciones del equipo utilizando comas.">${ data.especificacion }</textarea>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compras</label>
+            <input name='N_referencia_Compras' id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" required value='${ data.referenciaCompaq }'>
+        </div>
+
+        <div class='containerInput__flex hiden-inputs'>
+            <label for="addressEthernet" class='modify-label'>Dirección MAC Ethernet</label>
+
+            <input name='MAC_Ethernet' id="addressEthernet" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" required value='${ data.direccionMacEthernet }'>
+        </div>
+
+        <div class='containerInput__flex hiden-inputs'>
+            <label for="addressMacWifi">Dirección MAC WI-FI</label>
+
+            <input name='MAC_WIFI' id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" required value='${ data.direccionMacWifi }'>
+        </div>
+
+        <div class='containerInput__flex'>
+            <p>Subir factura del equipo</p>
+
+            <div class="container__inputfile">
+                <input name='Factura' id="invoiceDevices" type="file" accept=".pdf,.xml" multiple>
+
+                <label for="invoiceDevices">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-460h40v-80h40q17 0 28.5-11.5T480-580v-40q0-17-11.5-28.5T440-660h-80v200Zm40-120v-40h40v40h-40Zm120 120h80q17 0 28.5-11.5T640-500v-120q0-17-11.5-28.5T600-660h-80v200Zm40-40v-120h40v120h-40Zm120 40h40v-80h40v-40h-40v-40h40v-40h-80v200ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg>
+
+                    <span id='spanInputFile'>No hay facturas seleccionadas</span>
+                </label>
+            </div>
+        </div>
+
+        <div class='containerInput__flex'>
+            <p>Subir imagenes del equipo</p>
+
+            <div class="container__inputfile">
+                <input name='new_images' type="file" id="imageDevices" accept="image/*" multiple>
+
+                <label for="imageDevices">
+                    <svg width="118" height="102" viewBox="0 0 118 102" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M42.9997 58.6667H96.333L77.933 34.6667L65.6663 50.6667L57.3997 40L42.9997 58.6667ZM10.9997 101.333C8.06634 101.333 5.55523 100.289 3.46634 98.2C1.37745 96.1111 0.333008 93.6 0.333008 90.6667V21.3333H10.9997V90.6667H101.666V101.333H10.9997ZM32.333 80C29.3997 80 26.8886 78.9556 24.7997 76.8667C22.7108 74.7778 21.6663 72.2667 21.6663 69.3333V10.6667C21.6663 7.73333 22.7108 5.22222 24.7997 3.13333C26.8886 1.04444 29.3997 0 32.333 0H58.9997L69.6663 10.6667H107C109.933 10.6667 112.444 11.7111 114.533 13.8C116.622 15.8889 117.666 18.4 117.666 21.3333V69.3333C117.666 72.2667 116.622 74.7778 114.533 76.8667C112.444 78.9556 109.933 80 107 80H32.333ZM32.333 69.3333H107V21.3333H65.2663L54.5997 10.6667H32.333V69.3333Z" fill="black"/></svg>
+
+                    <span id='spanInputImage'>No hay imagenes seleccionadas</span>
+                </label>
+            </div>
+        </div>
+
+        <div class='containerInput__flex'>
+            <label for="detailsExtraDevices">Comentarios acerca del equipo</label>
+
+            <textarea name='Comentarios' id="detailsExtraDevices" placeholder="Colocar detalles extras sobre el equipo informático que se está registrando.">${ data.comentarios }</textarea>
+        </div>
+            
+        <button id="sendDataDevices">Actualizar datos del equipo</button>
+    </form>
+    `;
+
+  rootActions.innerHTML = html;
+  const selectCategory = document.getElementById("select__category");
+  const brandDevices = document.getElementById("brandDevices");
+  const codeDevice = document.getElementById("codeEquipment");
+  const imageDevices = document.getElementById("imageDevices");
+  const spanInputImage = document.getElementById('spanInputImage');
+  const formUpdate = document.getElementById('form-equipment');
+  console.log(data);
+
+  try {
+    const response = await getDataServer('../server/data/categories.php');
+    
+    for(let key in response) {
+      if(response.hasOwnProperty(key)) {
+          const optgroup = document.createElement('optgroup');
+          optgroup.setAttribute('label', key);
+
+          response[key].forEach( element => {
+              const option = document.createElement('option');
+              option.textContent = element;
+              option.value = element;
+
+              if(element === data.subcategoria) option.selected = true;
+
+              optgroup.appendChild(option);
+          })
+
+          selectCategory.appendChild(optgroup);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  try {
+    const response = await getDataServer('../server/data/brand.php');
+  
+    response.forEach( element => {
+      const option = document.createElement('option');
+
+      for(let i = 0; i < element.length; i++) {
+          if(i == 0) {
+              option.value = element[i];
+              continue;
+          };
+
+          if(element[i] === data.marca) option.selected = true;
+
+          option.innerText = element[i];
+      }
+
+      brandDevices.appendChild(option);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  codeDevice.addEventListener('change', () => {
+    const code = codeDevice.value;
+
+    if(code !== data.codeOpc.slice(-5)) {
+      alert('No puede modificar el código del equipo');
+
+      codeDevice.value = data.codeOpc.slice(-5);
+    }
+  });
+
+  imageDevices.addEventListener('change', () => {
+    const countNewImages = imageDevices.files.length;
+    const currentImages = data.images.length;
+
+    if(countNewImages + currentImages > 3) {
+      alert('No puede subir más de 3 imágenes');
+      imageDevices.value = '';
+      spanInputImage.textContent = 'No hay imagenes seleccionadas';
+
+      return;
+    }
+
+    spanInputImage.textContent = `${countNewImages} imagenes seleccionadas.`;
+  });
+
+  //Enviar datos del forulario en un objeto FormData
+  formUpdate.addEventListener('submit', async event => {
+    event.preventDefault();
+    //Enviar datos al archivo PHP para que los actualice
+    const data = new FormData(formUpdate);
+    data.append('Equipo_id', dataOriginal[0].idEquipo);
+
+    //crear un nuevo formdata para enviar las imagenes a otro archivo php
+    const dataImages = new FormData();
+    const images = imageDevices.files;
+
+    dataImages.append('equipo_id', dataOriginal[0].idEquipo);
+
+    for(let i = 0; i < images.length; i++) {
+      dataImages.append('image[]', images[i]);
+    }
+
+    try {
+      const response = await sendDataServerEquipment('../server/insert/update_img.php', dataImages);
+      console.warn(response);
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const response = await sendDataServerEquipment('../server/insert/update.php', data);
+      alert(response.message);
+    } catch (error) {
+      console.error(error);
+    }
+
+  });
+}
+
 export const windowActionsDevices = (data) => {
+  billsDevice = [];
   const containerClose = document.createElement("div");
   const containerActions = document.createElement("div");
   const html = `
@@ -719,6 +999,7 @@ export const windowActionsDevices = (data) => {
         <nav id='nav-actions'>
             <ul>
                 <li class='selected-actions__li'>Información detallada del equipo</li>
+                <li>Actualizar datos del equipo</li>
                 <li>Añadir gastos al equipo</li>
                 <li>Gatos del equipo</li>
                 <li>Resguardante</li>
@@ -739,10 +1020,11 @@ export const windowActionsDevices = (data) => {
   });
 
   const detailsDevice = document.querySelector("#nav-actions li:nth-child(1)");
-  const addExpenses = document.querySelector("#nav-actions li:nth-child(2)");
-  const expensesDevice = document.querySelector("#nav-actions li:nth-child(3)");
-  const resguardante = document.querySelector("#nav-actions li:nth-child(4)");
-  const preventiveMaintenance = document.querySelector("#nav-actions li:nth-child(5)");
+  const updateDataDevice = document.querySelector("#nav-actions li:nth-child(2)");
+  const addExpenses = document.querySelector("#nav-actions li:nth-child(3)");
+  const expensesDevice = document.querySelector("#nav-actions li:nth-child(4)");
+  const resguardante = document.querySelector("#nav-actions li:nth-child(5)");
+  const preventiveMaintenance = document.querySelector("#nav-actions li:nth-child(6)");
   const childrenNav = document.querySelectorAll("#nav-actions ul li");
 
   firstSectionActions(data);
@@ -752,6 +1034,13 @@ export const windowActionsDevices = (data) => {
     detailsDevice.classList.add("selected-actions__li");
 
     firstSectionActions(data);
+  });
+
+  updateDataDevice.addEventListener("click", () => {
+    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+    updateDataDevice.classList.add("selected-actions__li");
+
+    sixSectionActions(data);
   });
 
   addExpenses.addEventListener("click", () => {
@@ -781,4 +1070,9 @@ export const windowActionsDevices = (data) => {
 
     fiveSectionActions(data);
   });
+
+  if(data[0].expenses.message) return;
+
+  billsDevice = [...data[0].expenses];
+  console.log(billsDevice, 'billsDevice');
 };

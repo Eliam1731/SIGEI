@@ -9,13 +9,13 @@ $stmt_insert = $conn->prepare($sql_insert);
 try {
     $conn->beginTransaction();
 
-    foreach ($_FILES['new_images']['tmp_name'] as $key => $tmp_name) {
+    foreach ($_FILES['image']['tmp_name'] as $key => $tmp_name) {
         $imageData = file_get_contents($tmp_name);
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mime_type = $finfo->file($tmp_name);
 
         $stmt_insert->execute([
-            'nombre' => $_FILES['new_images']['name'][$key],
+            'nombre' => $_FILES['image']['name'][$key],
             'tipo_mime' => $mime_type,
             'datos_imagen' => $imageData,
             'equipo_id' => $equipo_id

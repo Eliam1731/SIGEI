@@ -104,4 +104,3 @@ Crear un php donde haga una cuenta de los que estan en mantenimiento (listo)
 Crear un php donde haga una cuenta de los que estan en Disponible (listo)
 
 Crear un php donde haga una cuenta de los que estan en resguardo (listo)
-

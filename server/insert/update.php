@@ -4,8 +4,16 @@ include '../config/connection_db.php';
 $data = $_POST;
 
 $fields = ['N_serie', 'MAC_WIFI', 'MAC_Ethernet', 'N_referencia_Compras', 'Service_tag'];
+$previous_values = []; 
+
 foreach ($fields as $field) {
     if (isset($data[$field]) && !empty($data[$field])) {
+
+        if (isset($previous_values[$field]) && $previous_values[$field] == $data[$field]) {
+            echo json_encode(["error" => "Está ingresando el mismo valor anterior para $field"]);
+            exit;
+        }
+
         $sql_check = "SELECT * FROM equipos_informaticos WHERE $field = :value";
         $stmt_check = $conn->prepare($sql_check);
         $stmt_check->execute(['value' => $data[$field]]);
@@ -15,9 +23,10 @@ foreach ($fields as $field) {
             echo json_encode(["error" => "El valor de $field ya existe en otro equipo"]);
             exit;
         }
+
+        $previous_values[$field] = $data[$field];
     }
 }
-
 
 $sql_subcategoria = "SELECT Subcategoria_id FROM subcategoria WHERE Nom_subcategoria = :subcategoria";
 $stmt_subcategoria = $conn->prepare($sql_subcategoria);
@@ -37,7 +46,7 @@ $sql_equipos = "UPDATE equipos_informaticos SET
     Direccion_mac_ethernet = :mac_ethernet, 
     Num_ref_compaq = :n_ref_compaq, 
     Service_tag = :service_tag, 
-    Comentarios = :comentarios
+    Comentarios = :comentarios,
     num_telefono = :num_telefono 
     WHERE Equipo_id = :equipo_id";
 
@@ -80,8 +89,6 @@ try {
     echo json_encode(["message" => "Su actualización fue exitosa"]);
 } catch (PDOException $e) {
     $conn->rollBack();
-    echo json_encode([
-        "error" => $e->getMessage()
-    ]);
+    echo json_encode(["error" => "Hubo un error en la actualización: " . $e->getMessage()]);
 }
 ?>

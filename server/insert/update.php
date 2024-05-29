@@ -3,6 +3,22 @@ include '../config/connection_db.php';
 
 $data = $_POST;
 
+$fields = ['N_serie', 'MAC_WIFI', 'MAC_Ethernet', 'N_referencia_Compras', 'Service_tag'];
+foreach ($fields as $field) {
+    if (isset($data[$field]) && !empty($data[$field])) {
+        $sql_check = "SELECT * FROM equipos_informaticos WHERE $field = :value";
+        $stmt_check = $conn->prepare($sql_check);
+        $stmt_check->execute(['value' => $data[$field]]);
+        $existing_data = $stmt_check->fetch(PDO::FETCH_ASSOC);
+
+        if ($existing_data && $existing_data['Equipo_id'] != $data['Equipo_id']) {
+            echo json_encode(["error" => "El valor de $field ya existe en otro equipo"]);
+            exit;
+        }
+    }
+}
+
+
 $sql_subcategoria = "SELECT Subcategoria_id FROM subcategoria WHERE Nom_subcategoria = :subcategoria";
 $stmt_subcategoria = $conn->prepare($sql_subcategoria);
 $stmt_subcategoria->execute(['subcategoria' => $data['Subcategoria']]);
@@ -21,7 +37,8 @@ $sql_equipos = "UPDATE equipos_informaticos SET
     Direccion_mac_ethernet = :mac_ethernet, 
     Num_ref_compaq = :n_ref_compaq, 
     Service_tag = :service_tag, 
-    Comentarios = :comentarios 
+    Comentarios = :comentarios
+    num_telefono = :num_telefono 
     WHERE Equipo_id = :equipo_id";
 
 $sql_facturas = "UPDATE facturas SET 
@@ -48,6 +65,7 @@ try {
         'n_ref_compaq' => $data['N_referencia_Compras'], 
         'service_tag' => $data['Service_tag'], 
         'comentarios' => $data['Comentarios'], 
+        'num_telefono' => $data['num_telefono'],
         'equipo_id' => $data['Equipo_id']
     ]);
 

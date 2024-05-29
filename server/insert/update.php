@@ -63,13 +63,7 @@ try {
 } catch (PDOException $e) {
     $conn->rollBack();
     echo json_encode([
-        "message" => "Hubo un error en la actualización", 
-        "error" => [
-            "code" => $e->getCode(),
-            "message" => $e->getMessage(),
-            "file" => $e->getFile(),
-            "line" => $e->getLine()
-        ]
+        "error" => $e->getMessage()
     ]);
 }
 ?>

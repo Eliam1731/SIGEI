@@ -3,7 +3,7 @@ include '../config/connection_db.php';
 
 $data = $_POST;
 
-$fields = ['N_serie', 'MAC_WIFI', 'MAC_Ethernet', 'N_referencia_Compras', 'Service_tag'];
+$fields = ['Num_serie', 'Direccion_mac_wifi', 'Direccion_mac_ethernet', 'Num_ref_compaq', 'Service_tag'];
 $previous_values = []; 
 
 foreach ($fields as $field) {

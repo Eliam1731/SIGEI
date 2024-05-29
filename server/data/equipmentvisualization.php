@@ -17,6 +17,7 @@ $sql = $conn->prepare("
         equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
         equipos_informaticos.Service_tag AS serviceTag,
         equipos_informaticos.Comentarios AS comentarios,
+        equipos_informaticos.num_telefono AS telefono,
         status.Nom_Status AS status,
         equipos_informaticos.miId AS codeOpc,
         CASE 
@@ -108,6 +109,7 @@ foreach ($rows as $row) {
         'nombreEmpresa' => $row['nombreEmpresa'],
         'nombreObra' => $row['nombreObra'],
         'nombreFrente' => $row['nombreFrente'],
+        'telefono' => $row['telefono'],
         'estaAResguardo' => $row['status'] !== 'Disponible'
     ];
 

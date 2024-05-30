@@ -7,8 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'brandDevices' => $_POST['brandDevices'],
         'modelDevices' => $_POST['modelDevices'],
         'serialNumber' => $_POST['serialNumber'],
-        'dateBuy' => $_POST['dateBuy'],
-        'dateExpiresWarranty' => $_POST['dateExpiresWarranty'],
+        'dateBuy' => $_POST['dateBuy'] === '' ? null : $_POST['dateBuy'],
+        'dateExpiresWarranty' => $_POST['dateExpiresWarranty'] === '' ? null : $_POST['dateExpiresWarranty'],
         'amountDevices' => $_POST['amountDevices'],
         'addressMacWifi' => $_POST['addressMacWifi'],
         'specificationDevices' => $_POST['specificationDevices'],
@@ -75,16 +75,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['message'] = 'La dirección MAC Ethernet ya está en uso. Intenta con otra dirección MAC Ethernet.';
                 }
 
-                // Verificar si el número de referencia de Compaq ya existe
-                $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");
-                $stmt->bindParam(':referenceCompaq', $data['referenceCompaq']);
-                $stmt->execute();
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                        // Verificar si el número de referencia de Compaq ya existe, pero solo si no es nulo
+                        if ($data['referenceCompaq'] !== null) {
+                            $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");
+                            $stmt->bindParam(':referenceCompaq', $data['referenceCompaq']);
+                            $stmt->execute();
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($row) {
-                    $response['status'] = 'error';
-                    $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
-                } else {
+                            if ($row) {
+                                $response['status'] = 'error';
+                                $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
+                            }
+                        }
                     // Verificar si el Service tag ya existe
                     $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
                     $stmt->bindParam(':serviceTag', $data['serviceTag']);
@@ -175,14 +177,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 }
 
                                 // Insertar facturas
-                                if (isset($_FILES['invoices'])) {
-                                    for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
-                                        $invoiceContent = file_get_contents($_FILES['invoices']['tmp_name'][$i]);
+                                
+                                    if (isset($_FILES['invoices']) && is_array($_FILES['invoices']['name'])) {
+                                        for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
+                                            $invoiceContent = file_get_contents($_FILES['invoices']['tmp_name'][$i]);
 
-                                        $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
-                                        $stmt->execute([$invoiceContent, $equipment_id]);
+                                            $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
+                                            $stmt->execute([$invoiceContent, $equipment_id]);
+                                        }
                                     }
-                                }
                                 $conn->commit();
 
                                 $response['status'] = 'success';
@@ -201,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-}
+
 
 header('Content-Type: application/json');
 print json_encode($response);

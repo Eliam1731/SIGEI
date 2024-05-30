@@ -21,12 +21,14 @@
             "email" => $formData['email'],
         ];
 
-        $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Num_seguro_social = ?");
-        $stmt->execute([$data["numberSocial"]]);
-        if($stmt->fetch()) {
-            header('Content-Type: application/json');
-            echo json_encode(["error" => "numberSocialExisting", "message" => $messages["numberSocialExisting"]], JSON_UNESCAPED_UNICODE);
-            exit;
+        if(!empty($data["numberSocial"])) {
+            $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Num_seguro_social = ?");
+            $stmt->execute([$data["numberSocial"]]);
+            if($stmt->fetch()) {
+                header('Content-Type: application/json');
+                echo json_encode(["error" => "numberSocialExisting", "message" => $messages["numberSocialExisting"]], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
         }
 
         $stmt = $conn->prepare("SELECT * FROM empleados_resguardantes WHERE Correo_electronico = ?");

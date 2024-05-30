@@ -119,3 +119,8 @@ MODIFY `Comentarios` text DEFAULT NULL;
 
 ALTER TABLE `equipos_informaticos`
 DROP INDEX `ref_compac`;
+
+ALTER TABLE `empleados_resguardantes`
+DROP INDEX `num_ssocial`;
+
+

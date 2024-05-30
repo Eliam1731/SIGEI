@@ -12,7 +12,8 @@ const inputsIDs = [
     'serviceTag',
     'referenceCompaq',
     'addressEthernet',
-    'codeEquipment'
+    'codeEquipment',
+    'num_telefono',
 ];
 
 export const generateCodeQR = ( image, equipmentID, nameImage  ) => {
@@ -35,7 +36,7 @@ export const cleanInputsForm = ( inputImage, inputFile ) => {
     inputRestoreValue.forEach(element => {
         const input = document.getElementById(element);
 
-        if(element === 'select__category' || element === 'brandDevices') {
+        if(element === 'brandDevices') {
             input.selectedIndex = 0;
 
             return
@@ -53,21 +54,18 @@ export const gettingDataInputsEquipment = async(images, invoice) => {
         return acc;
     }, {});
 
-    console.log(objectDataInputs);
-
     const formData = new FormData();
 
-    for (let key in objectDataInputs) {
-        formData.append(key, objectDataInputs[key]);
-    }
+    for (let key in objectDataInputs) { formData.append(key, objectDataInputs[key]) }
 
-    for (let image of images.values()) {
-        formData.append('images[]', image);
-    }
+    for (let image of images.values()) { formData.append('images[]', image) }
 
-    for (let invoiceFile of invoice.values()) {
-        formData.append('invoices[]', invoiceFile);
-    }
+   if(invoice !== undefined) {
+        for (let invoiceFile of invoice.values()) { formData.append('invoices[]', invoiceFile) }
+        return formData;
+   }
+
+   formData.append('invoices[]', '');
 
     return formData;
 }

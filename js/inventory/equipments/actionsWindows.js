@@ -236,6 +236,9 @@ const firstSectionActions = (dataOriginal) => {
           alert(response.message);
           closeWindow.remove();
           span.parentElement.remove();
+
+          const imagesUpdate = data.images.filter( image => image.Imagen_id !== parseInt(imageId));
+          data.images = imagesUpdate;
         }
       });
     });
@@ -368,7 +371,6 @@ const secondSectionActions = (data) => {
       return;
     } 
 
-    //Obtener base64 del pdf
     function getBase64(file) {
       return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -863,6 +865,12 @@ const sixSectionActions = async( dataOriginal ) => {
             </div>
         </div>
 
+        <div class='containerInput__flex hiden-inputs'>
+            <label for="numberPhone">Número de teléfono</label>
+
+            <input name='num_telefono' id="numberPhone" type="text" placeholder="Ejemplo: 9212728910" required value='${ (data.telefono === null) ? '' : data.telefono}'>
+        </div>
+
         <div class='containerInput__flex'>
             <label for="detailsExtraDevices">Comentarios acerca del equipo</label>
 
@@ -955,33 +963,32 @@ const sixSectionActions = async( dataOriginal ) => {
     spanInputImage.textContent = `${countNewImages} imagenes seleccionadas.`;
   });
 
-  //Enviar datos del forulario en un objeto FormData
   formUpdate.addEventListener('submit', async event => {
     event.preventDefault();
-    //Enviar datos al archivo PHP para que los actualice
     const data = new FormData(formUpdate);
-    data.append('Equipo_id', dataOriginal[0].idEquipo);
-
-    //crear un nuevo formdata para enviar las imagenes a otro archivo php
     const dataImages = new FormData();
     const images = imageDevices.files;
 
     dataImages.append('equipo_id', dataOriginal[0].idEquipo);
+    data.append('Equipo_id', dataOriginal[0].idEquipo);
 
     for(let i = 0; i < images.length; i++) {
       dataImages.append('image[]', images[i]);
     }
 
     try {
-      const response = await sendDataServerEquipment('../server/insert/update_img.php', dataImages);
-      console.warn(response);
-    } catch (error) {
-      console.error(error);
-    }
-
-    try {
       const response = await sendDataServerEquipment('../server/insert/update.php', data);
-      alert(response.message);
+
+      if(response.message === 'Su actualización fue exitosa') {
+        const responseImage = await sendDataServerEquipment('../server/insert/update_img.php', dataImages);
+        if(responseImage.error) { alert(responseImage.error); }
+
+        alert(response.message);
+        window.location.reload();
+        return;
+      }
+
+      alert(response.error);
     } catch (error) {
       console.error(error);
     }

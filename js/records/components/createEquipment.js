@@ -26,6 +26,9 @@ export const devicesWithAddresses = [
     'Fortinet',
 ];
 
+const devicesWitchNumberPhone = ['Teléfono'];
+
+
 const elementsDOM = {
     selectBrand: 'brandDevices',
     selectCategories: 'select__category',
@@ -423,22 +426,33 @@ const functionalitiesRegisterEquipment = async() => {
         const value = event.target.value;
         const inputAddressEthernet = document.getElementById('addressEthernet');   
         const inputAddressWifi = document.getElementById('addressMacWifi');
-
+        const inputNumberPhone = document.getElementById('num_telefono');
+        const containerInputNumberPhone = document.getElementById('hiden-inputs-numberPhone');
+    
         if(devicesWithAddresses.includes(value)) {
             inputsHiden.forEach(element => {
                 element.style.display = 'flex';
                 inputAddressEthernet.setAttribute('required', '');
                 inputAddressWifi.setAttribute('required', '');
             });
-
-            return;
+        } else {
+            inputsHiden.forEach(element => {
+                element.style.display = 'none';
+                inputAddressEthernet.removeAttribute('required');
+                inputAddressWifi.removeAttribute('required');
+                inputAddressEthernet.value = '';
+                inputAddressWifi.value = '';
+            });
         }
-
-        inputsHiden.forEach(element => {
-            element.style.display = 'none';
-            inputAddressEthernet.removeAttribute('required');
-            inputAddressWifi.removeAttribute('required');
-        });
+    
+        if(devicesWitchNumberPhone.includes(value)) {
+            containerInputNumberPhone.style.display = 'flex';
+            inputNumberPhone.setAttribute('required', '');
+        } else {
+            containerInputNumberPhone.style.display = 'none';
+            inputNumberPhone.removeAttribute('required');
+            inputNumberPhone.value = '';
+        }
     });
 
     everyBrand.forEach(element => {

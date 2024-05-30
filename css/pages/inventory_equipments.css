@@ -1457,16 +1457,17 @@ main {
 .containerInput__flex:nth-child(5) input,
 .containerInput__flex:nth-child(6) input,
 .containerInput__flex:nth-child(7) input,
+.containerInput__flex:nth-child(16) input,
 .containerInput__flex:nth-child(9) input { right: 30%; }
 
 .containerInput__flex:nth-child(8) input {  right: 25%;}
 
-.containerInput__flex:nth-child(10), 
-.containerInput__flex:nth-child(16) { height: 10em; }
-.containerInput__flex:nth-child(16) { border-bottom: 1px solid #E0E0E0; }
+.containerInput__flex:nth-child(16) { height: 5em; }
+.containerInput__flex:nth-child(10), .containerInput__flex:nth-child(17) { height: 10em; }
+.containerInput__flex:nth-child(17) { border-bottom: 1px solid #E0E0E0; }
 
-.containerInput__flex:nth-child(10) label, .containerInput__flex:nth-child(16) label { position: absolute; top: 20%; }
-.containerInput__flex:nth-child(10) textarea, .containerInput__flex:nth-child(16) textarea {
+.containerInput__flex:nth-child(10) label, .containerInput__flex:nth-child(17) label { position: absolute; top: 20%; }
+.containerInput__flex:nth-child(10) textarea, .containerInput__flex:nth-child(17) textarea {
     top: 20%;
     right: 16.5%;
     height: 65%;

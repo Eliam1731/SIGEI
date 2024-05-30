@@ -1,4 +1,5 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
+import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { windowActionsEmployee } from "./windowActionsEmployee.js";
 
 const employeeElementsDOM = {
@@ -8,6 +9,7 @@ const employeeElementsDOM = {
 
 const bodyTableEmployee = document.getElementById( employeeElementsDOM.tableBody );
 const listItemEmployee = document.getElementById( employeeElementsDOM.listItemEmployee );
+const searchEmployee = document.getElementById('searcherEmployee');
 let idx = 0; 
 
 const renderDataEmployee = ( data ) => {
@@ -51,6 +53,20 @@ listItemEmployee.addEventListener('click', async() => {
         let response = await getDataServer('../server/data/employeevisualization.php');
         console.log(response);
         renderDataEmployee(response);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+searchEmployee.addEventListener('keyup', async( event ) => {
+    const search = event.target.value.trim().toLowerCase();
+   
+    try {
+        if(search !== '') {
+            const response = await sendDataServer('../server/data/searcher.php', { search });
+
+            
+        }
     } catch (error) {
         console.error(error);
     }

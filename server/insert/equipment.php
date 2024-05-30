@@ -1,6 +1,8 @@
 <?php
 include '../config/connection_db.php';
 
+$response = array();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'select_category' => $_POST['select__category'],

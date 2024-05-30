@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
                             
                         }
-                    
+                    }
                     // Verificar si el Service tag ya existe
                     $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
                     $stmt->bindParam(':serviceTag', $data['serviceTag']);
@@ -195,11 +195,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $response['message'] = 'El registro se realizó correctamente.';
                                 $response['equipment_id'] = $equipment_id;
                                 $response['formatted_equipment_id'] = $data['codigo'];
-                            } catch (Exception $e) {
-                                $conn->rollback();
-
+                            } catch (PDOException $e) {
+                            if ($e->getCode() === 'HY000' && strpos($e->getMessage(), 'server has gone away') !== false) {
+                                
                                 $response['status'] = 'error';
-                                $response['message'] = 'Hubo un error al realizar el registro.' . $e->getMessage();
+                                $response['message'] = 'El servidor MySQL se ha desconectado. Por favor, inténtalo de nuevo.';
+                            } else {
+                                
+                                $response['status'] = 'error';
+                                $response['message'] = 'Ha ocurrido un error: ' . $e->getMessage();
                             }
                         }
                     }

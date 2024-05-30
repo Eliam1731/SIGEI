@@ -14,14 +14,7 @@ try {
 } catch (PDOException $e) {
     echo json_encode([
         "message" => "Hubo un error en la búsqueda de empleados", 
-        "error" => [
-            "code" => $e->getCode(),
-            "message" => $e->getMessage(),
-            "file" => $e->getFile(),
-            "line" => $e->getLine()
-        ]
+        "error" => $e->getMessage()
     ]);
 }
 ?>
-
-

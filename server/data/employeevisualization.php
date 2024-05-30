@@ -2,7 +2,7 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, emp.Nom_corto as Nom_corto_empresa, ob.Nombre_obra, ob.Num_obra as Num_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion, st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca
+    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, emp.Nom_corto as Nom_corto_empresa, ob.Nombre_obra, ob.Num_obra as Num_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion, st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca, eq.num_telefono
         FROM empleados_resguardantes e 
         LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id AND r.status = 'resguardado'
         LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
@@ -55,6 +55,7 @@ try {
                 'Comentarios' => $row['Comentarios'],
                 'Status' => $row['Nom_Status'],
                 'miId' => $row['miId'],
+                'num_telefono' => $row['num_telefono'],
             ];
         }
     }

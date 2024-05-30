@@ -16,6 +16,7 @@ $sql = $conn->prepare("SELECT
         equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
         equipos_informaticos.Service_tag AS serviceTag,
         equipos_informaticos.Comentarios AS comentarios,
+        equipos_informaticos.num_telefono AS telefono,
         status.Nom_Status AS status,
         equipos_informaticos.miId AS codeOpc,
         empleados_resguardantes.Nombre AS nombreEmpleado,
@@ -72,7 +73,8 @@ foreach ($rows as $row) {
         'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado'],
         'nombreEmpresa' => $row['nombreEmpresa'],
         'nombreObra' => $row['nombreObra'],
-        'nombreFrente' => $row['nombreFrente']
+        'nombreFrente' => $row['nombreFrente'],
+        'telefono' => $row['telefono']
     ];
 
     $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");

@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     Num_ref_compaq,
                                     Service_tag,
                                     Comentarios,
-                                    Status_id
+                                    Status_id,
                                     num_telefono
                                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 

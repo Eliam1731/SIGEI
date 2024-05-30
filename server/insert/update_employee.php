@@ -25,11 +25,6 @@ if($stmt->fetch()) {
 }
 
 
-if(strpos($data['Correo_electronico'], '@grupoopc.com') === false) {
-    echo json_encode(["message" => "Solo se pueden meter correos con el dominio @grupoopc.com"]);
-    exit;
-}
-
 $sql = "UPDATE empleados_resguardantes SET 
     Nombre = :nombre, 
     Primer_apellido = :primer_apellido, 

@@ -7,14 +7,18 @@ $search = $data['search'];
 $searchWords = explode(' ', $search);
 
 $searchConditions = [];
-foreach ($searchWords as $word) {
-    $searchConditions[] = "CONCAT(Nombre, ' ', Primer_apellido, ' ', Segundo_apellido) LIKE :$word";
+foreach ($searchWords as $index => $word) {
+    if ($index == 0) {
+        $searchConditions[] = "Nombre LIKE :$word";
+    } elseif ($index == 1) {
+        $searchConditions[] = "Primer_apellido LIKE :$word";
+    } elseif ($index == 2) {
+        $searchConditions[] = "Segundo_apellido LIKE :$word";
+    }
 }
 
-
-$sql_search = "SELECT * FROM empleados_resguardantes WHERE " . implode(' OR ', $searchConditions);
+$sql_search = "SELECT * FROM empleados_resguardantes WHERE " . implode(' AND ', $searchConditions);
 $stmt_search = $conn->prepare($sql_search);
-
 
 $searchParams = [];
 foreach ($searchWords as $word) {

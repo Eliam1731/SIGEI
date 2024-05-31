@@ -8,12 +8,13 @@ $searchWords = explode(' ', $search);
 
 $searchConditions = [];
 foreach ($searchWords as $index => $word) {
+    $word = strtr($word, 'ÁÉÍÓÚáéíóú', 'AEIOUaeiou');
     if ($index == 0) {
-        $searchConditions[] = "e.Nombre LIKE :$word";
+        $searchConditions[] = "CONVERT(e.Nombre USING utf8) COLLATE utf8_general_ci LIKE :word$index";
     } elseif ($index == 1) {
-        $searchConditions[] = "e.Primer_apellido LIKE :$word";
+        $searchConditions[] = "CONVERT(e.Primer_apellido USING utf8) COLLATE utf8_general_ci LIKE :word$index";
     } elseif ($index == 2) {
-        $searchConditions[] = "e.Segundo_apellido LIKE :$word";
+        $searchConditions[] = "CONVERT(e.Segundo_apellido USING utf8) COLLATE utf8_general_ci LIKE :word$index";
     }
 }
 
@@ -33,8 +34,8 @@ $sql_search = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apel
 $stmt_search = $conn->prepare($sql_search);
 
 $searchParams = [];
-foreach ($searchWords as $word) {
-    $searchParams[$word] = "%$word%";
+foreach ($searchWords as $index => $word) {
+    $searchParams["word$index"] = "%$word%";
 }
 
 try {

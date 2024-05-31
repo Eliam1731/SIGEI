@@ -148,6 +148,10 @@
                 <li class="li-selected">Equipos</li>
                 <li id="listItemEmployee">Empleados resguardantes</li>
             </ul>
+
+            <div class="container-countDevices">
+                
+            </div>
         </nav>
     </main>
     

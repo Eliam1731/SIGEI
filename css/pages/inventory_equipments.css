@@ -1710,3 +1710,10 @@ main {
     box-sizing: border-box;
     border-radius: .5em;
 }
+
+.container-countDevices {
+    height: 50%;
+    width: 100%;
+    position: relative;
+    background: purple;
+}

@@ -916,15 +916,14 @@ const sixSectionActions = async( dataOriginal ) => {
   const formUpdate = document.getElementById('form-equipment');
   const disabledInputMovil = document.querySelector('.hiden-inputsMovil');
   const directionMAC = document.querySelectorAll('.hiden-inputs');
-  //Datos que se mantendran 
   const numberPhoneInput = document.getElementById('numberPhone');
   const numberPhone = numberPhoneInput.value;
   const addressEthernetInput = document.getElementById('addressEthernet');
   const addressMacWifiInput = document.getElementById('addressMacWifi');
   const addressEthernet = addressEthernetInput.value;
   const addressMacWifi = addressMacWifiInput.value;
-
-  console.log(numberPhone, 'numberPhone')
+  const spanInputFile = document.getElementById('spanInputFile');
+  const inputInvoice = document.getElementById('invoiceDevices');
   
   if(data.subcategoria !== 'Teléfono') { 
     disabledInputMovil.style.display = 'none'; 
@@ -968,8 +967,6 @@ const sixSectionActions = async( dataOriginal ) => {
       disabledInputMovil.style.display = 'none';
       numberPhoneInput.value = '';
       numberPhoneInput.removeAttribute('required');
-
-      console.log(numberPhoneInput.value, 'numberPhoneInput.value')
     }
   });
 
@@ -1044,6 +1041,11 @@ const sixSectionActions = async( dataOriginal ) => {
     }
 
     spanInputImage.textContent = `${countNewImages} imagenes seleccionadas.`;
+  });
+
+  inputInvoice.addEventListener('change', () => {
+    const countFiles = inputInvoice.files.length;
+    spanInputFile.textContent = ( countFiles === 1 ) ? `${countFiles} archivo seleccionado` : `${countFiles} archivos seleccionados`;
   });
 
   formUpdate.addEventListener('submit', async event => {

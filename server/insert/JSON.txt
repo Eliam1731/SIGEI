@@ -122,5 +122,3 @@ DROP INDEX `ref_compac`;
 
 ALTER TABLE `empleados_resguardantes`
 DROP INDEX `num_ssocial`;
-
-

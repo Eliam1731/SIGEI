@@ -50,9 +50,16 @@ $sql_equipos = "UPDATE equipos_informaticos SET
     num_telefono = :num_telefono 
     WHERE Equipo_id = :equipo_id";
 
-$sql_facturas = "UPDATE facturas SET 
-    Factura_file = :factura_file 
-    WHERE Equipo_id = :equipo_id";
+$sql_check_factura = "SELECT * FROM facturas WHERE Equipo_id = :equipo_id";
+$stmt_check_factura = $conn->prepare($sql_check_factura);
+$stmt_check_factura->execute(['equipo_id' => $data['Equipo_id']]);
+$existing_factura = $stmt_check_factura->fetch(PDO::FETCH_ASSOC);
+
+if ($existing_factura) {
+    $sql_facturas = "UPDATE facturas SET Factura_file = :factura_file WHERE Equipo_id = :equipo_id";
+} else {
+    $sql_facturas = "INSERT INTO facturas (Factura_file, Equipo_id) VALUES (:factura_file, :equipo_id)";
+}
 
 $stmt_equipos = $conn->prepare($sql_equipos);
 $stmt_facturas = $conn->prepare($sql_facturas);

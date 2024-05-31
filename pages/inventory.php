@@ -100,7 +100,7 @@
             <section id="employee_section">
                 <div class="container-search__employee">
                     <div class="search__employe">
-                        <input type="text" id="searcherEmployee">
+                        <input type="text" id="searcherEmployee" placeholder="Coloque el nombre del empleado resguardante.">
 
                         <div>
                             <button id="searchEmployee">
@@ -108,14 +108,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <button class="filters-button__employee" id="deleteFiltrosEmployee" type="button">
-                        Eliminar filtros
-                    </button>
-
-                    <button class="filters-button__employee" id="enableWindowFilterEmployee" type="button">
-                        <img src="../images/filter.png" alt="">
-                    </button>
                 </div>
 
                 <div class="container-table__employee"> 
@@ -127,7 +119,7 @@
                             </div>
 
                             <div>
-                                <button>Agregar empleado</button>
+                                <button id="redirectionRecordsEmployee">Agregar empleado</button>
                             </div>
                         </div>
 

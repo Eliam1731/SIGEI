@@ -4,8 +4,7 @@ import { updateInformationEmployee } from "./updateSection.js";
 
 const closeWindowActionsEmployee = ( elementHTML ) => elementHTML.remove();
 
-const createWindowActionsEmployee = ( employee ) => {
-    
+export const createWindowActionsEmployee = ( employee ) => {
     const root = document.createElement('div');
     const container = document.createElement('div');
     const html = `
@@ -42,7 +41,10 @@ const createWindowActionsEmployee = ( employee ) => {
     listItemUpdateData.addEventListener('click', () => updateInformationEmployee( employee, rootEmployee ));
 
     downloadGuardFile.addEventListener('click', () => {
-        const { Num_obra: work, Nombre, Primer_apellido, Segundo_apellido, Equipos } = employee[0];
+        const { 
+            Num_obra: work, Nombre, Primer_apellido, Segundo_apellido, Equipos 
+        } = (employee[0] !== undefined) ? employee[0] : employee;
+        
         if( Equipos.length === 0 ) return alert('El empleado no tiene equipos asignados');
 
         const employeeName = `${Nombre} ${Primer_apellido} ${Segundo_apellido}`;
@@ -62,7 +64,7 @@ const createWindowActionsEmployee = ( employee ) => {
 }
 
 export const windowActionsEmployee = ( data, employee ) => {
-    const filterEmployee = data.filter( employeeData => employeeData.Num_seguro_social === employee );
+    const filterEmployee = data.filter( employeeData => employeeData.Empleado_id === parseInt(employee) );
 
     createWindowActionsEmployee( filterEmployee );
 }

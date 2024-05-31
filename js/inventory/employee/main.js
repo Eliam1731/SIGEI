@@ -1,5 +1,6 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { searchEmployeeList } from "./viewSearchEmployee.js";
 import { windowActionsEmployee } from "./windowActionsEmployee.js";
 
 const employeeElementsDOM = {
@@ -10,7 +11,10 @@ const employeeElementsDOM = {
 const bodyTableEmployee = document.getElementById( employeeElementsDOM.tableBody );
 const listItemEmployee = document.getElementById( employeeElementsDOM.listItemEmployee );
 const searchEmployee = document.getElementById('searcherEmployee');
+const buttonRedirectSection = document.getElementById('redirectionRecordsEmployee');
 let idx = 0; 
+
+buttonRedirectSection.addEventListener('click', () => { window.location.href = '../pages/records.php'; });
 
 const renderDataEmployee = ( data ) => {
     bodyTableEmployee.innerHTML = '';
@@ -27,7 +31,7 @@ const renderDataEmployee = ( data ) => {
                 <td>${shortName}</td>
                 <td>${workID}</td>
                 <td>${frontID}</td>   
-                <td id='${ sureSocial }'>
+                <td id='${ employeeID }'>
                     <button class='editInformation__employee'>
                         Editar
                     </button>
@@ -42,8 +46,8 @@ const renderDataEmployee = ( data ) => {
 
     buttonEdit.forEach(  button => {
         button.addEventListener('click', () => {
-            const sureSocial = button.parentElement.id;
-            windowActionsEmployee(data, sureSocial);
+            const idEmployee = button.parentElement.id;
+            windowActionsEmployee(data, idEmployee);
         });
     });
 }
@@ -51,7 +55,7 @@ const renderDataEmployee = ( data ) => {
 listItemEmployee.addEventListener('click', async() => {
     try {
         let response = await getDataServer('../server/data/employeevisualization.php');
-        console.log(response);
+    
         renderDataEmployee(response);
     } catch (error) {
         console.error(error);
@@ -62,11 +66,10 @@ searchEmployee.addEventListener('keyup', async( event ) => {
     const search = event.target.value.trim().toLowerCase();
    
     try {
-        if(search !== '') {
-            const response = await sendDataServer('../server/data/searcher.php', { search });
+        const response = await sendDataServer('../server/data/searcher.php', { search });
+        console.log(response, 'Busqueda de empleados');
 
-            
-        }
+        searchEmployeeList(response, searchEmployee);
     } catch (error) {
         console.error(error);
     }

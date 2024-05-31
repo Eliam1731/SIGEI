@@ -7,6 +7,21 @@ import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenan
 
 let billsDevice = [];
 
+const devicesWithAddresses = [
+  'Laptop',
+  'Computadora de escritorio',
+  'All In One',
+  'Impresora',
+  'Servidor',
+  'Teléfono',
+  'Teléfonos IP',
+  'Router',
+  'Modem',
+  'Switch',
+  'Acesspoint',
+  'Fortinet',
+];
+
 const firstSectionActions = (dataOriginal) => {
   const rootActions = document.getElementById("root-actions");
   const data = dataOriginal[0];
@@ -48,12 +63,12 @@ const firstSectionActions = (dataOriginal) => {
 
               <div class='row-info__device'>
                   <dt>Fecha de compra</dt>
-                  <dd>${data.fechaCompra}</dd>
+                  <dd>${ (data.fechaCompra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : data.fechaCompra }</dd>
               </div>
 
               <div class='row-info__device'>
                   <dt>Fecha en la que expira la garantía</dt>
-                  <dd>${data.fechaGarantia}</dd>
+                  <dd>${ (data.fechaGarantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : data.fechaGarantia }</dd>
               </div>
 
               <div class='row-info__device'>
@@ -68,7 +83,7 @@ const firstSectionActions = (dataOriginal) => {
 
               <div class='row-info__device'>
                   <dt>Numero de referencia de Compras</dt>
-                  <dd>${data.referenciaCompaq}</dd>
+                  <dd>${ (data.referenciaCompaq === '') ? 'El equipo no tiene un número de referencia de compra.' : data.referenciaCompaq }</dd>
               </div>
 
               <div class='row-info__device'>
@@ -104,6 +119,11 @@ const firstSectionActions = (dataOriginal) => {
                           }).join('')}
                       </ul>
                   </dd>
+              </div>
+
+              <div class='row-info__device'>
+                  <dt>Número de teléfono</dt>
+                  <dd>${(!data.telefono) ? 'El equipo no cuenta con un número telefónico.' : data.telefono}</dd>
               </div>
 
               <div class='row-info__device'>
@@ -262,6 +282,12 @@ const firstSectionActions = (dataOriginal) => {
   });
 
   downloadInvoice.addEventListener("click", async () => {
+    console.log(data, 'data');
+    if( data.invoices.length === 0) {
+      alert('El equipo no tiene factura');
+
+      return;
+    }
     const invoice = data.invoices[0].Factura_file;
     const pdfBytes = decodeBase64ToBytes(invoice);
     const blob = createBlobFromBytes(pdfBytes);
@@ -799,13 +825,13 @@ const sixSectionActions = async( dataOriginal ) => {
         <div class='containerInput__flex'>
             <label for="dateBuy">Fecha de compra</label>
 
-            <input name='Fecha_compra' type="date" id="dateBuy" required value='${ data.fechaCompra }'>
+            <input name='Fecha_compra' type="date" id="dateBuy" value='${ data.fechaCompra }'>
         </div>
 
         <div class='containerInput__flex'>
             <label for="dateExpiresWarranty">Fecha en la que expira la garantía</label>
 
-            <input name='Fecha_garantía' type="date" id="dateExpiresWarranty" required value='${ data.fechaGarantia }'>
+            <input name='Fecha_garantía' type="date" id="dateExpiresWarranty" value='${ data.fechaGarantia }'>
         </div>
 
         <div class='containerInput__flex'>
@@ -822,7 +848,7 @@ const sixSectionActions = async( dataOriginal ) => {
 
         <div class='containerInput__flex'>
             <label for="referenceCompaq" class='modify-label'>Numero de referencia de Compras</label>
-            <input name='N_referencia_Compras' id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" required value='${ data.referenciaCompaq }'>
+            <input name='N_referencia_Compras' id="referenceCompaq" type="text" placeholder="Ejemplo: 012832903" value='${ data.referenciaCompaq }'>
         </div>
 
         <div class='containerInput__flex hiden-inputs'>
@@ -865,7 +891,7 @@ const sixSectionActions = async( dataOriginal ) => {
             </div>
         </div>
 
-        <div class='containerInput__flex hiden-inputs'>
+        <div class='containerInput__flex hiden-inputsMovil'>
             <label for="numberPhone">Número de teléfono</label>
 
             <input name='num_telefono' id="numberPhone" type="text" placeholder="Ejemplo: 9212728910" required value='${ (data.telefono === null) ? '' : data.telefono}'>
@@ -888,7 +914,64 @@ const sixSectionActions = async( dataOriginal ) => {
   const imageDevices = document.getElementById("imageDevices");
   const spanInputImage = document.getElementById('spanInputImage');
   const formUpdate = document.getElementById('form-equipment');
-  console.log(data);
+  const disabledInputMovil = document.querySelector('.hiden-inputsMovil');
+  const directionMAC = document.querySelectorAll('.hiden-inputs');
+  //Datos que se mantendran 
+  const numberPhoneInput = document.getElementById('numberPhone');
+  const numberPhone = numberPhoneInput.value;
+  const addressEthernetInput = document.getElementById('addressEthernet');
+  const addressMacWifiInput = document.getElementById('addressMacWifi');
+  const addressEthernet = addressEthernetInput.value;
+  const addressMacWifi = addressMacWifiInput.value;
+
+  console.log(numberPhone, 'numberPhone')
+  
+  if(data.subcategoria !== 'Teléfono') { 
+    disabledInputMovil.style.display = 'none'; 
+    numberPhoneInput.value = '';
+    numberPhoneInput.removeAttribute('required');
+  }
+
+  if(!devicesWithAddresses.includes(data.subcategoria)) { 
+    directionMAC.forEach( element => element.style.display = 'none'); 
+    addressEthernetInput.value = '';
+    addressMacWifiInput.value = '';
+
+    addressEthernetInput.removeAttribute('required');
+    addressMacWifiInput.removeAttribute('required');
+  } 
+
+  selectCategory.addEventListener('change', () => {
+    const category = selectCategory.value;
+
+    if(devicesWithAddresses.includes(category)) {
+      directionMAC.forEach( element => element.style.display = 'flex');
+      addressEthernetInput.value = addressEthernet;
+      addressMacWifiInput.value = addressMacWifi;
+
+      addressEthernetInput.setAttribute('required', true);
+      addressMacWifiInput.setAttribute('required', true);
+    } else {
+      directionMAC.forEach( element => element.style.display = 'none');
+      addressEthernetInput.value = '';
+      addressMacWifiInput.value = '';
+
+      addressEthernetInput.removeAttribute('required');
+      addressMacWifiInput.removeAttribute('required');
+    }
+
+    if(category === 'Teléfono') {
+      disabledInputMovil.style.display = 'flex';
+      numberPhoneInput.value = numberPhone;
+      numberPhoneInput.setAttribute('required', true);
+    } else {
+      disabledInputMovil.style.display = 'none';
+      numberPhoneInput.value = '';
+      numberPhoneInput.removeAttribute('required');
+
+      console.log(numberPhoneInput.value, 'numberPhoneInput.value')
+    }
+  });
 
   try {
     const response = await getDataServer('../server/data/categories.php');

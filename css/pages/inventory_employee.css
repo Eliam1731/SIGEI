@@ -18,12 +18,14 @@
 
 .search__employe {
     margin: 0 0 0 3%;
-    height: 55%;
+    height: 60%;
     width: 50%;
     position: relative;
     display: flex;
-    border: 1px solid grey;
+    border: 2px solid #757575;
     box-sizing: border-box;
+    border-radius: .3em;
+    overflow: hidden;
 }
 
 #searcherEmployee {
@@ -33,7 +35,13 @@
     box-sizing: border-box;
     border: 0;
     outline: 0;
+    padding-left: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+#searcherEmployee::placeholder { color: #616161; }
 
 .search__employe div {
     height: 100%;
@@ -43,7 +51,7 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    border-left: 1px solid grey;
+    border-left: 2px solid #757575;
 }
 
 .search__employe div button {
@@ -258,3 +266,39 @@
     position: absolute;
     bottom: 5%;
 }
+
+.rootSearchEmployee {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.rootSearchEmployee > div {
+    margin: 8.5% 0 0 2.4%;
+    max-height: 70%;
+    width: 40%;
+    position: relative;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #FFFFFF;
+    border: 1px solid #212121;
+    border-radius: .3em;
+}
+
+.rootSearchEmployee > div ul {
+    height: auto;
+    width: 100%;
+    position: relative;
+}
+
+.rootSearchEmployee > div ul li {
+    padding: 1em;
+    cursor: default;
+}
+
+.rootSearchEmployee > div ul li:hover { background: #F5F5F5; }

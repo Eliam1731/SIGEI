@@ -1,8 +1,24 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
 
+function isObject(value) {
+    return value && typeof value === 'object' && !Array.isArray(value);
+}
+
 export const updateInformationEmployee = async( data, root ) => {
-    const { Correo_electronico, Empleado_id, Empresa, Nombre, Num_seguro_social, Obra, Primer_apellido, Segundo_apellido, Frente } = data[0];
     let business;
+    const { 
+        Correo_electronico, Empleado_id, Empresa, Nombre, Num_seguro_social, Obra, Primer_apellido, Segundo_apellido, Frente 
+    } = (data[0] !== undefined) ? data[0] : data;
+
+    if(Array.isArray(data)) {
+        console.log(data);
+        console.log('No es un objeto');
+    };
+
+    if(isObject(data)) {
+        console.log(data);
+        console.log('Es un objeto');
+    }
 
     try {
         business = await getDataServer('../server/data/business.php');
@@ -81,11 +97,12 @@ export const updateInformationEmployee = async( data, root ) => {
             
             if( result.message === 'Su actualización fue exitosa') {
                 alert(result.message);
+                window.location.reload();
                 return;
             }
 
             console.log(result);
-            alert('Hubo un error al actualizar los datos');
+            alert(result.message);
         } catch (error) {
             console.error(error);
         }

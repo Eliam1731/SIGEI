@@ -2,10 +2,7 @@ import { updateDevicesFilter } from "./renderDevices.js";
 
 export const messageTableDevice = ( root, data, checkbox ) => {
     if( data.length > 0 ) return;
-    if( !checkbox.available && !checkbox.inResguardo && !checkbox.inMaintenance ) {
-        updateDevicesFilter();
-        return;
-    };
+    if( !checkbox.available && !checkbox.inResguardo && !checkbox.inMaintenance ) return updateDevicesFilter();
 
     const message = `
         <div class='message-table'>

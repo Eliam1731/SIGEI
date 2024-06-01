@@ -83,7 +83,7 @@ foreach ($rows as $row) {
         'nombreEmpresa' => $row['nombreEmpresa'],
         'nombreObra' => $row['nombreObra'],
         'nombreFrente' => $row['nombreFrente'],
-        'num_telefono' => $row['num_telefono']
+        'telefono' => $row['num_telefono']
     ];
 
     $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");

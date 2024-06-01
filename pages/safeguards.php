@@ -24,6 +24,7 @@
                 <li><a href="records.php">Registros</a></li>
                 <li><a class="selected" href="safeguards.php">Resguardos</a></li>
                 <li><a href="inventory.php">Equipos y Empleados</a></li>
+                <li><a href="reports.php">Reporte</a></li>
                 <li><a href="history.php">Historial</a></li>
             </ul>
         </nav>
@@ -46,7 +47,7 @@
 
                     <div class="container__codeEquipment">
                         <div>
-                            <span>OPCIC-COM-</span>
+                            <span id='spanCodeOpc'>OPCIC-COM-</span>
                         </div>
                         <input type="text" placeholder="Ejemplo: 00012" id="codeEquipment">
                         <div>
@@ -54,6 +55,11 @@
                                 <img src="../images/safeguards/search.svg" alt="">
                             </button>
                         </div>
+                    </div>
+
+                    <div class="container-searchNumberPhone">
+                        <input type="checkbox"  id="searchNumberAuth">
+                        <label for="searchNumberAuth">Realizar búsqueda utilizando el número de teléfono</label>
                     </div>
 
                     <h2>Elegir empleado resguardante</h2>
@@ -119,7 +125,7 @@
 
                     <div class="container__codeEquipment">
                         <div>
-                            <span>OPCIC-COM-</span>
+                            <span id='spanCodeOpcReturn'>OPCIC-COM-</span>
                         </div>
                         <input type="text" placeholder="Ejemplo: 00012" id="codeEquipmentReturn">
                         <div>
@@ -129,14 +135,21 @@
                         </div>
                     </div>
 
+                    <div class="container-searchNumberPhone">
+                        <input type="checkbox"  id="searchNumberReturn">
+                        <label for="searchNumberReturn">Realizar búsqueda utilizando el número de teléfono</label>
+                    </div>
+
                     <h2>Empleado que está devolviendo el equipo</h2>
 
                     <div class="container-nameuser__return">
-                        <div class="circle__background">
-                            <div class="circle__center"></div>
-                        </div>
-
                         <p id="employeeName-return">Aún no se ha seleccionado el equipo</p>
+                    </div>
+
+                    <h2>Fecha en la que autorizo el resguardo</h2>
+
+                    <div class="container-nameuser__return">
+                        <p id="dateSafeguard-return">Aún no se ha seleccionado el equipo</p>
                     </div>
                 </div>
 

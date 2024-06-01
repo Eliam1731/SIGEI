@@ -1,0 +1,51 @@
+.container-filters-details {
+    height: 12%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    background: #ECEFF1;
+    border-bottom: 1px solid #90A4AE;
+}
+
+.container-filters-details .container-description {
+    height: 100%;
+    width: 60%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5%;
+    box-sizing: border-box;
+}
+
+.container-filters-details .container-description h1 {
+    padding-bottom: 2%;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.container-filters-details .container-filters {
+    height: 100%;
+    width: 40%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.container-filters-details .container-filters label {
+    padding-right: 3%;
+}
+
+#rootDetails {
+    height: 88%;
+    width: 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}

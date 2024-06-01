@@ -6,7 +6,6 @@ import { messageTableDevice } from "./messageTable.js";
 
 let data;
 let indexTable = 1;
-const inputSearch = document.getElementById('inputSearchEquipment');
 const buttonSearch = document.getElementById('buttonSearchEquipment');
 const deleteFiltersTable = document.getElementById('deleteFiltrosDevices');
 const tableDevices = document.getElementById('renderDataEquipments');
@@ -18,6 +17,24 @@ const filters = {
     enMantenimiento: 'En Mantenimiento',
     deBaja: 'De Baja',
 }
+const codeOpc = 'OPCIC-COM-';
+const inputSearch = document.getElementById('inputSearchEquipment');
+const spanCodeOpc = document.getElementById('spanCodeOpc');
+const checkboxSearchPhone = document.getElementById('searchNumberReturn');
+const numberValid = /^\d{10}$/;
+const formatCode = /^\d{5}$/;
+
+checkboxSearchPhone.addEventListener('change', () => {
+    if (checkboxSearchPhone.checked) {
+        spanCodeOpc.textContent = '+52';
+        inputSearch.placeholder = 'Ejemplo: 9212039080';
+
+        return;
+    }
+
+    spanCodeOpc.textContent = codeOpc;
+    inputSearch.placeholder = 'Ejemplo: 00090';
+});
 
 deleteFiltersTable.addEventListener('click', () => {
     devicesFilter = [];
@@ -93,22 +110,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 buttonSearch.addEventListener('click', async() => {
-    const codeOpc = 'OPCIC-COM-';
     const search = inputSearch.value;
 
-    if (search === '') {
-        alert('Ingrese el codigo de equipo');
+    if(checkboxSearchPhone.checked) {
+        if (!numberValid.test(search))  return alert('Ingrese un número de teléfono valido');
+
+        try {
+            const response = await sendDataServer('../server/data/seacher_equipment_num.php', { num_telefono: search });
+
+            if(response.length === 0) return alert('No se encontro el equipo.');
+
+            inputSearch.value = '';
+            windowActionsDevices(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
         return;
     }
 
+    if (!formatCode.test(search)) return alert('El código que usted esta colocando solo debe contener números, no debe tener espacios y exactamente 5 números.');
+    
     try {
         const response = await sendDataServer('../server/data/searcher_equipment.php', { opcicCode: `${codeOpc}${search}` });
 
-        console.log('Response:', response);
-        if (response.length === 0) {
-            alert('No se encontro el equipo');
-            return;
-        }
+        if (response.length === 0) return alert('No se encontro el equipo');
 
         inputSearch.value = '';
         windowActionsDevices(response);

@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="../css/resources/resetStyle.css">
     <link rel="stylesheet" href="../css/components/navegation.css">
     <link rel="stylesheet" href="../css/components/button.css">
+    <link rel="stylesheet" href="../css/pages/reports.css">
     <title>Reportes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>    
 </head>
 <body>
     <header>
@@ -19,6 +23,7 @@
                 <li><a href="records.php">Registros</a></li>
                 <li><a href="safeguards.php">Resguardos</a></li>
                 <li><a href="inventory.php">Equipos y Empleados</a></li>
+                <li><a class="selected" href="reports.php">Reporte</a></li>
                 <li><a href="history.php">Historial</a></li>
             </ul>
         </nav>
@@ -33,9 +38,25 @@
     </header>
 
     <main>
-        <h1>Reports</h1>
+        <div class="container-filters-details">
+            <div class="container-description">
+                <h1>Distribución de Dispositivos</h1>
+
+                <p>Por favor, seleccione una empresa para ver la cantidad de dispositivos que tiene asignados.</p>
+            </div>
+
+            <div class="container-filters">
+                <label for="">Seleccione una empresa</label>
+                <select name="company" id="filtersCompany">
+                    <option value="0">Seleccione una empresa</option>
+                </select>
+            </div>
+        </div>
+
+        <section id="rootDetails"></section>
     </main>
 
     <script type="module" src="../js/utilities/profileUser.js"></script>
+    <script type="module" src="../js/reports/main.js"></script>
 </body>
 </html>

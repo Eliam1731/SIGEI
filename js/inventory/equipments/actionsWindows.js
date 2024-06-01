@@ -6,7 +6,6 @@ import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenance.js";
 
 let billsDevice = [];
-
 const devicesWithAddresses = [
   'Laptop',
   'Computadora de escritorio',
@@ -156,10 +155,7 @@ const firstSectionActions = (dataOriginal) => {
     const existenceFormLow = document.getElementById('form-device-low');
 
     if(existenceFormLow) return;
-    if(data.status === 'De baja') {
-      alert('El equipo ya se encuentra de baja.');
-      return;
-    };
+    if(data.status === 'En resguardo') return alert('No puedes dar de baja un equipo que se encuentra en resguardo.');
 
     const formDeviceLow = `
         <form id='form-device-low'>
@@ -192,7 +188,6 @@ const firstSectionActions = (dataOriginal) => {
       if(!confirmLow) return;
 
       const response = await sendDataServer('../server/insert/low_equipment.php', low);
-      console.log(response, 'response');  
       
       if(response.message) {
         alert(response.message);
@@ -248,10 +243,7 @@ const firstSectionActions = (dataOriginal) => {
         if(confirmDelete) {
           const response = await sendDataServer('../server/insert/delete_img.php', { Imagen_id: imageId, Equipo_id: device });
       
-          if(response.message === 'No puede dejar sin imágenes el equipo') {
-            alert('No puede dejar sin imágenes el equipo');
-            return;
-          }
+          if(response.message === 'No puede dejar sin imágenes el equipo') return alert('No puede dejar sin imágenes el equipo');
 
           alert(response.message);
           closeWindow.remove();
@@ -282,12 +274,8 @@ const firstSectionActions = (dataOriginal) => {
   });
 
   downloadInvoice.addEventListener("click", async () => {
-    console.log(data, 'data');
-    if( data.invoices.length === 0) {
-      alert('El equipo no tiene factura');
+    if( data.invoices.length === 0) return alert('El equipo no tiene factura');
 
-      return;
-    }
     const invoice = data.invoices[0].Factura_file;
     const pdfBytes = decodeBase64ToBytes(invoice);
     const blob = createBlobFromBytes(pdfBytes);
@@ -374,7 +362,6 @@ const secondSectionActions = (data) => {
         alert('Formato inválido. Asegúrate de ingresar un número sin comas, que puede ser entero o un decimal con dos dígitos después del punto. Ejemplo válido: 20000.00; ejemplo no válido: 20,000.00.');
         inputPrice.focus();
 
-
         return;
     }
   });
@@ -390,6 +377,7 @@ const secondSectionActions = (data) => {
 
   formAddExpenses.addEventListener('submit', async (event) => {
     event.preventDefault();
+
     if(!regexPrice.test(inputPrice.value)) {
       alert('Formato inválido. Asegúrate de ingresar un número sin comas, que puede ser entero o un decimal con dos dígitos después del punto. Ejemplo válido: 20000.00; ejemplo no válido: 20,000.00.');
       inputPrice.focus();
@@ -409,7 +397,6 @@ const secondSectionActions = (data) => {
     const dataUrl = await getBase64(inputPdf.files[0]);
     const Recibo_pdf = dataUrl.split(',')[1];
 
-    //Obtener los value de los inputs
     const objectExpenses = {
       Fecha: inputDate.value,
       Importe: inputPrice.value,
@@ -417,7 +404,7 @@ const secondSectionActions = (data) => {
       Recibo_pdf: Recibo_pdf,
       orden_compra: document.getElementById('quantity').value,
     }
-    //Colocar el objeto en el array de expenses 
+   
     billsDevice.push(objectExpenses);
     console.log(billsDevice, 'billsDevice');
 
@@ -447,14 +434,26 @@ const thirdSectionActions = () => {
   let countBuy = 0;
 
   const notExpenses = `
-      <h2 class='title-expenses'>El equipo no tiene gastos disponibles</h2>    
+    <h2>Gastos del equipo</h2>
+
+    <div class='message-not-expenses'>
+        <p>No se han registrado gastos para el equipo.</p>
+
+        <img src='../images/capibara-table.png'>
+    
+        <button id='btn-add-expenses'>Añadir gastos al equipo</button>
+    </div>
   `;
 
-  console.log(expenses, 'expenses');
-  if(expenses.message === 'Este equipo aún no tiene gastos extra') {
+  if( expenses.length === 0 ) {
     rootActions.innerHTML = notExpenses;
+    const btnAddExpenses = document.getElementById('btn-add-expenses');
+    const addExpenses = document.querySelector("#nav-actions li:nth-child(3)");
+
+    btnAddExpenses.addEventListener('click', () => addExpenses.click() );
+
     return;
-  }
+  };
 
   const html = `
       <h2 class='title-expenses'>Gastos del equipo</h2>
@@ -523,21 +522,13 @@ const thirdSectionActions = () => {
     const bytes = atob(base64);
     const byteNumbers = new Array(bytes.length);
   
-    for (let i = 0; i < bytes.length; i++) {
-      byteNumbers[i] = bytes.charCodeAt(i);
-    }
+    for (let i = 0; i < bytes.length; i++) { byteNumbers[i] = bytes.charCodeAt(i) }
   
     return byteNumbers;
   }
 
-  const createBlobFromBytes = (bytes) => {
-    const blob = new Blob([new Uint8Array(bytes)], {type: 'application/pdf'});
-    return blob;
-  }
-  
-  const configureDownloadLink = (url) => {
-    window.open(url, '_blank');
-  };
+  const createBlobFromBytes = (bytes) => new Blob([new Uint8Array(bytes)], {type: 'application/pdf'});
+  const configureDownloadLink = (url) =>  window.open(url, '_blank');
 
   downloadExpensesBill.forEach( button => {
     button.addEventListener('click', () => {
@@ -577,10 +568,7 @@ const fourthSectionActions = (data) => {
     </div>
   `;  
 
-  if(!name) {
-    rootActions.innerHTML = notProtectiveEmployee;
-    return;
-  }
+  if(!name) return rootActions.innerHTML = notProtectiveEmployee;
 
   const html = `
       <h2 class='title-employeeProtective'>Empleado resguardante</h2>
@@ -692,24 +680,17 @@ const fourthSectionActions = (data) => {
     data.append('correo', email); 
   
     try {
-      const response = await fetch('../server/data/send_email.php', {
-        method: 'POST',
-        body: data,
-      });
-  
+      const response = await fetch('../server/data/send_email.php', { method: 'POST', body: data });
       const result = await response.text();
       
-      if( result === 'false') {
-        alert('No se pudo enviar el mensaje');
-        return;
-      }
+      if( result === 'false') return alert('No se pudo enviar el mensaje');
 
       inputAffair.value = '';
       inputMessage.value = '';
 
       alert('Mensaje enviado correctamente');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
 
@@ -1057,16 +1038,14 @@ const sixSectionActions = async( dataOriginal ) => {
     dataImages.append('equipo_id', dataOriginal[0].idEquipo);
     data.append('Equipo_id', dataOriginal[0].idEquipo);
 
-    for(let i = 0; i < images.length; i++) {
-      dataImages.append('image[]', images[i]);
-    }
+    for(let i = 0; i < images.length; i++) { dataImages.append('image[]', images[i]) }
 
     try {
       const response = await sendDataServerEquipment('../server/insert/update.php', data);
 
       if(response.message === 'Su actualización fue exitosa') {
         const responseImage = await sendDataServerEquipment('../server/insert/update_img.php', dataImages);
-        if(responseImage.error) { alert(responseImage.error); }
+        if(responseImage.error) alert(responseImage.error);
 
         alert(response.message);
         window.location.reload();
@@ -1095,7 +1074,7 @@ export const windowActionsDevices = (data) => {
                 <li>Añadir gastos al equipo</li>
                 <li>Gatos del equipo</li>
                 <li>Resguardante</li>
-                <li>Mantenimiento preventivo</li>
+                <!-- <li>Mantenimiento preventivo</li> -->
             </ul>
         </nav>
 
@@ -1107,16 +1086,14 @@ export const windowActionsDevices = (data) => {
   document.body.appendChild(containerClose);
   containerClose.appendChild(containerActions);
 
-  containerClose.addEventListener("click", (event) => {
-    if (event.target === containerClose) containerClose.remove();
-  });
+  containerClose.addEventListener("click", (event) => { if (event.target === containerClose) containerClose.remove() });
 
   const detailsDevice = document.querySelector("#nav-actions li:nth-child(1)");
   const updateDataDevice = document.querySelector("#nav-actions li:nth-child(2)");
   const addExpenses = document.querySelector("#nav-actions li:nth-child(3)");
   const expensesDevice = document.querySelector("#nav-actions li:nth-child(4)");
   const resguardante = document.querySelector("#nav-actions li:nth-child(5)");
-  const preventiveMaintenance = document.querySelector("#nav-actions li:nth-child(6)");
+  // const preventiveMaintenance = document.querySelector("#nav-actions li:nth-child(6)");
   const childrenNav = document.querySelectorAll("#nav-actions ul li");
 
   firstSectionActions(data);
@@ -1156,15 +1133,14 @@ export const windowActionsDevices = (data) => {
     fourthSectionActions(data);
   });
 
-  preventiveMaintenance.addEventListener("click", () => {
-    childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
-    preventiveMaintenance.classList.add("selected-actions__li");
+  // preventiveMaintenance.addEventListener("click", () => {
+  //   childrenNav.forEach((child) => child.classList.remove("selected-actions__li"));
+  //   preventiveMaintenance.classList.add("selected-actions__li");
 
-    fiveSectionActions(data);
-  });
+  //   fiveSectionActions(data);
+  // });
 
   if(data[0].expenses.message) return;
 
   billsDevice = [...data[0].expenses];
-  console.log(billsDevice, 'billsDevice');
 };

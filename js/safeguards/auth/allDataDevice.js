@@ -1,8 +1,4 @@
-import {
-    configureDownloadLink,
-    createBlobFromBytes,
-    decodeBase64ToBytes,
-} from "../../utilities/decodeBase64ToBytes.js";
+import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from "../../utilities/decodeBase64ToBytes.js";
 
 export const windowDeviceInformation = (data, divActions) => {
     const stringEmpty = /^\s*$/;
@@ -106,6 +102,11 @@ export const windowDeviceInformation = (data, divActions) => {
             </div>
 
             <div class='row-info__device'>
+                <dt>Número de teléfono</dt>
+                <dd>${(!data.telefono) ? 'El equipo no cuenta con un número telefónico.' : data.telefono}</dd>
+            </div>
+
+            <div class='row-info__device'>
               <dt>Comentario acerca del equipo</dt>
               <dd>${(stringEmpty.test(data.comentarios) ? 'Sin comentarios.' : data.comentarios)}</dd>
             </div>
@@ -169,6 +170,8 @@ export const windowDeviceInformation = (data, divActions) => {
     });
 
     downloadInvoice.addEventListener("click", async () => {
+        if(data.invoices.length === 0) return alert('El equipo no cuenta con una factura.');
+
         const invoice = data.invoices[0].Factura_file;
         const pdfBytes = decodeBase64ToBytes(invoice);
         const blob = createBlobFromBytes(pdfBytes);

@@ -1,10 +1,12 @@
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { dateInFormatText } from "../../utilities/textDate.js";
 import { windowDeviceInformation } from "./windowInformation.js";
 
 const elementsSectionReturnEquipmentDOM = {
     inputCode: 'codeEquipmentReturn',
     buttonSearch: 'searchEquipmentReturn',
     paragraphName: 'employeeName-return',
+    paragraphDate: 'dateSafeguard-return',
     bodyTable: 'bodyTableReturnSafeguards',
     buttonReturnAuth: 'auth__button-return',
     buttonCancelReturn: 'cancel__button-return',
@@ -24,8 +26,34 @@ const textareaObservationReturn = document.getElementById(elementsSectionReturnE
 let employeCurrent;
 let nameEmployeCurrent;
 const devicesReturn = [];
+const checkboxSearchPhoneReturn = document.getElementById('searchNumberReturn');
+const spanCodeOpcReturn = document.getElementById('spanCodeOpcReturn');
+const numberValid = /^\d{10}$/;
+const paragraphDateReturn = document.getElementById( elementsSectionReturnEquipmentDOM.paragraphDate );
+
+checkboxSearchPhoneReturn.addEventListener('change', () => {
+    if(checkboxSearchPhoneReturn.checked) {
+        inputCodeEquipmentReturn.setAttribute('placeholder', 'Ejemplo: 9212735701');
+        spanCodeOpcReturn.textContent = '+52';
+
+        return;
+    }
+
+    inputCodeEquipmentReturn.setAttribute('placeholder', 'Ejemplo: 00012');
+    spanCodeOpcReturn.textContent = codeOpcReturn;
+});
 
 const requestDeviceGuard  = async (id) => {
+    if(numberValid.test(id)) {
+        try {
+            const response = await sendDataServer("../server/data/returnEquipmentSection_num.php", { num_telefono: id });
+
+            return response;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     if (!validateInput.test(id)) {
         alert('El código que usted esta colocando solo debe contener números, no debe tener espacios y exactamente 5 números!');
         return;
@@ -33,6 +61,7 @@ const requestDeviceGuard  = async (id) => {
 
     try {
         const response = await sendDataServer('../server/data/returnEquipmentSection.php', { id: `${codeOpcReturn}${id}` });
+     
         return response;
     } catch (error) {
         console.error('Error:', error);
@@ -44,6 +73,7 @@ const cleanSectionReturnEquipment = () => {
 
     inputCodeEquipmentReturn.value = '';
     paragraphName.textContent = 'Aún no se ha seleccionado el equipo';
+    paragraphDateReturn.textContent = 'Aún no se ha seleccionado el equipo';
     bodyTableReturnSafeguards.innerHTML = '';
     employeCurrent = undefined;
     nameEmployeCurrent = '';
@@ -51,9 +81,11 @@ const cleanSectionReturnEquipment = () => {
     textareaObservationReturn.value = '';
 }
 
-const renderNameEmployee = (name) => {
+const renderNameEmployee = (name, date) => {
     const paragraphName = document.getElementById(elementsSectionReturnEquipmentDOM.paragraphName);
     paragraphName.textContent = name;
+
+    paragraphDateReturn.textContent = dateInFormatText(date);
 }
 
 const renderDeviceGuard = (data) => {
@@ -75,35 +107,54 @@ const renderDeviceGuard = (data) => {
     button.addEventListener('click', () => {windowDeviceInformation(data);});
 }
 
+const validateGuardReturn = ( data ) => {
+    if(data.status === 'error') {
+        alert(data.message);
+        return;
+    }
+
+    if(data && employeCurrent === undefined) {
+        employeCurrent = data.empleado.empleado_id;
+        nameEmployeCurrent = data.empleado.nombreResguardante_completo;
+    }
+
+    if (employeCurrent !== data.empleado.empleado_id) {
+        alert(`El empleado ${nameEmployeCurrent} no puede devolver el equipo de ${data.empleado.nombreResguardante_completo}!`);
+        return;
+    }
+
+    if(devicesReturn.includes(data.equipo.equipo_id)) {
+        alert(`El equipo con el código ${data.equipo.codigo} ya esta en la tabla.`);
+        return;
+    }
+
+    devicesReturn.push(data.equipo.equipo_id);
+    inputCodeEquipmentReturn.value = '';
+
+    renderNameEmployee(data.empleado.nombreResguardante_completo, data.fechaAutorizacion);
+    renderDeviceGuard(data.equipo);
+}
+
 buttonSearchEquipmentReturn.addEventListener('click', () => {
     const valueInputCode = inputCodeEquipmentReturn.value.trim();
 
+    if(checkboxSearchPhoneReturn.checked) {
+        if (!numberValid.test(valueInputCode)) {
+            alert('El número de teléfono debe tener 10 dígitos.');
+            return;
+        }
+
+        requestDeviceGuard(valueInputCode).then(( data ) => {
+            validateGuardReturn(data);
+        }).catch(( error ) => {
+            console.error('Error:', error);
+        });
+
+        return;
+    }
+
     requestDeviceGuard(valueInputCode).then(( data ) => {
-        if(data.status === 'error') {
-            alert(data.message);
-            return;
-        }
-
-        if(data && employeCurrent === undefined) {
-            employeCurrent = data.empleado.empleado_id;
-            nameEmployeCurrent = data.empleado.nombreResguardante_completo;
-        }
-
-        if (employeCurrent !== data.empleado.empleado_id) {
-            alert(`El empleado ${nameEmployeCurrent} no puede devolver el equipo de ${data.empleado.nombreResguardante_completo}!`);
-            return;
-        }
-
-        if(devicesReturn.includes(data.equipo.equipo_id)) {
-            alert(`El equipo con el código ${data.equipo.codigo} ya esta en la tabla.`);
-            return;
-        }
-
-        devicesReturn.push(data.equipo.equipo_id);
-        inputCodeEquipmentReturn.value = '';
-
-        renderNameEmployee(data.empleado.nombreResguardante_completo);
-        renderDeviceGuard(data.equipo);
+       validateGuardReturn(data);
     }).catch(( error ) => {
         console.error('Error:', error);
     });

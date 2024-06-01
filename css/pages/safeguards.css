@@ -36,9 +36,9 @@ main section .first_article .first_div .container__codeEquipment {
     border: 2px solid #EEEEEE;
     border-radius: 5px;
     background: #F5F5F5;
-    margin: 2% 0 15% 5%;
+    margin: 2% 0 3% 5%;
 }
-main section .first_article .first_div .container__codeEquipment div {
+main section .first_article .first_div .container__codeEquipment div:first-child {
     height: 100%;
     width: 30%;
     position: relative;
@@ -68,6 +68,7 @@ main section .first_article .first_div .container__codeEquipment div:last-child 
     align-items: center;
     color: #424242;
     border-left: 2px solid #EEEEEE;
+    box-sizing: border-box;
 }
 main section .first_article .first_div .container__codeEquipment div:last-child button {
     height: 100%;
@@ -363,9 +364,9 @@ main section .second_article .first_div .container__codeEquipment {
     border: 2px solid #EEEEEE;
     border-radius: 5px;
     background: #F5F5F5;
-    margin: 2% 0 15% 5%;
+    margin: 2% 0 3% 5%;
 }
-main section .second_article .first_div .container__codeEquipment div {
+main section .second_article .first_div .container__codeEquipment div:first-child {
     height: 100%;
     width: 30%;
     position: relative;
@@ -427,6 +428,8 @@ main section .second_article .first_div .container-nameuser__return {
     justify-content: center;
     align-items: center;
 }
+
+main section .second_article .first_div .container-nameuser__return { margin-bottom: 10%; }
 
 #observation__auth-textarea-return {
     height: 20%;
@@ -770,4 +773,19 @@ main nav ul li:first-child {
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
+}
+
+.container-searchNumberPhone {
+    height: auto;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15%;
+}
+
+.container-searchNumberPhone > input { margin-left: 5%; }
+.container-searchNumberPhone > label { 
+    font-size: .9em !important; 
+    padding: 0 !important; 
+    color: #757575 !important;
+    user-select: none;
 }

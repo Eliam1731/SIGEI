@@ -4,10 +4,10 @@ include '../config/connection_db.php';
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
-$codeEquipment = $data['code'];
+$codeEquipment = $data['num_telefono']; // Cambiado de 'numero' a 'num_telefono'
 $equipment_data = [];
 
-$sql_check = $conn->prepare("SELECT 1 FROM equipos_informaticos WHERE miId = ? AND Status_id = 1");
+$sql_check = $conn->prepare("SELECT 1 FROM equipos_informaticos WHERE num_telefono = ? AND Status_id = 1"); // Cambiado 'numero' a 'num_telefono'
 $sql_check->execute([$codeEquipment]);
 
 if (!$sql_check->fetchColumn()) {
@@ -33,7 +33,7 @@ $sql = $conn->prepare("SELECT
             equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
             equipos_informaticos.Service_tag AS serviceTag,
             equipos_informaticos.Comentarios AS comentarios,
-            equipos_informaticos.num_telefono AS telefoono,
+            equipos_informaticos.num_telefono AS telefono,
             status.Nom_Status AS status,
             equipos_informaticos.miId AS codeOpc
         FROM 
@@ -41,7 +41,7 @@ $sql = $conn->prepare("SELECT
         JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
         JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
         JOIN status ON equipos_informaticos.Status_id = status.Status_id
-        WHERE equipos_informaticos.miId = ? AND equipos_informaticos.Status_id = 1;");
+        WHERE equipos_informaticos.num_telefono = ? AND equipos_informaticos.Status_id = 1;"); // Cambiado 'numero' a 'num_telefono'
 
 $sql->execute([$codeEquipment]);
 

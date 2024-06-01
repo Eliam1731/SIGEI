@@ -1,8 +1,7 @@
-
 <?php
 include '../config/connection_db.php';
 $data = json_decode(file_get_contents("php://input"));
-$id = $data->id;
+$num_telefono = $data->num_telefono; 
 
 try {
     $query =  $conn->prepare("SELECT
@@ -11,8 +10,8 @@ try {
                             FROM 
                                 equipos_informaticos 
                             WHERE 
-                                miId = ?;");
-    $query->bindParam(1, $id);
+                                num_telefono = ?;"); 
+    $query->bindParam(1, $num_telefono); 
     $query->execute();
     $result = $query->fetch(PDO::FETCH_ASSOC); 
 

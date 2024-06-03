@@ -334,13 +334,13 @@ const validateInputs = () => {
         }
     });
 
-    inputDateExpiresWarranty.addEventListener('change', (event) => {
+    inputDateExpiresWarranty.addEventListener('blur', (event) => {
         const dateBuy = new Date(inputDateBuy.value);
         const dateExpiresWarranty = new Date(event.target.value);
-
+    
         if(dateExpiresWarranty < dateBuy) {
             alert('La fecha de expiración de la garantía no puede ser menor a la fecha de compra.');
-            inputDateExpiresWarranty.focus();
+            setTimeout(() => inputDateExpiresWarranty.focus(), 0);
             return;
         }
     });

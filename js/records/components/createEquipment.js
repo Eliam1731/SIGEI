@@ -307,8 +307,8 @@ const validateInputs = () => {
 
         if(valueInput.trim() === '') return;
 
-        if(valueInput.length < 8 || valueInput.length > 20) {
-            alert('El número de serie del equipo debe tener mínimo 10 caracteres y un maximo de 20 caracteres.');
+        if(valueInput.length < 8 || valueInput.length > 30) {
+            alert('El número de serie del equipo debe tener mínimo 10 caracteres y un maximo de 30 caracteres.');
             inputSerialNumber.focus();
             return;
         }

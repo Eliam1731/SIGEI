@@ -1,4 +1,4 @@
-<?php
+php: <?php
 
 include '../config/connection_db.php';
 use PHPMailer\PHPMailer\PHPMailer;
@@ -42,4 +42,3 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-

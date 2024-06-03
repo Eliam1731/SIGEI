@@ -2,9 +2,10 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT eq.*, s.Nom_Status 
+    $sql = "SELECT eq.*, s.Nom_Status, b.Fecha_baja, b.Motivo_baja 
             FROM equipos_informaticos eq 
             INNER JOIN status s ON eq.Status_id = s.Status_id 
+            INNER JOIN baja_de_equipos b ON eq.Equipo_id = b.Equipo_id
             WHERE eq.Status_id = 4";
 
     $stmt = $conn->prepare($sql);
@@ -31,6 +32,8 @@ try {
             'comentarios' => $row['Comentarios'],
             'status' => $row['Nom_Status'],
             'codeOpc' => $row['miId'],
+            'fechaBaja' => $row['Fecha_baja'],
+            'motivoBaja' => $row['Motivo_baja'],
         ];
 
         $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");

@@ -65,7 +65,7 @@ foreach ($rows as $row) {
         'referenciaCompaq' => $row['referenciaCompaq'],
         'serviceTag' => $row['serviceTag'],
         'comentarios' => $row['comentarios'],
-        'telefono' => $row['telefono'],
+        'telefono' => isset($row['telefono']) ? $row['telefono'] : null,
         'status' => $row['status'],
         'codeOpc' => $row['codeOpc'],
         'statusMessage' => 'El equipo se encuentra ' . $row['status']

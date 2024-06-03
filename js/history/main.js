@@ -26,16 +26,25 @@ itemNavSafeguard.addEventListener('click', async() => {
 
     try {
         const safeguardsFinished = await getDataServer('../server/data/historyvisualization.php');
+ 
         renderTableOfSafeguardsFinished(safeguardsFinished, tbodySafeguards);
     } catch(error) {
         throw new Error(error);
     }
 });
 
-itemNavDeviceLow.addEventListener('click', () => {
+itemNavDeviceLow.addEventListener('click', async() => {
     articleDevicesLow.style.display = 'block';
     articleSafeguards.style.display = 'none';
 
     itemNavDeviceLow.classList.add('li-selected');
     itemNavSafeguard.classList.remove('li-selected');
+
+    try {
+        const devicesLow = await getDataServer('../server/data/low_history.php');
+  
+        console.log(devicesLow)
+    } catch(error) {
+        throw new Error(error);
+    }
 });

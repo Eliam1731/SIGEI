@@ -55,8 +55,10 @@ main { display: flex; }
 .overflow__tableSafeguards table tbody tr td {
     padding: 1% 0;
     text-align: center;
+    position: relative;
     color: #424242;
     border-right: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
 }
 .overflow__tableSafeguards table tbody tr td:last-child { border-right: none; }
 .overflow__tableSafeguards table tbody tr td:last-child button {

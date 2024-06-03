@@ -1,37 +1,62 @@
+import { detailsSafeguardHistory } from "./detailsSafeguarda.js";
+
 let indexTable = 0;
 let indexMaxTable = 20;
 
+const buttonNext = document.getElementById('nextSafeguards');
+const buttonPrevious = document.getElementById('prevSafeguards');
+const root = document.getElementById('table-safeguards__finished'); 
+let data = []; 
+
+buttonNext.addEventListener('click', () => {
+    if (indexTable < data.length) {
+        indexTable += 20;
+        indexMaxTable += 20;
+        
+        if(indexTable > data.length) return;
+        
+        renderTableOfSafeguardsFinished(data, root);
+    }
+});
+
+buttonPrevious.addEventListener('click', () => {
+    if (indexTable > 0) {
+        indexTable -= 20;
+        indexMaxTable -= 20;
+        renderTableOfSafeguardsFinished(data, root);
+    }
+});
+
 export const renderTableOfSafeguardsFinished = ( safeguards, root ) => {
-    const lengthSafeguards = safeguards.length;
     root.innerHTML = '';
 
-    for(let i = 0; i < lengthSafeguards; i++) {
-        const { Equipos: devices, Nombre: name, Primer_apellido: firstSurname, Segundo_apellido: secondSurname, Nom_corto_empresa: shortNameCompany, Num_obra: numWork, Frente: forehead } = safeguards[i];
-
-        if( indexTable === indexMaxTable) break;
-        if( devices.length === 0 ) continue;
+    Object.keys( safeguards ).forEach( key => {
+        const { Nombre, Primer_apellido, Segundo_apellido } = safeguards[key].DatosEmpleado;
+        const { Nom_corto, Num_obra, Nom_frente, Fecha_inicio, Fecha_terminacion, NombreUsuarioResguardo, ApellidoUsuarioResguardo, SegundoApellidoUsuarioResguardo } = safeguards[key].Equipos[0];
 
         const row = `
             <tr>
-                <td>${devices[0]['Fecha de terminacion']}</td>
+                <td>${ Fecha_inicio }</td>
                 <td>
-                    <p>${name} ${firstSurname} ${secondSurname}</p>
-                    <span>${shortNameCompany}</span>
-                    <span>${numWork}</span>
-                    <span>${forehead}</span>
+                    <p>${ Nombre } ${ Primer_apellido } ${ Segundo_apellido }</p>
+                    <span>${ Nom_corto } |</span>
+                    <span>${ Num_obra }</span>
+                    <span>${ Nom_frente }</span>
                 </td>
-                <td>${devices[0]['Fecha de terminacion']}</td>
-                <td>${devices[0].Autorizacion_de_resguardo}</td>
+                <td>${ Fecha_terminacion }</td>
+                <td>${ NombreUsuarioResguardo } ${ ApellidoUsuarioResguardo } ${ SegundoApellidoUsuarioResguardo }</td>
                 <td>
-                    <button>Editar</button>
+                    <button class='viewDetailsSafeguardBtn'>Editar</button>
                 </td>
             </tr>
-        `;
+         `;
 
-        root.innerHTML += row;
+         root.innerHTML += row;
+         data.push( safeguards[key] );
+         const buttonsDetails= document.getElementsByClassName('viewDetailsSafeguardBtn');
 
-        console.log(safeguards[i]);
-        indexTable++;
-        indexMaxTable++;
-    }
+         for(let i = 0; i < buttonsDetails.length; i++) {
+            buttonsDetails[i].addEventListener('click', () => detailsSafeguardHistory( data[i] ) );
+        }
+    });
 }

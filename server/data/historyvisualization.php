@@ -47,6 +47,30 @@ try {
             ];
         }
 
+        $idEquipo = $resultado['Equipo_id'];
+
+        // Consulta para obtener las imágenes
+        $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
+        $sql_images->execute([$idEquipo]);
+        $images = $sql_images->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($images as $key => $image) {
+            $images[$key]['Datos_imagen'] = base64_encode($image['Datos_imagen']);
+        }
+
+        $resultado['images'] = $images;
+
+        // Consulta para obtener las facturas
+        $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
+        $sql_invoices->execute([$idEquipo]);
+        $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($invoices as $key => $invoice) {
+            $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
+        }
+
+        $resultado['invoices'] = $invoices;
+
         $datosFinales[$idEmpleado]['Equipos'][] = $resultado;
     }
 
@@ -55,3 +79,4 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+?>

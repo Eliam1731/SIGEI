@@ -209,6 +209,7 @@ checkboxSearchPhone.addEventListener("change", () => {
 });
 
 buttonSearchEquipment.addEventListener("click", async () => {
+  console.log(checkboxSearchPhone.checked);
   if (checkboxSearchPhone.checked) {
     const numberPhone = inputCodeEquipment.value.trim();
     const numberValid = /^\d{10}$/;

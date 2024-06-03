@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 main { display: flex; }
 #root-tables { height: 100%; width: 80%; position: relative; overflow: hidden; box-sizing: border-box; }
 #table-safeguards {
@@ -112,6 +114,272 @@ main { display: flex; }
     width: 80%;
     position: relative;
     background: #FFFFFF;
+}
+
+.container-details-safeguard h2 {
+    padding: 4% 0 5% 5%;
+    font-size: 1.05em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.container-info__device {
+    height: 80%;
+    width: 93%;
+    margin: 0 0 0 5%;
+    overflow-y: auto;
+    overflow-x: none;
+    border-top: 1px solid #EEEEEE ;
+}
+
+.container-info__device dl {
+    height: auto;
+    width: 100%;
+    position: relative;
+}
+
+.row-info__device {
+    height: 5em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.row-info__device:nth-child(15) { height: auto; }
+
+.row-info__device dt {
+    height: auto;
+    width: 35%;
+    position: relative;
+    box-sizing: border-box;
+    color: #0F172A;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.row-info__device dd {
+    height: auto;
+    width: 65%;
+    position: relative;
+    box-sizing: border-box;
+} 
+
+#download-invoice {
+    height: 3.5em;
+    width: 60%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: 1px solid #E0E0E0;
+}
+
+#download-invoice span {
+    color: #0F172A;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    margin-left: 3%;
+}
+
+#download-invoice svg { transform: rotate(45deg); }
+ 
+.list-image-device {
+    width: 90%;
+    margin: 2em 0 2em 0;
+    border: 1px solid #E0E0E0;
+    border-radius: .3em;
+    box-sizing: border-box;
+}
+
+.list-image-device li {
+    height: 3em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.list-image-device li svg { transform: rotate(45deg); margin-left: 3%; }
+.list-image-device span {
+    color: #111827;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    position: absolute;
+    left: 10%;
+}
+.list-image-device li button {
+    color: #1A73E8;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    background: none;
+    border: 0;
+    margin-right: 3%;
+}
+
+.list-image-device li:last-child { border-bottom: none; }
+
+.close-window-image {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    left: 0;
+    top: 0;
+}
+
+.root-image {
+    height: 80%;
+    max-width: 80%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.root-image img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.delete-image__device {
+    height: 2em;
+    width: 2em;
+    position: absolute;
+    display: flex;
+    background: rgba(224, 224, 224, 0.5);
+    align-items: center;
+    justify-content: center;
+    top: 2%;
+    right: 2%;
+    z-index: 200;
+    border: 1px solid #9E9E9E;
+}
+
+#change-status__device {
+    margin-left: 57%;
+    height: 3em;
+    width: 20%;
+    color: #B71C1C;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    background: none;
+    border-radius: .3em;
+    border: 1px solid #F44336;
+    box-sizing: border-box;
+}
+
+.root-form-device-low { top: 0; position: absolute; height: 100%; width: 100%; }
+
+#form-device-low {
+    margin: 40% 0 0 5%;
+    height: 35%;
+    width: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    border: 2px solid #EEEEEE;
+    border-radius: .3em;
+    box-sizing: border-box;
+}
+
+#form-device-low label {
+    color: #212121;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    padding: 1em 0 1em 3%;
+}
+
+#form-device-low textarea {
+    height: 9em;
+    width: 94%;
+    margin: 1em 0 1em 3%;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+#form-device-low textarea::placeholder {
+    color: #616161;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.container-buttons-device-low {
+    margin-top: .5em;
+    height: 3em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #EEEEEE;
+}
+
+.container-buttons-device-low button:first-child {
+    position: absolute;
+    right: 21%;
+    height: 70%;
+    background: none;
+    border: 1px solid #F44336;
+    color: #B71C1C;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    padding: 0 1em 0 1em;
+    border-radius: .3em;
+}
+
+.container-buttons-device-low button:last-child {
+    position: absolute;
+    right: 3%;
+    height: 70%;
+    background: #01579B;
+    border: 0;
+    color: #FAFAFA;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    padding: 0 1em 0 1em;
+    border-radius: .3em;
 }
 
 

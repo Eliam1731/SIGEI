@@ -3,9 +3,9 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT de.*, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, 
+    $sql = "SELECT de.*, de.Comentario AS ComentariosDevolucion, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, 
     er.Empresa_id, er.Obra_id, er.id_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, 
-    ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios, 
+    ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios AS ComentariosEquipo, 
     ei.Status_id, ei.miId, ei.num_telefono, re.Fecha_autorizacion AS Fecha_inicio, re.User_id AS UsuarioResguardo, 
     de.Fecha_autorizacion AS Fecha_terminacion, de.User_id AS UsuarioDevolucion, 
     ur.Nombre AS NombreUsuarioResguardo, ur.Primer_apellido AS ApellidoUsuarioResguardo, 
@@ -71,7 +71,13 @@ try {
 
         $resultado['invoices'] = $invoices;
 
-        $datosFinales[$idEmpleado]['Equipos'][] = $resultado;
+        $comentariosEquipo = $resultado['ComentariosEquipo'];
+        unset($resultado['ComentariosEquipo']);
+
+        $comentariosDevolucion = $resultado['ComentariosDevolucion'];
+        unset($resultado['ComentariosDevolucion']);
+
+        $datosFinales[$idEmpleado]['Equipos'][] = array_merge($resultado, ['ComentariosEquipo' => $comentariosEquipo]);
     }
 
     header('Content-Type: application/json');
@@ -79,4 +85,5 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+
 ?>

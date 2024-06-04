@@ -21,6 +21,8 @@ buttonNext.addEventListener('click', () => {
 });
 
 buttonPrevious.addEventListener('click', () => {
+    if( data.length < 20 ) return;
+
     if (indexTable > 0) {
         indexTable -= 20;
         indexMaxTable -= 20;

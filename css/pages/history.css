@@ -150,7 +150,44 @@ main { display: flex; }
     border-bottom: 1px solid #EEEEEE;
 }
 
-.row-info__device:nth-child(15) { height: auto; }
+.row-info__device:nth-child(19) { height: auto; }
+.row-info__device--modify { height: auto; }
+.list-safeguards-devices { 
+    position: relative;
+    width: 90%;
+    margin: 2em 0; 
+    border: 1px solid #E0E0E0;
+    border-radius: .3em;
+}
+
+.list-safeguards-devices li span {color: #111827; padding: 0 .3em 0 1.5em; }
+
+.list-safeguards-devices li { 
+    /* margin: 1em 0 1em 0;  */
+    height: 2.5em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    color: #9CA3AF; 
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.list-safeguards-devices li:last-child { border-bottom: 0; }
+
+.list-safeguards-devices li button {
+    background: none;
+    border: 0;
+    color: #4F46E5;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    position: absolute;
+    right: 4%;
+}
 
 .row-info__device dt {
     height: auto;
@@ -382,6 +419,33 @@ main { display: flex; }
     border-radius: .3em;
 }
 
+/* Ventana de informacion detallada de un unico dispositivo */
+.root-actions-details-device {
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.root-actions-details-device > div {
+    height: 90%;
+    width: 80%;
+    position: relative;
+    background: #FFFFFF;
+}
+
+.root-actions-details-device > div h2 {
+    padding: 4% 0 5% 5%;
+    font-size: 1.05em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
 
 
 #table-devices__low {
@@ -406,12 +470,7 @@ main { display: flex; }
     box-sizing: border-box;
 }
 
-#navegation_history ul li:first-child {
-    padding: 5% 0 5% 5%;
-}
-
-#navegation_history ul li:last-child {
-    padding: 0 0 5% 5%;
-}
-
+#navegation_history ul li { user-select: none; }
+#navegation_history ul li:first-child { padding: 5% 0 5% 5%; }
+#navegation_history ul li:last-child { padding: 0 0 5% 5%; }
 .li-selected { color: #1A73E8; }

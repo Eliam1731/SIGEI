@@ -14,7 +14,8 @@ buttonNext.addEventListener('click', () => {
         indexMaxTable += 20;
         
         if(indexTable > data.length) return;
-        
+        if( data.length < 20 ) return;
+
         renderTableOfSafeguardsFinished(data, root);
     }
 });

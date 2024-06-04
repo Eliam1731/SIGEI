@@ -151,6 +151,8 @@ const firstSectionActions = (dataOriginal) => {
   const detailsDevice = document.querySelector('.container-info__device');
   const rootFormLow = document.createElement('div');
 
+  console.log(new Date().toISOString().slice(0, 10));
+
   changeStatusDevice.addEventListener('click', () => {
     const existenceFormLow = document.getElementById('form-device-low');
 
@@ -182,6 +184,7 @@ const firstSectionActions = (dataOriginal) => {
         equipo_id: data.idEquipo,
         correo: sessionStorage.getItem('email'),
         comentario: comments,
+        fecha_baja: new Date().toISOString().slice(0, 10),
       }
       const confirmLow = confirm('¿Estás seguro de dar de baja el equipo?');
 

@@ -24,7 +24,7 @@
                 <li><a href="records.php">Registros</a></li>
                 <li><a class="selected" href="safeguards.php">Resguardos</a></li>
                 <li><a href="inventory.php">Equipos y Empleados</a></li>
-                <li><a href="reports.php">Reporte</a></li>
+                <!-- <li><a href="reports.php">Reporte</a></li> -->
                 <li><a href="history.php">Historial</a></li>
             </ul>
         </nav>

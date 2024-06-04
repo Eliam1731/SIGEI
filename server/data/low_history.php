@@ -2,7 +2,7 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT eq.*, s.Nom_Status, b.Fecha_baja, b.Motivo_baja, u.Nombre as Nombre_usuario, cat.Nom_categoria, subcat.Nom_subcategoria, m.Nom_marca
+    $sql = "SELECT eq.*, s.Nom_Status, b.Fecha_baja, b.Motivo_baja, u.*, cat.Nom_categoria, subcat.Nom_subcategoria, m.Nom_marca
             FROM equipos_informaticos eq 
             INNER JOIN status s ON eq.Status_id = s.Status_id 
             INNER JOIN baja_de_equipos b ON eq.Equipo_id = b.Equipo_id
@@ -38,7 +38,15 @@ try {
             'codeOpc' => $row['miId'],
             'fechaBaja' => $row['Fecha_baja'],
             'motivoBaja' => $row['Motivo_baja'],
-            'usuarioBaja' => $row['Nombre_usuario'],
+            'usuarioBaja' => [
+                'idUsuario' => $row['User_id'],
+                'nombre' => $row['Nombre'],
+                'primerApellido' => $row['Primer_apellido'],
+                'segundoApellido' => $row['Segundo_apellido'],
+                'correoElectronico' => $row['correo_electronico'],
+                'rolId' => $row['Rol_id'],
+                'departamentoId' => $row['departamento_id'],
+            ],
             'categoria' => $row['Nom_categoria']
         ];
 

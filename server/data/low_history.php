@@ -2,10 +2,14 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT eq.*, s.Nom_Status, b.Fecha_baja, b.Motivo_baja 
+    $sql = "SELECT eq.*, s.Nom_Status, b.Fecha_baja, b.Motivo_baja, u.Nombre as Nombre_usuario, cat.Nom_categoria, subcat.Nom_subcategoria, m.Nom_marca
             FROM equipos_informaticos eq 
             INNER JOIN status s ON eq.Status_id = s.Status_id 
             INNER JOIN baja_de_equipos b ON eq.Equipo_id = b.Equipo_id
+            INNER JOIN usuarios u ON b.User_id = u.User_id
+            INNER JOIN subcategoria subcat ON eq.Id_subcategoria = subcat.Subcategoria_id
+            INNER JOIN marca_del_equipo m ON eq.Id_marca = m.Id_Marca
+            INNER JOIN categorias_equipo_informatico cat ON subcat.id_categoria = cat.Categoria_id
             WHERE eq.Status_id = 4";
 
     $stmt = $conn->prepare($sql);
@@ -17,8 +21,8 @@ try {
 
         $equipment = [
             'idEquipo' => $row['Equipo_id'],
-            'subcategoria' => $row['Id_subcategoria'],
-            'marca' => $row['Id_marca'],
+            'subcategoria' => $row['Nom_subcategoria'],
+            'marca' => $row['Nom_marca'],
             'modelo' => $row['Modelo'],
             'numSerie' => $row['Num_serie'],
             'especificacion' => $especificacion,
@@ -34,48 +38,14 @@ try {
             'codeOpc' => $row['miId'],
             'fechaBaja' => $row['Fecha_baja'],
             'motivoBaja' => $row['Motivo_baja'],
+            'usuarioBaja' => $row['Nombre_usuario'],
+            'categoria' => $row['Nom_categoria']
         ];
 
-        $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
-        $sql_images->execute([$row['Equipo_id']]);
-        $images = $sql_images->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($images as $key => $image) {
-            $images[$key]['Datos_imagen'] = base64_encode($image['Datos_imagen']);
-        }
-
-        $equipment['images'] = $images;
-
-        $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
-        $sql_invoices->execute([$row['Equipo_id']]);
-        $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($invoices as $key => $invoice) {
-            $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
-        }
-
-        $equipment['invoices'] = $invoices;
-
-        $sql_expenses = $conn->prepare("SELECT orden_compra, Piezas, Importe, Fecha, Recibo_pdf FROM gastos_de_los_equipos WHERE Equipo_id = ?");
-        $sql_expenses->execute([$row['Equipo_id']]);
-        $expenses = $sql_expenses->fetchAll(PDO::FETCH_ASSOC);
-        
-        if (empty($expenses)) {
-            $expenses = ['message' => 'Este equipo aún no tiene gastos extra'];
-        } else {
-            foreach ($expenses as $key => $expense) {
-                $expenses[$key]['Recibo_pdf'] = base64_encode($expense['Recibo_pdf']);
-            }
-        }
-        
-        $equipment['expenses'] = $expenses;
-
-        $statusKey = lcfirst(str_replace(' ', '', $row['Nom_Status']));
-        $result[$statusKey][] = $equipment;
+        $result[] = $equipment;
     }
 
-    header('Content-Type: application/json');
-    echo json_encode($result, JSON_PRETTY_PRINT);
+    echo json_encode($result);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

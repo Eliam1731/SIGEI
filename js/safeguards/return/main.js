@@ -1,5 +1,4 @@
 import { sendDataServer } from "../../utilities/sendDataServer.js";
-import { dateInFormatText } from "../../utilities/textDate.js";
 import { windowDeviceInformation } from "./windowInformation.js";
 
 const elementsSectionReturnEquipmentDOM = {
@@ -30,6 +29,18 @@ const checkboxSearchPhoneReturn = document.getElementById('searchNumberReturn');
 const spanCodeOpcReturn = document.getElementById('spanCodeOpcReturn');
 const numberValid = /^\d{10}$/;
 const paragraphDateReturn = document.getElementById( elementsSectionReturnEquipmentDOM.paragraphDate );
+
+const dateInFormatText = ( dateString ) => {
+    const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    let [ year, day, month ] = dateString.split('-'); 
+    let date = new Date(year, month - 1, day);
+
+    day = date.getDate();
+    month = months[date.getMonth()];
+    year = date.getFullYear();
+
+    return `${day} de ${month} del ${year}`;
+}
 
 checkboxSearchPhoneReturn.addEventListener('change', () => {
     if(checkboxSearchPhoneReturn.checked) {
@@ -85,7 +96,8 @@ const renderNameEmployee = (name, date) => {
     const paragraphName = document.getElementById(elementsSectionReturnEquipmentDOM.paragraphName);
     paragraphName.textContent = name;
 
-    paragraphDateReturn.textContent = dateInFormatText(date);
+    console.log(date)
+    paragraphDateReturn.textContent = dateInFormatText( date );
 }
 
 const renderDeviceGuard = (data) => {

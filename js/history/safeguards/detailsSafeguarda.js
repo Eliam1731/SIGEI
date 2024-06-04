@@ -1,5 +1,16 @@
 import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from "../../utilities/decodeBase64ToBytes.js";
 import { dateInFormatText } from "../../utilities/textDate.js";
+const dateInFormatText1 = ( dateString ) => {
+    const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    let [ year, day, month ] = dateString.split('-'); 
+    let date = new Date(year, month - 1, day);
+
+    day = date.getDate();
+    month = months[date.getMonth()];
+    year = date.getFullYear();
+
+    return `${day} de ${month} del ${year}`;
+}
 
 const windowDetailsDevice = ( data ) => {
     const { Fecha_inicio, Fecha_terminacion, NombreUsuarioResguardo, ApellidoUsuarioResguardo, SegundoApellidoUsuarioResguardo, NombreUsuarioDevolucion, ApellidoUsuarioDevolucion, SegundoApellidoUsuarioDevolucion } = data;
@@ -12,7 +23,6 @@ const windowDetailsDevice = ( data ) => {
     rootActions.appendChild( root );
 
     rootActions.addEventListener('click', (event) => { if ( event.target === rootActions ) rootActions.remove() });
-    console.log(data);
   
     const html = `
         <h2>Información detallada del equipo</h2>
@@ -21,12 +31,12 @@ const windowDetailsDevice = ( data ) => {
             <dl>
                 <div class='row-info__device'>
                     <dt>Fecha de inicio de resguardo</dt>
-                    <dd>${ dateInFormatText( Fecha_inicio ) }</dd>
+                    <dd>${ dateInFormatText1( Fecha_inicio ) }</dd>
                 </div>
 
                 <div class='row-info__device'>
                     <dt>Fecha en la que finalizo el resguardo</dt>
-                    <dd>${ dateInFormatText( Fecha_terminacion ) }</dd>
+                    <dd>${ dateInFormatText1( Fecha_terminacion ) }</dd>
                 </div>
 
                 <div class='row-info__device'>

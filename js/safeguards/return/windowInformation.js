@@ -1,4 +1,5 @@
 import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from "../../utilities/decodeBase64ToBytes.js";
+import { dateInFormatText } from "../../utilities/textDate.js";
 
 export const windowDeviceInformation = (data) => {
     const stringEmpty = /^\s*$/;
@@ -41,12 +42,12 @@ export const windowDeviceInformation = (data) => {
 
             <div class='row-info__device'>
                 <dt>Fecha de compra</dt>
-                <dd>${data.fecha_compra}</dd>
+                <dd>${ (data.fecha_compra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : dateInFormatText( data.fecha_compra ) }</dd>
             </div>
 
             <div class='row-info__device'>
                 <dt>Fecha en la que expira la garantía</dt>
-                <dd>${data.fecha_garantia}</dd>
+                <dd>${ (data.fecha_garantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : dateInFormatText( data.fecha_garantia ) }</dd>
             </div>
 
             <div class='row-info__device'>

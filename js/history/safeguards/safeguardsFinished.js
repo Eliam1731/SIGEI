@@ -8,6 +8,18 @@ const buttonPrevious = document.getElementById('prevSafeguards');
 const root = document.getElementById('table-safeguards__finished'); 
 let data = []; 
 
+const dateInFormatText = ( dateString ) => {
+    const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    let [ year, day, month ] = dateString.split('-'); 
+    let date = new Date(year, month - 1, day);
+
+    day = date.getDate();
+    month = months[date.getMonth()];
+    year = date.getFullYear();
+
+    return `${day} de ${month} del ${year}`;
+}
+
 buttonNext.addEventListener('click', () => {
     if (indexTable < data.length) {
         indexTable += 20;
@@ -39,14 +51,14 @@ export const renderTableOfSafeguardsFinished = ( safeguards, root ) => {
 
         const row = `
             <tr>
-                <td>${ Fecha_inicio }</td>
+                <td>${ dateInFormatText( Fecha_inicio ) }</td>
                 <td>
                     <p>${ Nombre } ${ Primer_apellido } ${ Segundo_apellido }</p>
                     <span>${ Nom_corto } |</span>
                     <span>${ Num_obra }</span>
                     <span>${ Nom_frente }</span>
                 </td>
-                <td>${ Fecha_terminacion }</td>
+                <td>${ dateInFormatText( Fecha_terminacion ) }</td>
                 <td>${ NombreUsuarioResguardo } ${ ApellidoUsuarioResguardo } ${ SegundoApellidoUsuarioResguardo }</td>
                 <td>
                     <button class='viewDetailsSafeguardBtn'>Editar</button>

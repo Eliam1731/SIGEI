@@ -45,7 +45,6 @@ itemNavDeviceLow.addEventListener('click', async() => {
 
     try {
         const devicesLow = await getDataServer('../server/data/low_history.php');
-        console.log(devicesLow);
   
         renderTableOfLowDevices( devicesLow, tbodyDevicesLow );
     } catch(error) {

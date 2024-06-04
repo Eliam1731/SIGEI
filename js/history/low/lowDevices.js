@@ -36,7 +36,7 @@ export const renderTableOfLowDevices = (lowDevices, root) => {
                 <td>${ codeOpc }</td>
                 <td>${ subcategoria } ${ marca } ${ modelo } ${ numSerie }</td>
                 <td>${ nombre } ${ primerApellido } ${ segundoApellido }</td>
-                <td>${ dateInFormatText( fechaBaja ) }</td>
+                <td>${ fechaBaja }</td>
                 <td>
                     <button class='viewDetailsLowDevice'>Editar</button>
                 </td>

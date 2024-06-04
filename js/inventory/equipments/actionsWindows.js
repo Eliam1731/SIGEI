@@ -3,6 +3,7 @@ import { configureDownloadLink, createBlobFromBytes, decodeBase64ToBytes } from 
 import { getDataServer } from "../../utilities/getDataServer.js";
 import { sendDataServerEquipment } from "../../utilities/sendDataEquipment.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
+import { dateInFormatText } from "../../utilities/textDate.js";
 import { finishMaintenanceDevice, initMaintenanceDevice } from "./formsMaintenance.js";
 
 let billsDevice = [];
@@ -62,12 +63,12 @@ const firstSectionActions = (dataOriginal) => {
 
               <div class='row-info__device'>
                   <dt>Fecha de compra</dt>
-                  <dd>${ (data.fechaCompra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : data.fechaCompra }</dd>
+                  <dd>${ (data.fechaCompra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : dateInFormatText( data.fechaCompra ) }</dd>
               </div>
 
               <div class='row-info__device'>
                   <dt>Fecha en la que expira la garantía</dt>
-                  <dd>${ (data.fechaGarantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : data.fechaGarantia }</dd>
+                  <dd>${ (data.fechaGarantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : dateInFormatText( data.fechaGarantia ) }</dd>
               </div>
 
               <div class='row-info__device'>
@@ -150,8 +151,6 @@ const firstSectionActions = (dataOriginal) => {
   const changeStatusDevice = document.getElementById('change-status__device');
   const detailsDevice = document.querySelector('.container-info__device');
   const rootFormLow = document.createElement('div');
-
-  console.log(new Date().toISOString().slice(0, 10));
 
   changeStatusDevice.addEventListener('click', () => {
     const existenceFormLow = document.getElementById('form-device-low');

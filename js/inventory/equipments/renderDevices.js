@@ -177,9 +177,20 @@ export const renderDevices = (devices) => {
         tr.querySelector('#columnActionsDevices').appendChild(buttonActions);
         tableDevices.appendChild(tr);
 
+        function switchType(value) {
+            if (typeof value === 'string') {
+                return Number(value);
+            } else if (typeof value === 'number') {
+                return String(value);
+            } else {
+                return value; 
+            }
+        }
+
         buttonActions.addEventListener('click', () => {
             const devicesID = buttonActions.getAttribute('data-id');
-            const filterDevice = devicesArray.filter(device => device.idEquipo === parseInt(devicesID));
+            const transformingNumber = switchType(devicesID);
+            const filterDevice = devicesArray.filter(device => device.idEquipo === transformingNumber);
 
             console.log(devicesArray);
             console.log(filterDevice);

@@ -67,7 +67,31 @@
             </article>
 
             <article id="table-devices__low">
-                <p>Equipos dados de baja</p>
+            <div class="containerRoot__tableSafeguards">
+                    <div class="overflow__tableSafeguards">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Información del equipo</th>
+                                    <th>Autorizador</th>
+                                    <th>Fecha de baja</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="table-lowDevices">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="control-buttons__safeguards">
+                        <button id="prevLowDevices">-</button>
+                        <p id="indexTextTableLowDevices">1</p>
+                        <button id="nextLowDevices">+</button>
+                    </div>
+                </div>
             </article>
         </section>
 

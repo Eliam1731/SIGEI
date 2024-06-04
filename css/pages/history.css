@@ -109,6 +109,8 @@ main { display: flex; }
     background: rgba(0, 0, 0, 0.8);
 }
 
+.root-actions-details-device--active { background: rgba(0, 0, 0, 0.8); }
+
 .container-details-safeguard {
     height: 90%;
     width: 80%;
@@ -452,7 +454,10 @@ main { display: flex; }
     height: 100%;
     width: 100%;
     display: none;
+    justify-content: center;
+    align-items: center;
     position: relative;
+    box-sizing: border-box;
 }
 
 #navegation_history {

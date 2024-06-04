@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         data = await getDataServer('../server/data/equipmentvisualization.php');
         devicesArray = Object.values(data).flat();
 
+        console.log(devicesArray);
         renderDevices(data);
     } catch (error) {
         console.error('Error:', error);
@@ -179,6 +180,9 @@ export const renderDevices = (devices) => {
         buttonActions.addEventListener('click', () => {
             const devicesID = buttonActions.getAttribute('data-id');
             const filterDevice = devicesArray.filter(device => device.idEquipo === parseInt(devicesID));
+
+            console.log(devicesArray);
+            console.log(filterDevice);
 
             windowActionsDevices(filterDevice);
         })

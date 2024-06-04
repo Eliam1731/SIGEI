@@ -25,6 +25,7 @@ const devicesWithAddresses = [
 const firstSectionActions = (dataOriginal) => {
   const rootActions = document.getElementById("root-actions");
   const data = dataOriginal[0];
+  console.log(data, 'data');
 
   const html = `
       <h2>Información detallada del equipo</h2>

@@ -178,7 +178,7 @@ export const renderDevices = (devices) => {
 
         buttonActions.addEventListener('click', () => {
             const devicesID = buttonActions.getAttribute('data-id');
-            const filterDevice = devicesArray.filter(device => device.idEquipo === Number(devicesID));
+            const filterDevice = devicesArray.filter(device => device.idEquipo === parseInt(devicesID));
 
             windowActionsDevices(filterDevice);
         })

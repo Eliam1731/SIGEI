@@ -11,7 +11,8 @@ try {
     ur.Nombre AS NombreUsuarioResguardo, ur.Primer_apellido AS ApellidoUsuarioResguardo, 
     ur.Segundo_apellido AS SegundoApellidoUsuarioResguardo, ud.Nombre AS NombreUsuarioDevolucion, 
     ud.Primer_apellido AS ApellidoUsuarioDevolucion, ud.Segundo_apellido AS SegundoApellidoUsuarioDevolucion,
-    ob.Nombre_obra, ob.Num_obra, em.Nom_empresa, em.Nom_corto, fr.Nom_frente, fr.numero_frente
+    ob.Nombre_obra, ob.Num_obra, em.Nom_empresa, em.Nom_corto, fr.Nom_frente, fr.numero_frente,
+    sc.Nom_subcategoria, ce.Nom_categoria
     FROM devolucion_de_equipos de
     LEFT JOIN empleados_resguardantes er ON de.Empleado_id = er.Empleado_id
     LEFT JOIN equipos_informaticos ei ON de.Equipo_id = ei.Equipo_id
@@ -21,6 +22,8 @@ try {
     LEFT JOIN obras ob ON er.Obra_id = ob.Obra_id
     LEFT JOIN empresas em ON er.Empresa_id = em.Empresa_id
     LEFT JOIN frente fr ON er.id_frente = fr.Frente_id
+    LEFT JOIN subcategoria sc ON ei.Id_subcategoria = sc.Subcategoria_id
+    LEFT JOIN categorias_equipo_informatico ce ON sc.id_categoria = ce.Categoria_id
     GROUP BY de.Devolucion_id";
     $stmt = $conn->prepare($sql);
     $stmt->execute();

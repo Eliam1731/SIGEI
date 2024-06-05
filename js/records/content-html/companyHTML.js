@@ -29,7 +29,7 @@ export const companySystemsHTML = `
 
             <div class='second_div-work'>
                 <div>
-                    <p>Seleccione las empresas a la que pewrtenece la obra</p>
+                    <p>Seleccione las empresas a la que pertenece la obra</p>
 
                     <div id='groupsCompany'>
                     
@@ -48,10 +48,21 @@ export const companySystemsHTML = `
             </div>
         </form>
 
+        <form id="formForehead">
+            <label for="nameForehead">Nombre del frente</label>
+            <input class='input-forms' type="text" id="nameForehead" placeholder="Ejemplo: Frente 1">
+
+            <label for="numberForehead">Número de frente</label>
+            <input class='input-forms' type="text" id="numberForehead" placeholder="Ejemplo: 8292">
+
+            <button class='button-action' id="buttonCreateForehead" type='button'>Crear frente</button>
+        </form>
+
         <nav>
             <ul>
                 <li class="formCompany li-selected">Crear nueva empresa</li>
                 <li class="formWork">Crear nueva obra</li>
+                <li class='formForehead'>Crear nuevo frente</li>
             </ul>
         </nav>
     </section>

@@ -167,9 +167,40 @@ const functionalitiesFormWork = async() => {
     })
 }
 
+const functionalitiesFormForehead = () => {
+    const button = document.getElementById('buttonCreateForehead');
+
+    button.addEventListener('click', async() => {
+        const nameForehead = document.getElementById('nameForehead');
+        const numberForehead = document.getElementById('numberForehead');
+        const data = { nombre_frente: nameForehead.value, numero_frente: numberForehead.value }
+
+        if(regex.test(data.nombre_frente) || regex.test(data.numero_frente)) {
+            alert('Ninguno de los campos puede estar vacío');
+            return;
+        }
+
+        if(isNaN(data.numero_frente)) {
+            alert('El número de frente tiene que ser un número');
+            return;
+        }
+
+        const response = await sendDataServer('../server/insert/front.php', data);
+        console.log(response);
+
+        if(response.error) {
+            alert(response.error);
+            return;
+        }
+
+        alert(response.message);
+        window.location.reload();
+    });
+}
+
 const functionalitiesFormCompany = () => {
     const button = document.getElementById('buttonCreateCompany');
-    const navElementsLi = ['formCompany', 'formWork'];
+    const navElementsLi = ['formCompany', 'formWork', 'formForehead'];
 
     button.addEventListener('click', getDataFormCompany);
     navElementsLi.forEach( elements => {
@@ -184,6 +215,7 @@ export const formCreateCompany = ( forehead ) => {
         document.getElementById('root-forms').innerHTML = formsCompany[forehead];
         functionalitiesFormCompany();
         functionalitiesFormWork();
+        functionalitiesFormForehead();
 
         return;
     }

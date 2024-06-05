@@ -107,6 +107,18 @@
     margin-bottom: 5%;
 }
 
+#formForehead {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#formForehead button { width: 50%; }
+#formForehead label { padding-bottom: 3%; }
+#formForehead input { width: 50%; }
+
 /* Estilos de la barra de navegaciòn */
 #sectionCompany nav {
     top: 0;
@@ -123,5 +135,6 @@
     font-size: 1.1em;
 }
 #sectionCompany nav ul li:first-child { margin-bottom: 8%; }
+#sectionCompany nav ul li:nth-child(2) { margin-bottom: 8%; }
 #sectionCompany nav ul li { user-select: none; }
 .li-selected { color: #1A73E8}

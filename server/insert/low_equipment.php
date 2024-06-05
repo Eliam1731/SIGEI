@@ -13,7 +13,13 @@ try {
     $equipo_id = $data['equipo_id'];
     $correo = $data['correo'];
     $comentario = $data['comentario'];
-    $fecha_baja = date('Y-m-d', strtotime($data['fecha_baja'])); // Asegúrate de que la fecha esté en el formato 'Y-m-d'
+    $fecha_baja = $data['fecha_baja']; 
+
+    // Reorganiza la fecha
+    $fecha_baja_reorganizada = substr($fecha_baja, 0, 4) . '-' . substr($fecha_baja, 4, 2) . '-' . substr($fecha_baja, 6, 2);
+
+    // Formatea la fecha
+    $fecha_baja_formateada = date('Y-m-d', strtotime($fecha_baja_reorganizada));
 
     // Verifica si el equipo ya está en baja o si su estado es distinto de 1
     $stmt = $conn->prepare("SELECT Status_id FROM equipos_informaticos WHERE Equipo_id = :equipo_id");
@@ -32,8 +38,8 @@ try {
     $stmt->execute(['equipo_id' => $equipo_id]);
 
     // Registra la baja en la tabla baja_de_equipos
-    $stmt = $conn->prepare("INSERT INTO baja_de_equipos (Equipo_id, User_id, Fecha_baja, Motivo_baja) VALUES (:equipo_id, (SELECT User_id FROM usuarios WHERE correo_electronico = :correo), :fecha_baja, :comentario)");
-    $stmt->execute(['equipo_id' => $equipo_id, 'correo' => $correo, 'fecha_baja' => $fecha_baja, 'comentario' => $comentario]);
+    $stmt = $conn->prepare("INSERT INTO baja_de_equipos (Equipo_id, User_id, Fecha_baja, Motivo_baja) VALUES (:equipo_id, (SELECT User_id FROM usuarios WHERE correo_electronico = :correo), :fecha_baja_formateada, :comentario)");
+    $stmt->execute(['equipo_id' => $equipo_id, 'correo' => $correo, 'fecha_baja_formateada' => $fecha_baja_formateada, 'comentario' => $comentario]);
 
     $mail = new PHPMailer(true);
 

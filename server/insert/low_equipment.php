@@ -34,9 +34,9 @@ try {
     $stmt = $conn->prepare("UPDATE equipos_informaticos SET Status_id = 4 WHERE Equipo_id = :equipo_id");
     $stmt->execute(['equipo_id' => $equipo_id]);
 
-    // Registra la baja en la tabla baja_de_equipos
-    $stmt = $conn->prepare("INSERT INTO baja_de_equipos (Equipo_id, User_id, Fecha_baja, Motivo_baja) VALUES (:equipo_id, (SELECT User_id FROM usuarios WHERE correo_electronico = :correo), :fecha_baja, :comentario)");
-    $stmt->execute(['equipo_id' => $equipo_id, 'correo' => $correo, 'fecha_baja' => $fecha_baja_formateada, 'comentario' => $comentario]);
+        // Registra la baja en la tabla baja_de_equipos
+    $stmt = $conn->prepare("INSERT INTO baja_de_equipos (Equipo_id, User_id, Fecha_baja, Motivo_baja) VALUES (:equipo_id, (SELECT User_id FROM usuarios WHERE correo_electronico = :correo), STR_TO_DATE(:fecha_baja, '%Y-%m-%d'), :comentario)");
+    $stmt->execute(['equipo_id' => $equipo_id, 'correo' => $correo, 'fecha_baja' => $fecha_baja, 'comentario' => $comentario]);
 
     $mail = new PHPMailer(true);
 

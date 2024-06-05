@@ -13,7 +13,7 @@ try {
     $equipo_id = $data['equipo_id'];
     $correo = $data['correo'];
     $comentario = $data['comentario'];
-    $fecha_baja = $data['fecha_baja']; // Ya está en el formato 'Y-m-d'
+    $fecha_baja = date('Y-m-d', strtotime($data['fecha_baja'])); // Asegúrate de que la fecha esté en el formato 'Y-m-d'
 
     // Verifica si el equipo ya está en baja o si su estado es distinto de 1
     $stmt = $conn->prepare("SELECT Status_id FROM equipos_informaticos WHERE Equipo_id = :equipo_id");

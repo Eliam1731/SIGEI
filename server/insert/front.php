@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $row = $stmt->fetch();
 
     if ($row) {
-        http_response_code(400);
         echo json_encode(['error' => 'Ese frente ya existe.']);
     } else {
         $stmt = $conn->prepare("INSERT INTO frente (Nom_frente, numero_frente) VALUES (:nombre_frente, :numero_frente)");
@@ -24,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->rowCount() > 0) {
             echo json_encode(['message' => 'Frente creado exitosamente.']);
         } else {
-            http_response_code(500);
             echo json_encode(['error' => 'No se pudo crear el frente.']);
         }
     }

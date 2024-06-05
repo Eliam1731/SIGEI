@@ -16,7 +16,7 @@ try {
     $fecha_baja = $data['fecha_baja']; 
 
     // Formatea la fecha
-    $fecha_baja_formateada = date('Y-m-d H:i:s', strtotime($fecha_baja));
+    $fecha_baja_formateada = date('Y-m-d', strtotime($fecha_baja));
 
     // Verifica si el equipo ya está en baja o si su estado es distinto de 1
     $stmt = $conn->prepare("SELECT Status_id FROM equipos_informaticos WHERE Equipo_id = :equipo_id");

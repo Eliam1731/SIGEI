@@ -10,20 +10,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre_frente = $data['nombre_frente'];
     $numero_frente = $data['numero_frente'];
 
-    $stmt = $conn->prepare("SELECT * FROM frente WHERE Nom_frente = :nombre_frente OR numero_frente = :numero_frente");
-    $stmt->execute(['nombre_frente' => $nombre_frente, 'numero_frente' => $numero_frente]);
+    $stmt = $conn->prepare("SELECT * FROM frente WHERE Nom_frente = :nombre_frente");
+    $stmt->execute(['nombre_frente' => $nombre_frente]);
     $row = $stmt->fetch();
 
     if ($row) {
-        echo json_encode(['error' => 'Ese frente ya existe.']);
+        echo json_encode(['error' => 'El nombre de frente ' . $nombre_frente . ' ya existe.']);
     } else {
-        $stmt = $conn->prepare("INSERT INTO frente (Nom_frente, numero_frente) VALUES (:nombre_frente, :numero_frente)");
-        $stmt->execute(['nombre_frente' => $nombre_frente, 'numero_frente' => $numero_frente]);
+        $stmt = $conn->prepare("SELECT * FROM frente WHERE numero_frente = :numero_frente");
+        $stmt->execute(['numero_frente' => $numero_frente]);
+        $row = $stmt->fetch();
 
-        if ($stmt->rowCount() > 0) {
-            echo json_encode(['message' => 'Frente creado exitosamente.']);
+        if ($row) {
+            echo json_encode(['error' => 'El número de frente ' . $numero_frente . ' ya existe.']);
         } else {
-            echo json_encode(['error' => 'No se pudo crear el frente.']);
+            $stmt = $conn->prepare("INSERT INTO frente (Nom_frente, numero_frente) VALUES (:nombre_frente, :numero_frente)");
+            $stmt->execute(['nombre_frente' => $nombre_frente, 'numero_frente' => $numero_frente]);
+
+            if ($stmt->rowCount() > 0) {
+                echo json_encode(['message' => 'Frente creado exitosamente.']);
+            } else {
+                echo json_encode(['error' => 'No se pudo crear el frente.']);
+            }
         }
     }
 }

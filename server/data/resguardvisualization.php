@@ -23,6 +23,11 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $num_obra = $row['Num_obra'];
     $frente = $row['Nom_frente'];
     $numero_frente = $row['numero_frente'];
+    $nombre_empleado = $row['Nombre'];
+    $primer_apellido = $row['Primer_apellido'];
+    $segundo_apellido = $row['Segundo_apellido'];
+    $num_seguro_social = $row['Num_seguro_social'];
+    $correo_electronico = $row['Correo_electronico'];
     $equipo = [
         'Modelo' => $row['Modelo'],
         'Num_serie' => $row['Num_serie'],
@@ -37,13 +42,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         'Comentarios' => $row['Comentarios'],
         'miId' => $row['miId'],
         'num_telefono' => $row['num_telefono'],
-        'empleado' => [
-            'Nombre' => $row['Nombre'],
-            'Primer_apellido' => $row['Primer_apellido'],
-            'Segundo_apellido' => $row['Segundo_apellido'],
-            'Num_seguro_social' => $row['Num_seguro_social'],
-            'Correo_electronico' => $row['Correo_electronico'],
-        ],
     ];
 
     if (!isset($results[$empresa])) {
@@ -53,9 +51,18 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $results[$empresa]['obras'][$obra] = ['Num_obra' => $num_obra, 'frentes' => []];
     }
     if (!isset($results[$empresa]['obras'][$obra]['frentes'][$frente])) {
-        $results[$empresa]['obras'][$obra]['frentes'][$frente] = ['numero_frente' => $numero_frente, 'equipos' => []];
+        $results[$empresa]['obras'][$obra]['frentes'][$frente] = ['numero_frente' => $numero_frente, 'empleados' => []];
     }
-    $results[$empresa]['obras'][$obra]['frentes'][$frente]['equipos'][] = $equipo;
+    if (!isset($results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$nombre_empleado])) {
+        $results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$nombre_empleado] = [
+            'Primer_apellido' => $primer_apellido,
+            'Segundo_apellido' => $segundo_apellido,
+            'Num_seguro_social' => $num_seguro_social,
+            'Correo_electronico' => $correo_electronico,
+            'equipos' => []
+        ];
+    }
+    $results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$nombre_empleado]['equipos'][] = $equipo;
 }
 
 echo json_encode($results);

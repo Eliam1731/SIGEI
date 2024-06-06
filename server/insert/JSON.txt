@@ -218,4 +218,3 @@ INSERT INTO `frente` (`numero_frente`, `Nom_frente`) VALUES
 (633, 'Recursos Humanos');
 
 
-

@@ -2,7 +2,7 @@
 include '../config/connection_db.php';
 
 $sql = "
-SELECT e.Nom_empresa, e.Nom_corto,o.Nombre_obra, o.Num_obra,f.Nom_frente, f.numero_frente,ei.Modelo, ei.Num_serie,ei.Especificacion,ei.Fecha_compra,ei.Fecha_garantia,ei.Importe,ei.Direccion_mac_wifi,ei.Direccion_mac_ethernet,ei.Num_ref_compaq,ei.Service_tag,ei.Comentarios,ei.miId,ei.num_telefono,er.Nombre, er.Primer_apellido, er.Segundo_apellido,er.Num_seguro_social,er.Correo_electronico
+SELECT e.Nom_empresa, e.Nom_corto, o.Nombre_obra, o.Num_obra, f.Nom_frente, f.numero_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios, ei.miId, ei.num_telefono, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, er.Empleado_id
 FROM resguardos_de_equipos r
 JOIN empleados_resguardantes er ON r.Empleado_id = er.Empleado_id
 JOIN equipos_informaticos ei ON r.Equipo_id = ei.Equipo_id
@@ -28,6 +28,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $segundo_apellido = $row['Segundo_apellido'];
     $num_seguro_social = $row['Num_seguro_social'];
     $correo_electronico = $row['Correo_electronico'];
+    $empleado_id = $row['Empleado_id'];
     $equipo = [
         'Modelo' => $row['Modelo'],
         'Num_serie' => $row['Num_serie'],
@@ -42,7 +43,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         'Comentarios' => $row['Comentarios'],
         'miId' => $row['miId'],
         'num_telefono' => $row['num_telefono'],
+        'empleado_id' => $empleado_id 
     ];
+
+    $claveEmpleado = $nombre_empleado . $primer_apellido . $segundo_apellido . $empleado_id;
 
     if (!isset($results[$empresa])) {
         $results[$empresa] = ['Nom_corto' => $nom_corto, 'obras' => []];
@@ -53,16 +57,18 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     if (!isset($results[$empresa]['obras'][$obra]['frentes'][$frente])) {
         $results[$empresa]['obras'][$obra]['frentes'][$frente] = ['numero_frente' => $numero_frente, 'empleados' => []];
     }
-    if (!isset($results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$nombre_empleado])) {
-        $results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$nombre_empleado] = [
+    if (!isset($results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$claveEmpleado])) {
+        $results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$claveEmpleado] = [
+            'Nombre' => $nombre_empleado,
             'Primer_apellido' => $primer_apellido,
             'Segundo_apellido' => $segundo_apellido,
             'Num_seguro_social' => $num_seguro_social,
             'Correo_electronico' => $correo_electronico,
+            'empleado_id' => $empleado_id, 
             'equipos' => []
         ];
     }
-    $results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$nombre_empleado]['equipos'][] = $equipo;
+    $results[$empresa]['obras'][$obra]['frentes'][$frente]['empleados'][$claveEmpleado]['equipos'][] = $equipo;
 }
 
 echo json_encode($results);

@@ -2,13 +2,16 @@
 include '../config/connection_db.php';
 
 $sql = "
-SELECT e.Nom_empresa, e.Nom_corto, o.Nombre_obra, o.Num_obra, f.Nom_frente, f.numero_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios, ei.miId, ei.num_telefono, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, er.Empleado_id
+SELECT ei.Equipo_id, e.Nom_empresa, e.Nom_corto, o.Nombre_obra, o.Num_obra, f.Nom_frente, f.numero_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios, ei.miId, ei.num_telefono, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, er.Empleado_id, sc.Nom_subcategoria, mc.Nom_marca, cc.Nom_categoria
 FROM resguardos_de_equipos r
 JOIN empleados_resguardantes er ON r.Empleado_id = er.Empleado_id
 JOIN equipos_informaticos ei ON r.Equipo_id = ei.Equipo_id
 JOIN empresas e ON er.Empresa_id = e.Empresa_id
 JOIN obras o ON er.Obra_id = o.Obra_id
 JOIN frente f ON er.id_frente = f.Frente_id
+JOIN subcategoria sc ON ei.Id_subcategoria = sc.Subcategoria_id
+JOIN marca_del_equipo mc ON ei.Id_marca = mc.Id_Marca
+JOIN categorias_equipo_informatico cc ON sc.id_categoria = cc.Categoria_id
 WHERE r.status = 'resguardado'
 ";
 
@@ -30,6 +33,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $correo_electronico = $row['Correo_electronico'];
     $empleado_id = $row['Empleado_id'];
     $equipo = [
+        'Equipo_id' => $row['Equipo_id'],
         'Modelo' => $row['Modelo'],
         'Num_serie' => $row['Num_serie'],
         'Especificacion' => $row['Especificacion'],
@@ -43,7 +47,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         'Comentarios' => $row['Comentarios'],
         'miId' => $row['miId'],
         'num_telefono' => $row['num_telefono'],
-        'empleado_id' => $empleado_id 
+        'Nom_subcategoria' => $row['Nom_subcategoria'],
+        'Nom_marca' => $row['Nom_marca'],
+        'Nom_categoria' => $row['Nom_categoria'],
     ];
 
     $claveEmpleado = $nombre_empleado . $primer_apellido . $segundo_apellido . $empleado_id;

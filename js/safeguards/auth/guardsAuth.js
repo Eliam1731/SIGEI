@@ -203,14 +203,14 @@ buttonAuth.addEventListener('click', async() => {
     if(response.message === 'Su resguardo fue exitoso' ) {
       alert(response.message);
 
-      generateReportSafeguards( 
-        safeguardsData.work, 
-        '1 Pza', 
-        safeguardsData.codeOpc, 
-        safeguardsData.description, 
-        nameComplete,
-        response.employeeEmail,
-      );
+      // generateReportSafeguards( 
+      //   safeguardsData.work, 
+      //   '1 Pza', 
+      //   safeguardsData.codeOpc, 
+      //   safeguardsData.description, 
+      //   nameComplete,
+      //   response.employeeEmail,
+      // );
 
       cleanSectionAuth();
     }

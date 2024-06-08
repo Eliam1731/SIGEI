@@ -1,16 +1,16 @@
 .container-filters-details {
-    height: 12%;
+    height: 15%;
     width: 100%;
     position: relative;
     display: flex;
     box-sizing: border-box;
-    background: #ECEFF1;
-    border-bottom: 1px solid #90A4AE;
+    background: #833F0E;
+    border-bottom: 1px solid #212121;
 }
 
 .container-filters-details .container-description {
     height: 100%;
-    width: 60%;
+    width: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -20,11 +20,22 @@
 }
 
 .container-filters-details .container-description h1 {
-    padding-bottom: 2%;
+    padding-bottom: 1%;
+    font-size: 1.1em;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 800;
     font-style: normal;
+    color: #EEEEEE;
+}
+
+.container-filters-details .container-description p {
+    font-size: .9em;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    color: #EEEEEE;
 }
 
 .container-filters-details .container-filters {
@@ -42,10 +53,203 @@
 }
 
 #rootDetails {
-    height: 88%;
+    height: 85%;
     width: 100%;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
+}
+
+.container-details-resguards {
+    height: 90%;
+    width: 95%;
+    position: relative;
+    background: #FAFAFA;
+    border: 1px solid #E0E0E0;
+    border-radius: .3em;
+    overflow-y: auto;
+    overflow-x: none;
+}
+
+/* Estilos de las cartas de seguimiento de equipos informaticos */
+.card-follow-up {
+    height: 10em;
+    width: 98%;
+    position: relative;
+    display: flex;
+    background: #FFFFFF;
+    margin: 1em auto;
+    border: 1px solid #E0E0E0;
+}
+
+.card-follow-up div {
+    height: 100%;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.card-follow-up div:first-child h4 {
+    font-size: .9em;
+    font-weight: 600;
+    padding: 0 0 3% 5%;
+    color: #6B7280;
+}
+
+.card-follow-up div:first-child p {
+    padding: 0 0 0 5%;
+    font-size: 1em;
+    font-weight: 600;
+    color: #111827;
+}
+
+.card-follow-up div h4 {
+    font-size: .9em;
+    font-weight: 600;
+    padding: 0 0 7% 9%;
+    color: #6B7280;
+}
+
+.card-follow-up div p {
+    padding: 0 0 0 9%;
+    font-size: 1em;
+    font-weight: 600;
+    color: #111827;
+}
+
+.card-follow-up div:first-child { width: 40%; }
+
+.card-follow-up div:last-child { border-right: 0; }
+
+.root-window-details__safeguards {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.root-window-details__safeguards > div {
+    height: 90%;
+    width: 90%;
+    position: relative;
+    display: flex;
+    background: #FAFAFA;
+    border-radius: .3em;
+    box-sizing: border-box;
+}
+
+.root-window-details__safeguards > div section:first-child {
+    height: 100%;
+    width: 72%;
+    position: relative;
+    background: #FAFAFA;
+    box-sizing: border-box;
+}
+
+.root-window-details__safeguards > div section:last-child {
+    height: 100%;
+    width: 28%;
+    position: relative;
+    background: #F5F5F5;
+    border-left: 1px solid #E0E0E0;
+    box-sizing: border-box;
+}
+
+.root-window-details__safeguards > div section:last-child h4 {
+    padding: 10% 0 0 5%;
+    color: #6B7280;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: .9em;
+    font-weight: 700;
+}
+
+.root-window-details__safeguards > div section:last-child > div {
+    height: 85%;
+    width: 90%;
+    position: relative;
+    margin: 10% 0 0 5%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.card-category-count {
+    height: 4em;
+    width: 100%;
+    position: relative;
+    display: flex;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: .3em;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    overflow: hidden;
+}
+
+.card-category-count:first-child { margin-top: 5%; }
+
+.card-category-count div:first-child {
+    height: 100%;
+    width: 23%;
+    background: #111827;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.card-category-count div:first-child h5 {
+    color: #FFFFFF;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: .8em;
+    font-weight: 600;
+}
+
+.card-category-count div:last-child {
+    height: 100%;
+    width: 77%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.card-category-count div:last-child h5 {
+    color: #111827;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: .8em;
+    font-weight: 700;
+    padding: 0 0 5% 5%;
+}
+
+.card-category-count div:last-child p {
+    color: #6B7280;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: .8em;
+    font-weight: 700;
+    padding: 0 0 0 5%;
 }

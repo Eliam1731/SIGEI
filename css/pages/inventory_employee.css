@@ -68,10 +68,19 @@
     box-sizing: border-box;
 }
 
+.table__employee-root-overflow {
+    height: 84%;
+    width: 100%;
+    position: relative;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
 .container-table__employee-root {
     margin: 2% 0 0 3%;
     height: 95%;
     width: 97%;
+    overflow-y: auto;
     border: 1px solid #E0E0E0;
     box-sizing: border-box;
 }

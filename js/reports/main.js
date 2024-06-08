@@ -1,22 +1,15 @@
 import { getDataServer } from "../utilities/getDataServer.js";
-
-const selectCompany = document.getElementById('filtersCompany');
+import { renderFollowUp } from "./followUpRender.js";
+import { followUpRenderSystems } from "./followUpSystems.js";
+const root = document.querySelector('.container-details-resguards')
 
 document.addEventListener('DOMContentLoaded', async() => {
     try {
-        const response = await getDataServer('../server/data/resguardvisualization.php');
+        const followUpDevice = await getDataServer('../server/data/resguardvisualization.php');
+        const guardDevicesSystemsUsers = await getDataServer('../server/data/resguard_systems.php');
 
-        for(let company in response) {
-            if(response.hasOwnProperty(company)) {
-                const option = document.createElement('option');
-                option.value = company;
-                option.textContent = response[company].Nom_corto.toUpperCase();
-
-                selectCompany.appendChild(option);
-            }
-        }
-
-        console.log(response)
+        followUpRenderSystems( guardDevicesSystemsUsers, root);
+        renderFollowUp( followUpDevice, root);
     } catch(error) {
         console.error('Error:', error);
     }

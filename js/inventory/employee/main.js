@@ -12,7 +12,6 @@ const bodyTableEmployee = document.getElementById( employeeElementsDOM.tableBody
 const listItemEmployee = document.getElementById( employeeElementsDOM.listItemEmployee );
 const searchEmployee = document.getElementById('searcherEmployee');
 const buttonRedirectSection = document.getElementById('redirectionRecordsEmployee');
-let idx = 0; 
 
 buttonRedirectSection.addEventListener('click', () => { window.location.href = '../pages/records.php'; });
 
@@ -20,10 +19,7 @@ const renderDataEmployee = ( data ) => {
     bodyTableEmployee.innerHTML = '';
 
     data.forEach( employee => {
-        const { 
-            Empleado_id: employeeID, Nombre: name, Primer_apellido: firstLastName, Segundo_apellido: secondLastName, 
-            Num_seguro_social: sureSocial, Correo_electronico: email, Empresa: companyID, Obra: workID, Frente: frontID, 
-            Nom_corto_empresa: shortName } = employee;
+        const { Empleado_id: employeeID, Nombre: name, Primer_apellido: firstLastName, Segundo_apellido: secondLastName, Obra: workID, Frente: frontID, Nom_corto_empresa: shortName } = employee;
 
         const employeeRow = `
             <tr>
@@ -67,7 +63,6 @@ searchEmployee.addEventListener('keyup', async( event ) => {
    
     try {
         const response = await sendDataServer('../server/data/searcher.php', { search });
-        console.log(response, 'Busqueda de empleados');
 
         searchEmployeeList(response, searchEmployee);
     } catch (error) {

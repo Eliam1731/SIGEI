@@ -186,6 +186,8 @@ const firstSectionActions = (dataOriginal) => {
         comentario: comments,
         fecha_baja: new Date().toISOString().slice(0, 10),
       }
+
+      console.log(new Date().toISOString().slice(0, 10));
       const confirmLow = confirm('¿Estás seguro de dar de baja el equipo?');
 
       if(!confirmLow) return;

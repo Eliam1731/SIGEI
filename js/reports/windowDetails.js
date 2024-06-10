@@ -1,54 +1,160 @@
 const colorsCard = ['#EAB308', '#22C55E', '#9333EA', '#DB2777', '#0F172A', '#0EA5E9', '#833F0E', '#03A9F4', '#00BCD4', '#009688', '#8BC34A', '#CDDC39', '#FFEB3B', '#FF9800', '#795548', '#9E9E9E', '#607D8B'];
 
-const closeWindowDetails = ( root ) => {
-    root.remove();
-}
+const closeWindowDetails = ( root ) => root.remove();
 
-const createCardWorks = ( data, root ) => {
-    Object.keys(data).forEach( work => {
+const createCardTotalDeviceFront = ( data, root ) => {
+    const devicesCountCategory = {};
+
+    Object.keys(data).forEach( front => {
+        Object.keys(data[front].empleados).forEach( employee => {
+            data[front].empleados[employee].equipos.forEach( device => {
+                const { Nom_subcategoria: subcategory } = device;
+
+                ( devicesCountCategory[subcategory] ) ? devicesCountCategory[subcategory]++ : devicesCountCategory[subcategory] = 1;
+            });
+        });
+    });
+
+    Object.keys(devicesCountCategory).forEach( (category, idx) => {
         const card = `
-            <div class='card-work-summary'>
-                <div>
-                    <h5>Nombre de la obra</h5>
-
-                    <p>${work} <span>| núm. ${ data[work].Num_obra }</span></p>
+            <div class='card-category-count'>
+                <div style='background: ${ ( colorsCard[idx] ) ? colorsCard[idx] : colorsCard[0] }'>
+                    <h5>${ category.split(' ').map( word => word[0].toUpperCase()).join('') }</h5>
                 </div>
+
                 <div>
-                    <div>
-                        <h5>Cantidad de frentes</h5>
-
-                        <span>${ Object.keys(data[work].frentes).length }</span>
-                    </div>
-                    <div>
-                        <h5>Cantidad de empleados</h5>
-
-                        <span>${
-                            Object.values(data[work].frentes).reduce((count, currentFront) => {
-                                return count + Object.keys(currentFront.empleados).length;
-                            }, 0)
-                        }</span>
-                    </div>
-                    <div>
-                        <h5>Cantidad de equipos</h5>
-
-                        <span>
-                            ${
-                                Object.values(data[work].frentes).reduce((count, currentFront) => {
-                                    return count + Object.values(currentFront.empleados).reduce((countEmployees, currentEmployee) => {
-                                        return countEmployees + Object.keys(currentEmployee.equipos).length;
-                                    }, 0);
-                                }, 0)
-                            }
-                        </span>
-                    </div>
+                    <h5>${category}</h5>
+                    <p>${devicesCountCategory[category]} ${ ( devicesCountCategory[category] > 1 ) ? 'dispositivos' : 'dispositivo' }</p>
                 </div>
             </div>
         `;
 
         root.innerHTML += card;
     });
+}
 
+const createCardForehead = ( data, root ) => {
+    Object.keys( data ).forEach( front => {
+        const createCard = document.createElement('div');
+        const totalEquipos = Object.values(data[front].empleados).reduce((total, empleado) => total + empleado.equipos.length, 0);
+        const html = `
+            <div>
+                <h5>Nombre del frente</h5>
+
+                <p>${front} <span>| núm. ${ data[front].numero_frente }</span></p>
+            </div>
+
+            <div>
+                <div>
+                    <h5>Cantidad de empleados</h5>
+
+                    <span>${ Object.keys(data[front].empleados).length }</span>
+                </div>
+
+                <div>
+                    <h5>Cantidad de equipos</h5>
+
+                    <span>${ totalEquipos }</span>
+                </div>
+            </div>
+        `;
+
+        createCard.innerHTML = html;
+        createCard.classList.add('card-forehead-summary');
+        root.appendChild(createCard);
+    });
+
+    const rootCardCategory = document.getElementById('rootCard-category__work');
+    createCardTotalDeviceFront( data, rootCardCategory );
     console.log(data);
+}
+
+const windowDetailsForehead = ( forehead, nameWork ) => {
+    const rootWindow = document.createElement('div');
+    const windowDetails = document.createElement('div');
+    const htmlForehead = `
+        <section id="rootDetailsForehead">
+            <div class="container-closeForehead">
+                <button id="prevSectionWork">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.86875 6.75L7.06875 10.95L6 12L0 6L6 0L7.06875 1.05L2.86875 5.25H12V6.75H2.86875Z" fill="#9E9E9E"/></svg>
+                </button>
+
+                <h4>Información general de la obra</h4>
+            </div>
+
+            <h4>${ nameWork }</h4>
+
+            <p>Por favor, haga clic en el frente sobre la que desea obtener más información.</p>
+
+            <div id='rootCard-forehead'></div>
+        </section>
+
+        <section id='summary-work'>
+            <h4>Dispositivos en resguardo por la obra</h4>
+
+            <div id='rootCard-category__work'></div>
+        </section>
+    `;
+
+    rootWindow.classList.add('root-window-details__Forehead');
+
+    rootWindow.append(windowDetails);
+    document.body.appendChild(rootWindow);
+    windowDetails.innerHTML = htmlForehead;
+
+    const buttonPrevSection = document.getElementById('prevSectionWork');
+    const rootCards = document.getElementById('rootCard-forehead');
+
+    buttonPrevSection.addEventListener('click', () => closeWindowDetails( rootWindow ));
+    createCardForehead( forehead, rootCards );
+}
+
+const createCardWorks = ( data, root ) => {
+    Object.keys(data).forEach( work => {
+        const createCard = document.createElement('div');
+        const card = `
+            <div>
+                <h5>Nombre de la obra</h5>
+
+                <p>${work} <span>| núm. ${ data[work].Num_obra }</span></p>
+            </div>
+            <div>
+                <div>
+                    <h5>Cantidad de frentes</h5>
+
+                    <span>${ Object.keys(data[work].frentes).length }</span>
+                </div>
+                <div>
+                    <h5>Cantidad de empleados</h5>
+
+                    <span>${
+                        Object.values(data[work].frentes).reduce((count, currentFront) => {
+                            return count + Object.keys(currentFront.empleados).length;
+                        }, 0)
+                    }</span>
+                </div>
+                <div>
+                    <h5>Cantidad de equipos</h5>
+
+                    <span>
+                        ${
+                            Object.values(data[work].frentes).reduce((count, currentFront) => {
+                                return count + Object.values(currentFront.empleados).reduce((countEmployees, currentEmployee) => {
+                                    return countEmployees + Object.keys(currentEmployee.equipos).length;
+                                }, 0);
+                            }, 0)
+                        }
+                    </span>
+                </div>
+            </div>
+        `;
+
+        createCard.classList.add('card-work-summary');
+        createCard.innerHTML = card;
+
+        root.appendChild(createCard);
+        createCard.addEventListener('click', () => windowDetailsForehead( data[work].frentes, work ));
+    });
 }
 
 const createCardTotalDevice = ( data, root ) => {

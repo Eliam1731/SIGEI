@@ -2,6 +2,110 @@ const colorsCard = ['#EAB308', '#22C55E', '#9333EA', '#DB2777', '#0F172A', '#0EA
 
 const closeWindowDetails = ( root ) => root.remove();
 
+const windowDetailsDeviceEmployee = ( device ) => {
+    const rootWindow = document.createElement('div');
+    const windowDetails = document.createElement('div');
+
+    rootWindow.classList.add('root-window-details__employee-devices');
+    rootWindow.append(windowDetails);
+    document.body.appendChild(rootWindow);
+}
+
+const createCardTotalDeviceEmployee = ( data, root ) => {
+    const devicesCountCategory = {};
+
+    Object.keys(data.empleados).forEach( employee => {
+        data.empleados[employee].equipos.forEach( device => {
+            const { Nom_subcategoria: subcategory } = device;
+
+            ( devicesCountCategory[subcategory] ) ? devicesCountCategory[subcategory]++ : devicesCountCategory[subcategory] = 1;
+        });
+    });
+
+    Object.keys(devicesCountCategory).forEach( (category, idx) => {
+        const card = `
+            <div class='card-category-count'>
+                <div style='background: ${ ( colorsCard[idx] ) ? colorsCard[idx] : colorsCard[0] }'>
+                    <h5>${ category.split(' ').map( word => word[0].toUpperCase()).join('') }</h5>
+                </div>
+
+                <div>
+                    <h5>${category}</h5>
+                    <p>${devicesCountCategory[category]} ${ ( devicesCountCategory[category] > 1 ) ? 'dispositivos' : 'dispositivo' }</p>
+                </div>
+            </div>
+        `;
+
+        root.innerHTML += card;
+    });
+}
+
+const windowEmployeeDetails = ( data, nameForehead ) => {
+    const rootWindow = document.createElement('div');
+    const windowDetails = document.createElement('div');
+    const html = `
+        <section id="rootDetailsForehead">
+            <div class="container-closeForehead">
+                <button id="prevSectionForehead">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.86875 6.75L7.06875 10.95L6 12L0 6L6 0L7.06875 1.05L2.86875 5.25H12V6.75H2.86875Z" fill="#9E9E9E"/></svg>
+                </button>
+
+                <h4>Información general de ${ nameForehead }</h4>
+            </div>
+
+            <div id='root-table__employeeFront'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Correo</th>
+                            <th>Cantidad de equipos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="renderEmployeeForehead"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id='summary-work'>
+            <h4>Dispositivos en resguardo por el frente</h4>
+
+            <div id='rootCard-category__forehead'></div>
+        </section>
+    `;
+
+    rootWindow.classList.add('root-window-details__employee');  
+    document.body.appendChild(rootWindow);
+    rootWindow.append(windowDetails);
+    windowDetails.innerHTML = html;
+    const prevSectionForehead = document.getElementById('prevSectionForehead');
+    const tbody = document.getElementById('renderEmployeeForehead');
+
+    prevSectionForehead.addEventListener('click', () => closeWindowDetails( rootWindow ));
+
+    Object.keys(data.empleados).forEach( employee => {
+        const { Correo_electronico, Nombre, Primer_apellido, Segundo_apellido, equipos } = data.empleados[employee];
+        const button = document.createElement('button');
+
+        button.textContent = 'Ver detalles';
+        button.addEventListener('click', () => windowDetailsDeviceEmployee( data.empleados[employee].equipos ));
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${Nombre} ${Primer_apellido} ${Segundo_apellido}</td>
+            <td>${Correo_electronico}</td>
+            <td>${equipos.length}</td>
+            <td></td>
+        `;
+        row.children[3].appendChild(button);
+
+        tbody.appendChild(row);
+    });
+
+    createCardTotalDeviceEmployee( data, document.getElementById('rootCard-category__forehead') );
+}
+
 const createCardTotalDeviceFront = ( data, root ) => {
     const devicesCountCategory = {};
 
@@ -62,6 +166,7 @@ const createCardForehead = ( data, root ) => {
         createCard.innerHTML = html;
         createCard.classList.add('card-forehead-summary');
         root.appendChild(createCard);
+        createCard.addEventListener('click', () => windowEmployeeDetails( data[front], front ));
     });
 
     const rootCardCategory = document.getElementById('rootCard-category__work');

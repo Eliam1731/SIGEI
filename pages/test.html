@@ -5,111 +5,77 @@ const html = `
     <dl>
         <div class='row-info__device'>
             <dt>Subcategoría del equipo</dt>
-            <dd>${data.subcategoria}</dd>
+            <dd>${Nom_subcategoria}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Marca del equipo</dt>
-            <dd>${data.marca}</dd>
+            <dd>${Nom_marca}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Código OPC</dt>
-            <dd>${data.codeOpc}</dd>
+            <dd>${miId}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Modelo del equipo</dt>
-            <dd>${data.modelo}</dd>
+            <dd>${Modelo}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Número de serie</dt>
-            <dd>${data.numSerie}</dd>
+            <dd>${Num_serie}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Service tag del equipo</dt>
-            <dd>${data.serviceTag}</dd>
+            <dd>${Service_tag}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Fecha de compra</dt>
-            <dd>${ (data.fechaCompra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : dateInFormatText( data.fechaCompra ) }</dd>
+            <dd>${ (Fecha_compra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : dateInFormatText( Fecha_compra ) }</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Fecha en la que expira la garantía</dt>
-            <dd>${ (data.fechaGarantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : dateInFormatText( data.fechaGarantia ) }</dd>
+            <dd>${ (Fecha_garantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : dateInFormatText( Fecha_garantia ) }</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Importe del equipo</dt>
-            <dd>$${data.importe}</dd>
+            <dd>$${Importe}</dd>
         </div>
         
         <div class='row-info__device'>
             <dt>Especificación del equipo</dt>
-            <dd>${data.especificacion}</dd>
+            <dd>${Especificacion}</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Numero de referencia de Compras</dt>
-            <dd>${ (data.referenciaCompaq === '') ? 'El equipo no tiene un número de referencia de compra.' : data.referenciaCompaq }</dd>
+            <dd>${ (Num_ref_compaq === '') ? 'El equipo no tiene un número de referencia de compra.' : Num_ref_compaq }</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Dirección MAC Ethernet</dt>
-            <dd>${ (!data.direccionMacEthernet) ? 'El equipo no cuenta con una dirección MAC Ethernet.' : data.direccionMacEthernet }</dd>
+            <dd>${ (!Direccion_mac_ethernet) ? 'El equipo no cuenta con una dirección MAC Ethernet.' : Direccion_mac_ethernet }</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Dirección MAC Wi-Fi</dt>
-            <dd>${ (!data.direccionMacWifi) ? 'El equipo no cuenta con una dirección MAC WI-FI.' : data.direccionMacWifi }</dd>
-        </div>
-
-        <div class='row-info__device'>
-            <dt>Factura del equipo</dt>
-            <dd>
-                <button id='download-invoice'>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
-                    <span>Descargar factura</span>
-                </button>
-            </dd>
-        </div>
-
-        <div class='row-info__device'>
-            <dt>Imagenes del equipo</dt>
-            <dd>
-                <ul class='list-image-device'>
-                    ${data.images.map((image) => {
-                      return `<li data-image-blob='${image.Datos_imagen}' data-type-image='${image.Tipo_mime}' data-name-image='${image.Nombre}' data-imagen-id='${image.Imagen_id}' class='listItemImageDevice'>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
-                          <span>${image.Nombre}</span>
-                          <button>Descargar</button>
-                      </li>`;
-                    }).join('')}
-                </ul>
-            </dd>
+            <dd>${ (!Direccion_mac_wifi) ? 'El equipo no cuenta con una dirección MAC WI-FI.' : Direccion_mac_wifi }</dd>
         </div>
 
         <div class='row-info__device'>
             <dt>Número de teléfono</dt>
-            <dd>${(!data.telefono) ? 'El equipo no cuenta con un número telefónico.' : data.telefono}</dd>
+            <dd>${(!num_telefono) ? 'El equipo no cuenta con un número telefónico.' : num_telefono}</dd>
         </div>
 
         <div class='row-info__device'>
           <dt>Comentario acerca del equipo</dt>
-          <dd>${(!data.comentarios) ? 'El equipo no tienen comentarios.' : data.comentarios}</dd>
-        </div>
-
-        <div class='row-info__device'>
-          <dt>Estado</dt>
-          <dd>
-              <span>${data.status}</span>
-
-              <button id='change-status__device'>Dar de baja</button>
-          </dd>
+          <dd>${(!Comentarios) ? 'El equipo no tienen comentarios.' : Comentarios}</dd>
         </div>
     </dl>
 </div>

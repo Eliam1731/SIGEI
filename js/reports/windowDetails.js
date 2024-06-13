@@ -1,14 +1,127 @@
+import { dateInFormatText } from "../utilities/textDate.js";
+
 const colorsCard = ['#EAB308', '#22C55E', '#9333EA', '#DB2777', '#0F172A', '#0EA5E9', '#833F0E', '#03A9F4', '#00BCD4', '#009688', '#8BC34A', '#CDDC39', '#FFEB3B', '#FF9800', '#795548', '#9E9E9E', '#607D8B'];
 
 const closeWindowDetails = ( root ) => root.remove();
 
-const windowDetailsDeviceEmployee = ( device ) => {
+const windowDetailsDeviceEmployee = ( device, employee ) => {
     const rootWindow = document.createElement('div');
     const windowDetails = document.createElement('div');
+    const html = `
+            <div class="container-closeForehead">
+                <button id="prevSectionForehead__employee">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.86875 6.75L7.06875 10.95L6 12L0 6L6 0L7.06875 1.05L2.86875 5.25H12V6.75H2.86875Z" fill="#9E9E9E"/></svg>
+                </button>
+
+                <h4>Dispositivos en resguardo por ${ employee }</h4> 
+            </div>
+
+            <div id='root-data__devices'></div>
+    `;
 
     rootWindow.classList.add('root-window-details__employee-devices');
     rootWindow.append(windowDetails);
     document.body.appendChild(rootWindow);
+    windowDetails.innerHTML = html;
+    const rootDataDevices = document.getElementById('root-data__devices');
+    const prevSectionForehead__employee = document.getElementById('prevSectionForehead__employee');
+
+    prevSectionForehead__employee.addEventListener('click', () => closeWindowDetails( rootWindow ));
+
+    device.forEach( (device, idx) => {
+        const { Comentarios, Direccion_mac_ethernet, Direccion_mac_wifi, Especificacion, Fecha_compra, Fecha_garantia, Importe, Modelo, Nom_categoria, Nom_marca, Nom_subcategoria, Num_ref_compaq, Num_serie, Service_tag, miId, num_telefono } = device;
+
+        const html = `
+            <h2>Información detallada del equipo núm. ${ idx + 1 }</h2>
+
+            <div class='container-info__device'>
+                <dl>
+                    <div class='row-info__device'>
+                        <dt>Subcategoría del equipo</dt>
+                        <dd>${Nom_subcategoria}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Marca del equipo</dt>
+                        <dd>${Nom_marca}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Código OPC</dt>
+                        <dd>${miId}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Modelo del equipo</dt>
+                        <dd>${Modelo}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Número de serie</dt>
+                        <dd>${Num_serie}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Service tag del equipo</dt>
+                        <dd>${Service_tag}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Fecha de compra</dt>
+                        <dd>${ (Fecha_compra === '0000-00-00') ? 'No se ha seleccionado una fecha de compra.' : dateInFormatText( Fecha_compra ) }</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Fecha en la que expira la garantía</dt>
+                        <dd>${ (Fecha_garantia === '0000-00-00') ? 'No se ha seleccionado una fecha de vencimiento para la garantía.' : dateInFormatText( Fecha_garantia ) }</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Importe del equipo</dt>
+                        <dd>$${Importe}</dd>
+                    </div>
+                    
+                    <div class='row-info__device'>
+                        <dt>Especificación del equipo</dt>
+                        <dd>${Especificacion}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Numero de referencia de Compras</dt>
+                        <dd>${ (Num_ref_compaq === '') ? 'El equipo no tiene un número de referencia de compra.' : Num_ref_compaq }</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Dirección MAC Ethernet</dt>
+                        <dd>${ (!Direccion_mac_ethernet) ? 'El equipo no cuenta con una dirección MAC Ethernet.' : Direccion_mac_ethernet }</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Dirección MAC Wi-Fi</dt>
+                        <dd>${ (!Direccion_mac_wifi) ? 'El equipo no cuenta con una dirección MAC WI-FI.' : Direccion_mac_wifi }</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                        <dt>Número de teléfono</dt>
+                        <dd>${(!num_telefono) ? 'El equipo no cuenta con un número telefónico.' : num_telefono}</dd>
+                    </div>
+
+                    <div class='row-info__device'>
+                    <dt>Comentario acerca del equipo</dt>
+                    <dd>${(!Comentarios) ? 'El equipo no tienen comentarios.' : Comentarios}</dd>
+                    </div>
+                </dl>
+            </div>`;
+
+            rootDataDevices.innerHTML += html;
+    });
+
+
+
+
+
+    console.log(device);
+    console.log(employee);
 }
 
 const createCardTotalDeviceEmployee = ( data, root ) => {
@@ -89,7 +202,7 @@ const windowEmployeeDetails = ( data, nameForehead ) => {
         const button = document.createElement('button');
 
         button.textContent = 'Ver detalles';
-        button.addEventListener('click', () => windowDetailsDeviceEmployee( data.empleados[employee].equipos ));
+        button.addEventListener('click', () => windowDetailsDeviceEmployee( data.empleados[employee].equipos, `${ Nombre }${ Primer_apellido }${ Segundo_apellido }` ));
 
         const row = document.createElement('tr');
         row.innerHTML = `

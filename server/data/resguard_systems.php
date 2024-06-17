@@ -1,7 +1,12 @@
 <?php
 include '../config/connection_db.php';
 
-$sql = "SELECT * FROM equipos_informaticos WHERE Status_id = 1";
+$sql = "SELECT ei.*, me.Nom_marca, sc.Nom_subcategoria, ce.Nom_categoria 
+        FROM equipos_informaticos ei
+        JOIN marca_del_equipo me ON ei.Id_marca = me.Id_Marca
+        JOIN subcategoria sc ON ei.Id_subcategoria = sc.Subcategoria_id
+        JOIN categorias_equipo_informatico ce ON sc.id_categoria = ce.Categoria_id
+        WHERE ei.Status_id = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 

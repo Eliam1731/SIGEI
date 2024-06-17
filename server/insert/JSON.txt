@@ -143,3 +143,4 @@ INSERT INTO `frente` (`numero_frente`, `Nom_frente`) VALUES
 (639, 'Almacen'),
 (663, 'Oficina Xalapa'),
 (633, 'Recursos Humanos');
+

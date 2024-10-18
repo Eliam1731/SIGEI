@@ -115,13 +115,6 @@ const windowDetailsDeviceEmployee = ( device, employee ) => {
 
             rootDataDevices.innerHTML += html;
     });
-
-
-
-
-
-    console.log(device);
-    console.log(employee);
 }
 
 const createCardTotalDeviceEmployee = ( data, root ) => {
@@ -284,7 +277,6 @@ const createCardForehead = ( data, root ) => {
 
     const rootCardCategory = document.getElementById('rootCard-category__work');
     createCardTotalDeviceFront( data, rootCardCategory );
-    console.log(data);
 }
 
 const windowDetailsForehead = ( forehead, nameWork ) => {

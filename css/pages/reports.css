@@ -254,7 +254,8 @@
     padding: 0 0 0 5%;
 }
 
-#rootDetailsSafeguars h4 {
+#rootDetailsSafeguars h4,
+#sectionTableDevices h4 {
     color: #111827;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -264,7 +265,8 @@
     padding: 4% 0 0 4%;
 }
 
-#rootDetailsSafeguars p {
+#rootDetailsSafeguars p,
+#sectionTableDevices p {
     color: #6B7280;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -943,4 +945,73 @@
     font-style: normal;
     padding: 0 1em 0 1em;
     border-radius: .3em;
+}
+
+#sectionTableDevices .root_devices {
+    height: 80%;
+    width: 92%;
+    display: block;
+    margin: 3% 0 0 4%;
+    position: relative;
+    border: 1px solid #E0E0E0;
+    border-radius: .5em;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#sectionTableDevices .root_devices table { height: auto; width: 100%; position: relative; box-sizing: border-box; } 
+#sectionTableDevices .root_devices table thead { height: auto; width: 100%; position: relative; box-sizing: border-box; } 
+#sectionTableDevices .root_devices table thead tr { height: auto; width: 100%; position: relative; box-sizing: border-box; border-bottom: 1px solid #BDBDBD; }
+#sectionTableDevices .root_devices table thead tr th {
+    height: auto;
+    position: relative;
+    padding: 1em 0 1em 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: .9em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: #212121;
+    box-sizing: border-box;
+}
+
+#sectionTableDevices .root_devices table thead tr th:first-child { padding-left: 2%; width: 25%; }
+#sectionTableDevices .root_devices table thead tr th:nth-child(2) { width: 60%; }
+#sectionTableDevices .root_devices table thead tr th:last-child { width: 15%; text-align: center; }
+#sectionTableDevices .root_devices table tbody { height: auto; width: 100%; position: relative; box-sizing: border-box; }
+#sectionTableDevices .root_devices table tbody tr { height: auto; width: 100%; position: relative; box-sizing: border-box; border-bottom: 1px solid #E0E0E0; }
+#sectionTableDevices .root_devices table tbody tr td {
+    padding: 1.7% 0;
+    height: auto;
+    position: relative;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-size: .8em;
+    text-align: left;
+    font-optical-sizing: auto;
+    font-weight: 550;
+    font-style: normal;
+    color: #6B7280;
+}
+#sectionTableDevices .root_devices table tbody tr td:first-child { padding-left: 2%; color: #111827; }
+#sectionTableDevices .root_devices table tbody tr td:last-child button {
+    height: 100%;
+    width: 100%;
+    color: #0277BD;
+    font-weight: 700;
+    background: none;
+    border: none;
+}
+
+.root-details__device {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #FFFFFF;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }

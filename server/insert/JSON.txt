@@ -144,3 +144,16 @@ INSERT INTO `frente` (`numero_frente`, `Nom_frente`) VALUES
 (663, 'Oficina Xalapa'),
 (633, 'Recursos Humanos');
 
+
+INSERT INTO empleados_resguardantes (Nombre, Primer_apellido, Segundo_apellido, Num_seguro_social, Empresa_id, Obra_id, Correo_electronico, id_frente) VALUES ('Irving', 'Rodríguez', 'Arias', '67139006752', 2, 16, 'irodriguez@grupoopc.com', 108);
+
+SET @Empleado_id = LAST_INSERT_ID();
+
+INSERT INTO obra_empresa (Obra_id, Empresa_id, Empleado_id) VALUES (16, 2, @Empleado_id);
+
+INSERT INTO obra_frente (Obra_id, Frente_id, Empleado_id) VALUES (16, 108, @Empleado_id);
+
+INSERT INTO obras (Nombre_obra, Nom_corto_obra, Num_obra) VALUES ('Oficinas Centrales', 'Oficinas Centrales', '60');
+
+=SI(ESBLANCO(M6)," ",SI(SUMA(M6:V6)>=0,(SUMA(M6:V6)/Hoja2!$M$7)*100,0))
+En este cosigo quiero que lo que haga es que sume todos los campos de M2 a W2, y que la divida por el numero de preguntas que esta en la hoja dos en este campo =Hoja2!M7, y que despues la multiplique por 100

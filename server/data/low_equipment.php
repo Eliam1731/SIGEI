@@ -1,4 +1,4 @@
-php: <?php
+<?php
 
 include '../config/connection_db.php';
 use PHPMailer\PHPMailer\PHPMailer;

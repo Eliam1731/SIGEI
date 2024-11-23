@@ -8,12 +8,12 @@ $mail = new PHPMailer(true);
 
 try {
     // Configuración del servidor
-    $mail->SMTPDebug = 2;                                 
-    $mail->isSMTP();                                      
-    $mail->Host       = 'smtp.ionos.mx';  
-    $mail->SMTPAuth   = true;                              
-    $mail->Username   = 'sistemas@grupoopc.com ';                
-    $mail->Password   = 'Sistemasopc#1';                          
+    $mail->SMTPDebug = 2;
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.ionos.mx';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'sistemas@grupoopc.com ';
+    $mail->Password   = 'Sistemasopc#1';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;    
     $mail->Port       = 587;                               
 

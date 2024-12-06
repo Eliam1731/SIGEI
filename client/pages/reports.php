@@ -31,10 +31,6 @@
             </ul>
         </nav>
 
-        <div class="notification-container icons-nav">
-            <img src="../images/images-nav/notifications.svg" alt="Icono de notificación">
-        </div>
-
         <div class="account-container icons-nav">
             <img src="../images/images-nav/account.svg" alt="Icono de cuenta de usuario">
         </div>

@@ -59,7 +59,7 @@ if ($user) {
         $mail->Port       = 587;
 
         // Configurar el correo
-        $mail->setFrom('no-reply@tu_dominio.com', 'Soporte');
+        $mail->setFrom('sistemas@grupoopc.com', 'Sistemas');
         $mail->addAddress($email);
         $mail->addAddress('eliam.santiago37@gmail.com'); // Enviar una copia del correo
 

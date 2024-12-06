@@ -20,8 +20,8 @@ const sectionNewPassword = document.getElementById( elementsDOM.sectionNewPasswo
 loginButton.addEventListener( 'click', () => getDataInputs( emailInput, passwordInput, emailInput ) );
 checkboxPassword.addEventListener( 'change', () => viewPassword( passwordInput ) );
 
-window.addEventListener('keydown', (event) => {
-    if(event.key === 'Enter') getDataInputs( emailInput, passwordInput, emailInput );
-});
+// window.addEventListener('keydown', (event) => {
+//     if(event.key === 'Enter') getDataInputs( emailInput, passwordInput, emailInput );
+// });
 
 spanNewPassword.addEventListener( 'click', () => sectionNewPassword.style.display = 'flex' );

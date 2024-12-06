@@ -8,7 +8,7 @@ export const GettingCodeVerify = async ( event ) => {
 
     const validateEmail = validateInputEmail( data.email );
 
-    if( !validateEmail === undefined ) return false;
+    if( validateEmail !== undefined ) return false;
 
     try {
         const response = await sendDataServer( 'server/data/new_pass.php', data );
@@ -27,6 +27,8 @@ export const GettingCodeVerify = async ( event ) => {
         sessionStorage.setItem( 'email_verify', data.email );
 
         event.target.reset();
+
+        return true;
     } catch ( error ) {
         console.error( error );
     }

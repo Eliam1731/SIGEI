@@ -11,7 +11,7 @@
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
         $email = $obj->email;
-        $newPassword = password_hash($obj->newwpass, PASSWORD_DEFAULT);
+        $newPassword = password_hash($obj->newPass, PASSWORD_DEFAULT);
 
         // Verificar si el usuario existe
         $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
@@ -27,7 +27,7 @@
             $updatePassword->execute([$newPassword, $email]);
 
             header('Content-Type: application/json');
-            echo json_encode(["message" => $messages["successful"]]);
+            echo json_encode(["message" => $messages["successful"], "error" => false ]);
         } catch(Exception $error) {
             header('Content-Type: application/json');
             echo json_encode(["error" => "failed", "message" => $messages['failed'], "details" => $error->getMessage()]);

@@ -33,7 +33,7 @@ $stmt_subcategoria = $conn->prepare($sql_subcategoria);
 $stmt_subcategoria->execute(['subcategoria' => $data['Subcategoria']]);
 $subcategoria_id = $stmt_subcategoria->fetchColumn();
 
-$sql_equipos = "UPDATE equipos_informaticos SET 
+$sql_equipos = "UPDATE equipos_informaticos SET
     Id_subcategoria = :subcategoria_id, 
     Id_marca = :marca, 
     Modelo = :modelo, 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+    <script src="https://kit.fontawesome.com/8d63761432.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./client/css/resetStyle.css">
     <link rel="stylesheet" href="./client/css/pages/login.css">
     <link rel="stylesheet" href="./client/css/components/button.css">
@@ -102,9 +103,58 @@
                             </div>
 
                             <div class="container-newPassword-btn">
-                                <button>Siguiente</button>
+                                <button id="followingStep">Siguiente</button>
                                 <button type="button" id="returnSection">Regresar a Iniciar Sesión</button>
                             </div>
+                        </form>
+                    </div>
+
+                    <div id="code-verify">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+
+                        <h2>Pon el código</h2>
+
+                        <p>
+                            Enviamos un código de autorización para el cambio de la contraseña de la cuenta al correo
+                            <span id="userEmailChangePass"></span>
+                        </p>
+
+                        <form id="formCodeVerify">
+                            <input type="text" name="oneCode" id="oneCode">
+                            <input type="text" name="twoCode" id="twoCode">
+                            <input type="text" name="threeCode" id="threeCode">
+                            <input type="text" name="fourCode" id="fourCode">
+                            <input type="text" name="fiveCode" id="fiveCode">
+                        </form>
+
+                        <div class="container__codeIncorrect">
+                            <p id="codeIncorrect"></p>
+                        </div>
+
+                        <div class="forwardCodeVerify">
+                            <button id="forwardCodeVerify">
+                                Reenviar código de verificación
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="cardChangePass">
+                        <form id="formChangePass">
+                            <h2>Restablecer contraseña</h2>
+
+                            <p>
+                                Ingresa tu nueva contraseña y confírmala para restablecer tu acceso al sistema de información.
+                            </p>
+
+                            <div class="container-password">
+                                <input type="password" placeholder="Nueva contraseña" id="newPassword" name="newPass">
+                            </div>
+
+                            <div class="container-password">
+                                <input type="password" placeholder="Confirmar contraseña" id="confirmPassword" name="confirmPassword">
+                            </div>
+
+                            <button id="buttonChangePassword">Restablecer contraseña</button>
                         </form>
                     </div>
                 </div>

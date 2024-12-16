@@ -157,3 +157,21 @@ INSERT INTO obras (Nombre_obra, Nom_corto_obra, Num_obra) VALUES ('Oficinas Cent
 
 =SI(ESBLANCO(M6)," ",SI(SUMA(M6:V6)>=0,(SUMA(M6:V6)/Hoja2!$M$7)*100,0))
 En este cosigo quiero que lo que haga es que sume todos los campos de M2 a W2, y que la divida por el numero de preguntas que esta en la hoja dos en este campo =Hoja2!M7, y que despues la multiplique por 100
+
+
+
+
+
+ALTER TABLE empleados_resguardantes DROP COLUMN Num_seguro_social;
+ALTER TABLE empleados_resguardantes ADD COLUMN User_id INT(11) NOT NULL;
+ALTER TABLE empleados_resguardantes ADD CONSTRAINT FK_User_Empleado FOREIGN KEY (User_id) REFERENCES usuarios(User_id);
+
+
+INSERT INTO `roles` (`Rol_id`, `Nombre_rol`) VALUES (3, 'empleado');
+
+-- Modificar la tabla para que el campo id_departamento sea auto-incremental
+ALTER TABLE `departamento` MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT;
+
+-- Insertar el nuevo registro
+INSERT INTO `departamento` (`nombre_departamento`) VALUES ('incidencias');
+

@@ -92,7 +92,7 @@ export const equipmentSystemsHTML = `
         <input id="addressEthernet" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" required>
     </div>
 
-    <div class='containerInput__flex hiden-inputs'>
+    <div class='containerInput__flex hiden-inputs hiden-inputs-wifi'>
         <label for="addressMacWifi">Dirección MAC WI-FI</label>
 
         <input id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" required>

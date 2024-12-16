@@ -15,15 +15,20 @@ export const devicesWithAddresses = [
     'Laptop',
     'Computadora de escritorio',
     'All In One',
-    'Impresora',
-    'Servidor',
+    //'Impresora',
+    // 'Servidor',
     'Teléfono',
     'Teléfonos IP',
     'Router',
     'Modem',
     'Switch',
-    'Acesspoint',
+    // 'Acesspoint',
     'Fortinet',
+];
+
+const devicesWithoutWifi = [
+    'Router',
+    'Teléfono',
 ];
 
 const devicesWitchNumberPhone = ['Teléfono'];
@@ -399,6 +404,7 @@ const functionalitiesRegisterEquipment = async() => {
     const inputImageDevices = document.getElementById(elementsDOM.inputImage);
     const inputFileEquipment = document.getElementById(elementsDOM.inputFile);  
     const inputsHiden = document.querySelectorAll(elementsDOM.inputsHiden);
+    const inputsHidenWifi = document.querySelector('.hiden-inputs-wifi');
     let imagesFormData;
     let fileFormData;
     let imageCount = 0;
@@ -431,6 +437,17 @@ const functionalitiesRegisterEquipment = async() => {
     
         if(devicesWithAddresses.includes(value)) {
             inputsHiden.forEach(element => {
+                if( devicesWithoutWifi.includes( value ) ) {
+                    console.log( inputsHidenWifi )
+                    element.style.display = 'flex';
+                    inputAddressEthernet.setAttribute('required', '');
+
+                    inputsHidenWifi.style.display = 'none';
+                    inputAddressWifi.removeAttribute('required');
+
+                    return;
+                }
+
                 element.style.display = 'flex';
                 inputAddressEthernet.setAttribute('required', '');
                 inputAddressWifi.setAttribute('required', '');

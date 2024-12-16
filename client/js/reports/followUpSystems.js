@@ -157,7 +157,6 @@ const windowDetailsDevices = ( devices ) => {
     root.addEventListener('click', event => { if( event.target === root ) closeWindow( root ) });
     window.innerHTML = html;
     renderDataTable( devices, document.getElementById('renderDataEquipments') );
-    console.warn( devices );
 }
 
 export const followUpRenderSystems = ( data, root ) => {

@@ -23,7 +23,7 @@ const inputsIDs = [
 ];
 
 const insertingDataSelect = async(selectCompany, selectWork, selectForehead) => {
-    const data = await getDataServer('../../server/data/business.php')
+    const data = await getDataServer('../../server/data/business.php');
 
     data.company.forEach( company => {
         const option = document.createElement('option');
@@ -45,6 +45,7 @@ const insertingDataSelect = async(selectCompany, selectWork, selectForehead) => 
 
     data.work.forEach ( work => {
         const option = document.createElement('option');
+        console.log( work )
 
         option.value = work[0];
         option.textContent = work[1];

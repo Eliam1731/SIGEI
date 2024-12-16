@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/components/button.css">
     <link rel="stylesheet" href="../css/pages/reports.css">
     <title>Reportes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
     </style>
@@ -42,6 +43,10 @@
                 <h1>Distribución de Dispositivos</h1>
 
                 <p>Por favor, seleccione una empresa para ver la cantidad de dispositivos que tiene asignados.</p>
+            </div>
+
+            <div class="container-button-export">
+                <button id="export_file_devices">Exportar información</button>
             </div>
         </div>
 

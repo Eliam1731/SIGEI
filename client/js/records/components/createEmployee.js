@@ -15,7 +15,7 @@ const inputsIDs = [
     'nameEmployee',
     'firstSurname',
     'secondSurname',
-    'numberSocial',
+    // 'numberSocial',
     'companyBelongs',
     'workBelongs',
     'forehead_belongs',

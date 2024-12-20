@@ -13,8 +13,8 @@ export const employeeSystemsHTML = `
         <label for="secondSurname">Segundo apellido</label>
         <input class='input-forms' type="text" name="second_surname" id="secondSurname" placeholder="Ejemplo: Dalto" required>
 
-        <label for="numberSocial">Número de seguro social</label>
-        <input class='input-forms' type="text" name="number_social" id="numberSocial" placeholder="Ejemplo: 91052412345" required>
+        <label for="email">Correo electrónico</label>
+        <input name='email' class='input-forms' type='email' id='email' placeholder='Ejemplo: pablo@grupoopc.com' required>
     </div>
 
     <div class="second_div">
@@ -32,9 +32,6 @@ export const employeeSystemsHTML = `
         <select name="forehead_belongs" id="forehead_belongs" required>
             <option value="">No se ha seleccionado ningun frente</option>
         </select>
-
-        <label for="email">Correo electrónico</label>
-        <input name='email' class='input-forms' type='email' id='email' placeholder='Ejemplo: pablo@grupoopc.com' required>
     </div>
 
     <div class="third_div">

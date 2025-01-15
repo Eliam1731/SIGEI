@@ -32,10 +32,10 @@ $sql = $conn->prepare("
             WHEN status.Nom_Status = 'Disponible' THEN NULL
             ELSE empleados_resguardantes.Segundo_apellido
         END AS segundoApellidoEmpleado,
-        CASE 
+        /* CASE 
             WHEN status.Nom_Status = 'Disponible' THEN NULL
             ELSE empleados_resguardantes.Num_seguro_social
-        END AS numSeguroSocialEmpleado,
+        END AS numSeguroSocialEmpleado, */
         CASE 
             WHEN status.Nom_Status = 'Disponible' THEN NULL
             ELSE empleados_resguardantes.Correo_electronico
@@ -73,9 +73,7 @@ $sql = $conn->prepare("
     ORDER BY equipos_informaticos.Equipo_id DESC
 ");
 
-
 $sql->execute();
-
 
 $rows = $sql->fetchAll();
 
@@ -104,7 +102,7 @@ foreach ($rows as $row) {
         'nombreEmpleado' => $row['nombreEmpleado'],
         'primerApellidoEmpleado' => $row['primerApellidoEmpleado'],
         'segundoApellidoEmpleado' => $row['segundoApellidoEmpleado'],
-        'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
+        // 'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
         'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado'],
         'nombreEmpresa' => $row['nombreEmpresa'],
         'nombreObra' => $row['nombreObra'],
@@ -112,8 +110,6 @@ foreach ($rows as $row) {
         'telefono' => $row['telefono'],
         'estaAResguardo' => $row['status'] !== 'Disponible'
     ];
-
-
 
     $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
     $sql_images->execute([$row['idEquipo']]);

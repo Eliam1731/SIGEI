@@ -1,11 +1,11 @@
-
 <?php
 include '../config/connection_db.php';
 $data = json_decode(file_get_contents("php://input"));
 $id = $data->id;
 
 try {
-    $query =  $conn->prepare("SELECT
+    // Verifica si el equipo existe y obtiene su estado
+    $query = $conn->prepare("SELECT
                                 Equipo_id AS id, 
                                 Status_id AS status
                             FROM 
@@ -30,19 +30,7 @@ try {
     $equipo_id = $result['id'];
     $status_id = $result['status'];
 
-    if($status_id !== 2) {
-        
-        $result = [
-            'status' => 'error',
-            'message' => 'El equipo no está en estado de resguardo'
-        ];
-
-        header('Content-Type: application/json');
-        print json_encode($result);
-        return;
-    }
-
-    //Empieza la logica para obtener los datos del equipo
+    // Empieza la lógica para obtener los datos del equipo
     $sql_guard = $conn->prepare("SELECT 
         resguardos_de_equipos.User_id AS user_id,
         resguardos_de_equipos.Comentario AS comentario, 
@@ -89,6 +77,17 @@ try {
     $sql_guard->execute();
     $guard = $sql_guard->fetch(PDO::FETCH_ASSOC);
     
+    if ($guard === false) {
+        $result = [
+            'status' => 'error',
+            'message' => 'No se encontraron datos de resguardo para el equipo'
+        ];
+
+        header('Content-Type: application/json');
+        print json_encode($result);
+        return;
+    }
+
     // Consulta para obtener las imágenes
     $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
     $sql_images->execute([$equipo_id]);
@@ -141,7 +140,6 @@ try {
             'frente_id' => $guard['frente_id'],
             'correoResguardante' => $guard['correoResguardante'],
         ],
-        
     ];
 
     header('Content-Type: application/json');

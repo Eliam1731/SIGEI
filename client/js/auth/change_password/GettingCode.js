@@ -20,7 +20,6 @@ export const GettingCodeVerify = async ( event ) => {
             return false;
         }
 
-
         alert( message );
 
         sessionStorage.setItem( 'code_verification', code );
@@ -30,6 +29,7 @@ export const GettingCodeVerify = async ( event ) => {
 
         return true;
     } catch ( error ) {
-        console.error( error );
+        alert('Error interno del servidor. Por favor, inténtelo más tarde.')
+        return false;
     }
 }

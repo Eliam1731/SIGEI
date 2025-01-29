@@ -52,7 +52,11 @@ formEmail.addEventListener( 'submit', async( event ) => {
         cardConfirmEmail.style.display = 'none';
         cardCodeVerify.style.display = 'flex';
         spanUserEmail.textContent = sessionStorage.getItem('email_verify');
+
+        return;
     };
+
+    followingStepBtn.textContent = 'Siguiente'
 });
 
 inputsCodeVerify.forEach((input, index) => {

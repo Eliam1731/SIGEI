@@ -222,9 +222,9 @@ buttonSearchEquipment.addEventListener("click", async () => {
           const response = await sendDataServer("../../server/data/equipmentSafeguards_num.php", { num_telefono: numberPhone } );
 
           if (response.error) {
-               alert(response.error);
-         
-               return;
+              alert(response.error);
+
+            return;
           }
 
           ( response.length === 0 ) ? alert("No se encontró ningún dispositivo.") : renderingEquipmentInTable(response);

@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $response['status'] = 'error';
                 $response['message'] = 'La dirección MAC WIFI ya está en uso. Intenta con otra dirección MAC WIFI.';
             }
-            //Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
+            // Verificar si la dirección MAC Ethernet ya existe, pero solo si no es nula
             if ($data['addressEthernet'] !== null) {
                 $stmt = $conn->prepare("SELECT Direccion_mac_ethernet FROM equipos_informaticos WHERE Direccion_mac_ethernet = :addressEthernet");
                 $stmt->bindParam(':addressEthernet', $data['addressEthernet']);
@@ -77,148 +77,154 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['message'] = 'La dirección MAC Ethernet ya está en uso. Intenta con otra dirección MAC Ethernet.';
                 }
 
-                    // Verificar si el número de referencia de Compaq ya existe, pero solo si no es nulo o una cadena vacía
-                    if ($data['referenceCompaq'] !== null && $data['referenceCompaq'] !== '') {
-                        $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");
-                        $stmt->bindParam(':referenceCompaq', $data['referenceCompaq']);
-                        $stmt->execute();
-                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
-                        if ($row) {
-                            $response['status'] = 'error';
-                            $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
-                            
-                        }
-                    }
-                        // Verificar si el número de telefono ya existe, pero solo si no es nulo o una cadena vacía
-                        if (!empty($data['num_telefono'])) {
-                            $stmt = $conn->prepare("SELECT num_telefono FROM equipos_informaticos WHERE num_telefono = :num_telefono");
-                            $stmt->bindParam(':num_telefono', $data['num_telefono']);
-                            $stmt->execute();
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                        
-                            if ($row) {
-                                $response['status'] = 'error';
-                                $response['message'] = 'El número de telefono ya está en uso. Intenta con otro número de telefono.';
-                                echo json_encode($response);
-                                exit();
-                            }
-                        }
-                    // Verificar si el Service tag ya existe
-                    $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
-                    $stmt->bindParam(':serviceTag', $data['serviceTag']);
+                // Verificar si el número de referencia de Compaq ya existe, pero solo si no es nulo o una cadena vacía
+                if ($data['referenceCompaq'] !== null && $data['referenceCompaq'] !== '') {
+                    $stmt = $conn->prepare("SELECT Num_ref_compaq FROM equipos_informaticos WHERE Num_ref_compaq = :referenceCompaq");
+                    $stmt->bindParam(':referenceCompaq', $data['referenceCompaq']);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     if ($row) {
                         $response['status'] = 'error';
-                        $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
+                        $response['message'] = 'El número de referencia de Compaq ya está en uso. Intenta con otro número de referencia de Compaq.';
+                    }
+                }
+                // Verificar si el número de telefono ya existe, pero solo si no es nulo o una cadena vacía
+                if (!empty($data['num_telefono'])) {
+                    $stmt = $conn->prepare("SELECT num_telefono FROM equipos_informaticos WHERE num_telefono = :num_telefono");
+                    $stmt->bindParam(':num_telefono', $data['num_telefono']);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($row) {
+                        $response['status'] = 'error';
+                        $response['message'] = 'El número de telefono ya está en uso. Intenta con otro número de telefono.';
+                        echo json_encode($response);
+                        exit();
+                    }
+                }
+                // Verificar si el Service tag ya existe
+                $stmt = $conn->prepare("SELECT Service_tag FROM equipos_informaticos WHERE Service_tag = :serviceTag");
+                $stmt->bindParam(':serviceTag', $data['serviceTag']);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($row) {
+                    $response['status'] = 'error';
+                    $response['message'] = 'El Service tag del equipo ya está en uso. Intenta con otro Service tag.';
+                } else {
+                    //Aqui realice la validacion del Codigo OPCIC espero este bien:(
+
+                    $codigoCompleto = 'OPCIC-COM-' . $data['codigo'];
+                    $stmt = $conn->prepare("SELECT miId FROM equipos_informaticos WHERE miId = :codigo");
+                    $stmt->bindParam(':codigo', $codigoCompleto);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($row) {
+                        $response['status'] = 'error';
+                        $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
                     } else {
-                        //Aqui realice la validacion del Codigo OPCIC espero este bien:(
-                        $codigoCompleto = 'OPCIC-COM-' . $data['codigo'];
-                        $stmt = $conn->prepare("SELECT miId FROM equipos_informaticos WHERE miId = :codigo");
-                        $stmt->bindParam(':codigo', $codigoCompleto);
-                        $stmt->execute();
-                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                        // Si todas las verificaciones son exitosas, entonces insertar los datos
+                        $conn->beginTransaction();
+                        $equipment_id = null;
 
-                        if ($row) {
-                            $response['status'] = 'error';
-                            $response['message'] = 'El código ' . $codigoCompleto . ' ya está en uso. Intenta con otro código.';
-                        } else {
-                            // Si todas las verificaciones son exitosas, entonces insertar los datos
-                            $conn->beginTransaction();
-                            $equipment_id = null;
+                        try {
+                            $stmt = $conn->prepare("INSERT INTO equipos_informaticos (
+                                Id_subcategoria,
+                                Id_marca,
+                                Modelo,
+                                Num_serie,
+                                Especificacion,
+                                Fecha_compra,
+                                Fecha_garantia,
+                                Importe,
+                                Direccion_mac_wifi,
+                                Direccion_mac_ethernet,
+                                Num_ref_compaq,
+                                Service_tag,
+                                Comentarios,
+                                Status_id,
+                                num_telefono
+                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                            try {
-                                $stmt = $conn->prepare("INSERT INTO equipos_informaticos (
-                                    Id_subcategoria,
-                                    Id_marca,
-                                    Modelo,
-                                    Num_serie,
-                                    Especificacion,
-                                    Fecha_compra,
-                                    Fecha_garantia,
-                                    Importe,
-                                    Direccion_mac_wifi,
-                                    Direccion_mac_ethernet,
-                                    Num_ref_compaq,
-                                    Service_tag,
-                                    Comentarios,
-                                    Status_id,
-                                    num_telefono
-                                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            $executeResult = $stmt->execute([
+                                $data['subcategoryId'],
+                                $data['brandDevices'],
+                                $data['modelDevices'],
+                                $data['serialNumber'],
+                                $data['specificationDevices'],
+                                $data['dateBuy'],
+                                $data['dateExpiresWarranty'],
+                                $data['amountDevices'],
+                                $data['addressMacWifi'],
+                                $data['addressEthernet'],
+                                $data['referenceCompaq'],
+                                $data['serviceTag'],
+                                $data['detailsExtraDevices'],
+                                $data['status'],
+                                $data['num_telefono']
+                            ]);
 
-                                $executeResult = $stmt->execute([
-                                    $data['subcategoryId'],
-                                    $data['brandDevices'],
-                                    $data['modelDevices'],
-                                    $data['serialNumber'],
-                                    $data['specificationDevices'],
-                                    $data['dateBuy'],
-                                    $data['dateExpiresWarranty'],
-                                    $data['amountDevices'],
-                                    $data['addressMacWifi'],
-                                    $data['addressEthernet'],
-                                    $data['referenceCompaq'],
-                                    $data['serviceTag'],
-                                    $data['detailsExtraDevices'],
-                                    $data['status'],
-                                    $data['num_telefono']
-                                ]);
-
-                                if (!$executeResult) {
-                                    // La consulta falló
-                                    $errorInfo = $stmt->errorInfo();
-                                    throw new Exception('La consulta de inserción falló: ' . var_export($errorInfo, true));
-                                }
-
-                                $equipment_id = $conn->lastInsertId();
-
-                                if ($data['codigo'] === null) {
-                                    $data['codigo'] = 'OPCIC-COM-' . str_pad($equipment_id, 5, '0', STR_PAD_LEFT);
-                                } else {
-                                    $data['codigo'] = 'OPCIC-COM-' . $data['codigo'];
-                                }
-
-                                $stmt = $conn->prepare("UPDATE equipos_informaticos SET miId = ? WHERE Equipo_id = ?");
-                                $stmt->execute([$data['codigo'], $equipment_id]);
-
-                                // Insertar imágenes
-                                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-                                    $imageName = $_FILES['images']['name'][$i];
-                                    $imageType = $_FILES['images']['type'][$i];
-                                    $imageData = file_get_contents($_FILES['images']['tmp_name'][$i]);
-
-                                    $stmt = $conn->prepare("INSERT INTO imagenes (Nombre, Tipo_mime, Datos_imagen, Equipo_id) VALUES (?, ?, ?, ?)");
-                                    $stmt->execute([$imageName, $imageType, $imageData, $equipment_id]);
-                                }
-
-                                // Insertar facturas
-                                
-                                    if (isset($_FILES['invoices']) && is_array($_FILES['invoices']['name'])) {
-                                        for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
-                                            $invoiceContent = file_get_contents($_FILES['invoices']['tmp_name'][$i]);
-
-                                            $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
-                                            $stmt->execute([$invoiceContent, $equipment_id]);
-                                        }
-                                    }
-                                $conn->commit();
-
-                                $response['status'] = 'success';
-                                $response['message'] = 'El registro se realizó correctamente.';
-                                $response['equipment_id'] = $equipment_id;
-                                $response['formatted_equipment_id'] = $data['codigo'];
-                            } catch (PDOException $e) {
-                            if ($e->getCode() === 'HY000' && strpos($e->getMessage(), 'server has gone away') !== false) {
-                                
-                                $response['status'] = 'error';
-                                $response['message'] = 'El servidor MySQL se ha desconectado. Por favor, inténtalo de nuevo.';
-                            } else {
-                                
-                                $response['status'] = 'error';
-                                $response['message'] = 'Ha ocurrido un error: ' . $e->getMessage();
+                            if (!$executeResult) {
+                                // La consulta falló
+                                $errorInfo = $stmt->errorInfo();
+                                throw new Exception('La consulta de inserción falló: ' . var_export($errorInfo, true));
                             }
+
+                            $equipment_id = $conn->lastInsertId();
+
+                            if ($data['codigo'] === null) {
+                                $data['codigo'] = 'OPCIC-COM-' . str_pad($equipment_id, 5, '0', STR_PAD_LEFT);
+                            } else {
+                                $data['codigo'] = 'OPCIC-COM-' . $data['codigo'];
+                            }
+
+                            $stmt = $conn->prepare("UPDATE equipos_informaticos SET miId = ? WHERE Equipo_id = ?");
+                            $stmt->execute([$data['codigo'], $equipment_id]);
+
+                            // Crear carpetas para imágenes y facturas si no existen
+                            $imageDir = '../../path/to/images/';
+                            $invoiceDir = '../../path/to/invoices/';
+                            if (!is_dir($imageDir)) {
+                                mkdir($imageDir, 0777, true);
+                            }
+                            if (!is_dir($invoiceDir)) {
+                                mkdir($invoiceDir, 0777, true);
+                            }
+
+                            // Insertar imágenes
+                            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                                $imageName = $_FILES['images']['name'][$i];
+                                $imagePath = $imageDir . $imageName;
+                                move_uploaded_file($_FILES['images']['tmp_name'][$i], $imagePath);
+
+                                $stmt = $conn->prepare("INSERT INTO imagenes (Nombre, Tipo_mime, Datos_imagen, Equipo_id) VALUES (?, ?, ?, ?)");
+                                $stmt->execute([$imageName, $_FILES['images']['type'][$i], $imagePath, $equipment_id]);
+                            }
+
+                            // Insertar facturas
+                            if (isset($_FILES['invoices']) && is_array($_FILES['invoices']['name'])) {
+                                for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
+                                    $invoiceName = $_FILES['invoices']['name'][$i];
+                                    $invoicePath = $invoiceDir . $invoiceName;
+                                    move_uploaded_file($_FILES['invoices']['tmp_name'][$i], $invoicePath);
+
+                                    $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
+                                    $stmt->execute([$invoicePath, $equipment_id]);
+                                }
+                            }
+
+                            $conn->commit();
+
+                            $response['status'] = 'success';
+                            $response['message'] = 'El registro se realizó correctamente.';
+                            $response['equipment_id'] = $equipment_id;
+                            $response['formatted_equipment_id'] = $data['codigo'];
+                        } catch (PDOException $e) {
+                            $conn->rollBack();
+                            $response['status'] = 'error';
+                            $response['message'] = 'Error al registrar el equipo: ' . $e->getMessage();
                         }
                     }
                 }

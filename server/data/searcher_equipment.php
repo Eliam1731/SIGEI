@@ -25,7 +25,7 @@ $sql = $conn->prepare("SELECT
         empleados_resguardantes.Nombre AS nombreEmpleado,
         empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
         empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
-        empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,
+        /*empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,*/
         empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado,
         empresas.Nom_empresa AS nombreEmpresa,
         obras.Nombre_obra AS nombreObra,
@@ -71,7 +71,7 @@ foreach ($rows as $row) {
         'nombreEmpleado' => $row['nombreEmpleado'],
         'primerApellidoEmpleado' => $row['primerApellidoEmpleado'],
         'segundoApellidoEmpleado' => $row['segundoApellidoEmpleado'],
-        'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
+        //*'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
         'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado'],
         'nombreEmpresa' => $row['nombreEmpresa'],
         'nombreObra' => $row['nombreObra'],

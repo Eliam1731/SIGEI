@@ -9,9 +9,9 @@ export const createWindowActionsEmployee = ( employee ) => {
     const container = document.createElement('div');
     const html = `
         <div class='root-employee'>
-            
-        </div>   
-        
+
+        </div>
+
         <nav class='windowActionsEmployee__nav'>
             <ul class='windowActionsEmployee__list'>
                 <li id='updateSectionEmployee'>Actualizar datos del empleado</li>
@@ -41,10 +41,10 @@ export const createWindowActionsEmployee = ( employee ) => {
     listItemUpdateData.addEventListener('click', () => updateInformationEmployee( employee, rootEmployee ));
 
     downloadGuardFile.addEventListener('click', () => {
-        const { 
-            Num_obra: work, Nombre, Primer_apellido, Segundo_apellido, Equipos 
+        const {
+            Num_obra: work, Nombre, Primer_apellido, Segundo_apellido, Equipos
         } = (employee[0] !== undefined) ? employee[0] : employee;
-        
+
         if( Equipos.length === 0 ) return alert('El empleado no tiene equipos asignados');
 
         const employeeName = `${Nombre} ${Primer_apellido} ${Segundo_apellido}`;

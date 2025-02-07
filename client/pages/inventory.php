@@ -90,10 +90,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="renderDataEquipments">
-                                <!-- Primera fila -->
-
-                            </tbody>
+                            <tbody id="renderDataEquipments"></tbody>
                         </table>
                     </div>
                 </div>

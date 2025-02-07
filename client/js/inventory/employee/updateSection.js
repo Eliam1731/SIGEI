@@ -1,24 +1,10 @@
 import { getDataServer } from "../../utilities/getDataServer.js";
 
-function isObject(value) {
-    return value && typeof value === 'object' && !Array.isArray(value);
-}
-
 export const updateInformationEmployee = async( data, root ) => {
     let business;
-    const { 
-        Correo_electronico, Empleado_id, Empresa, Nombre, Num_seguro_social, Obra, Primer_apellido, Segundo_apellido, Frente 
+    const {
+        Correo_electronico, Empleado_id, Empresa, Nombre, Obra, Primer_apellido, Segundo_apellido, Frente
     } = (data[0] !== undefined) ? data[0] : data;
-
-    if(Array.isArray(data)) {
-        console.log(data);
-        console.log('No es un objeto');
-    };
-
-    if(isObject(data)) {
-        console.log(data);
-        console.log('Es un objeto');
-    }
 
     try {
         business = await getDataServer('../../server/data/business.php');
@@ -39,9 +25,6 @@ export const updateInformationEmployee = async( data, root ) => {
             <label for='second_lastname'>Segundo apellido</label>
             <input id='second_lastname' value='${Segundo_apellido}' name='Segundo_apellido' type='text' required>
 
-            <label for='numberSureSocial'>Número de seguro social</label>
-            <input id='numberSureSocial' value='${Num_seguro_social}' name='Num_seguro_social' type='text' required>
-
             <label for='emailEmployee'>Número de seguro social</label>
             <input id='emailEmployee' value='${Correo_electronico}' name='Correo_electronico' type='email' required>
 
@@ -60,6 +43,8 @@ export const updateInformationEmployee = async( data, root ) => {
                 <option value=''>No se ha seleccionado ninguna obra</option>
                 ${
                     business.work.map( works => {
+                        console.log( works );
+                        console.log( Obra )
                         return `<option value='${works[0]}' ${(works[1] === Obra) ? 'selected' : ''}>${works[1]}</option>`
                     }).join(' ')
                 }
@@ -94,7 +79,7 @@ export const updateInformationEmployee = async( data, root ) => {
             });
 
             let result = await response.json();
-            
+
             if( result.message === 'Su actualización fue exitosa') {
                 alert(result.message);
                 window.location.reload();

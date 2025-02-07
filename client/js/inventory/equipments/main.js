@@ -1,3 +1,4 @@
+import { DevicesService } from "../../services/DevicesService.js";
 import { getDataServer } from "../../utilities/getDataServer.js";
 import { checkboxAvailableEvent, checkboxInMaintenanceEvent, checkboxInResguardoEvent } from "./renderDevices.js";
 
@@ -11,6 +12,8 @@ export const checkboxStates = {
     inResguardo: false,
     inMaintenance: false
 };
+
+DevicesService.getDevicesByIndexes( 1, 20 );
 
 const devicesSection = document.querySelector("#navigation-ul li:nth-child(1)");
 const employeesSection = document.querySelector("#navigation-ul li:nth-child(2)");

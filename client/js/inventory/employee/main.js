@@ -26,12 +26,12 @@ const renderDataEmployee = ( data ) => {
                 <td>${name} ${firstLastName} ${secondLastName}</td>
                 <td>${shortName}</td>
                 <td>${workID}</td>
-                <td>${frontID}</td>   
+                <td>${frontID}</td>
                 <td id='${ employeeID }'>
                     <button class='editInformation__employee'>
                         Editar
                     </button>
-                </td>            
+                </td
             </tr>
         `;
 
@@ -51,7 +51,7 @@ const renderDataEmployee = ( data ) => {
 listItemEmployee.addEventListener('click', async() => {
     try {
         let response = await getDataServer('../../server/data/employeevisualization.php');
-    
+
         renderDataEmployee(response);
     } catch (error) {
         console.error(error);
@@ -60,7 +60,7 @@ listItemEmployee.addEventListener('click', async() => {
 
 searchEmployee.addEventListener('keyup', async( event ) => {
     const search = event.target.value.trim().toLowerCase();
-   
+
     try {
         const response = await sendDataServer('../../server/data/searcher.php', { search });
 

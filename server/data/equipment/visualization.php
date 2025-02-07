@@ -4,7 +4,7 @@ include '../../config/connection_db.php';
 
 // Get the JSON input
 $data = json_decode(file_get_contents('php://input'), true);
-$index = $data['Index'];
+$index = $data['index'];
 $amountDevices = $data['amountDevices'];
 
 // Calculate the offset for the SQL query
@@ -12,17 +12,17 @@ $offset = ($index - 1) * $amountDevices;
 
 // Prepare the SQL query with JOINs to get the names of subcategory and brand
 $sql = "
-    SELECT 
-        ei.miId, 
-        sc.Nom_subcategoria, 
-        me.Nom_marca, 
-        ei.Modelo, 
-        ei.Status_id 
-    FROM 
+    SELECT
+        ei.miId,
+        sc.Nom_subcategoria,
+        me.Nom_marca,
+        ei.Modelo,
+        ei.Status_id
+    FROM
         equipos_informaticos ei
-    JOIN 
+    JOIN
         subcategoria sc ON ei.Id_subcategoria = sc.Subcategoria_id
-    JOIN 
+    JOIN
         marca_del_equipo me ON ei.Id_marca = me.Id_Marca
     LIMIT :offset, :amountDevices";
 

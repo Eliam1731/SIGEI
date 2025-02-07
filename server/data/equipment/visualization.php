@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include '../config/connection_db.php';
+include '../../config/connection_db.php';
 
 // Get the JSON input
 $data = json_decode(file_get_contents('php://input'), true);

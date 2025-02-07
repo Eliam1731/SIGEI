@@ -20,6 +20,7 @@ if (!empty($imageNames) && is_array($imageNames)) {
         FROM 
             imagenes 
         WHERE 
+        
             Nombre IN (" . implode(',', array_fill(0, count($imageNames), '?')) . ")";
 
     $stmt = $conn->prepare($sql);

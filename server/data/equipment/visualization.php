@@ -1,29 +1,31 @@
 <?php
 // Include the database connection file
-include '../../config/connection_db.php';
+include '../config/connection_db.php';
 
 // Get the JSON input
 $data = json_decode(file_get_contents('php://input'), true);
-$index = $data['index'];
+$index = $data['Index'];
 $amountDevices = $data['amountDevices'];
 
 // Calculate the offset for the SQL query
 $offset = ($index - 1) * $amountDevices;
 
-// Prepare the SQL query with JOINs to get the names of subcategory and brand
+// Prepare the SQL query to exclude equipos with Status_id 4
 $sql = "
-    SELECT
-        ei.miId,
-        sc.Nom_subcategoria,
-        me.Nom_marca,
-        ei.Modelo,
-        ei.Status_id
-    FROM
+    SELECT 
+        ei.miId, 
+        sc.Nom_subcategoria, 
+        me.Nom_marca, 
+        ei.Modelo, 
+        ei.Status_id 
+    FROM 
         equipos_informaticos ei
-    JOIN
+    JOIN 
         subcategoria sc ON ei.Id_subcategoria = sc.Subcategoria_id
-    JOIN
+    JOIN 
         marca_del_equipo me ON ei.Id_marca = me.Id_Marca
+    WHERE 
+        ei.Status_id != 4
     LIMIT :offset, :amountDevices";
 
 $stmt = $conn->prepare($sql);

@@ -1,64 +1,54 @@
 <?php
 
+require '../vendor/autoload.php';
+use Intervention\Image\ImageManagerStatic as Image;
+
 include '../../config/connection_db.php';
 
-
 $data = json_decode(file_get_contents('php://input'), true);
-$imageIds = $data['imageIds'];
+$imageNames = $data['imageNames'];
 
 $response = array();
 
-if (!empty($imageIds) && is_array($imageIds)) {
+if (!empty($imageNames) && is_array($imageNames)) {
     
     $sql = "
         SELECT 
-            Imagen_id, 
-            Nombre, 
-            Datos_imagen 
+            Imagen_id AS imagenId, 
+            Nombre AS nombre, 
+            Datos_imagen AS datosImagen 
         FROM 
             imagenes 
         WHERE 
-            Imagen_id IN (" . implode(',', array_fill(0, count($imageIds), '?')) . ")";
+            Nombre IN (" . implode(',', array_fill(0, count($imageNames), '?')) . ")";
 
     $stmt = $conn->prepare($sql);
-    foreach ($imageIds as $index => $id) {
-        $stmt->bindValue($index + 1, $id, PDO::PARAM_INT);
+    foreach ($imageNames as $index => $name) {
+        $stmt->bindValue($index + 1, $name, PDO::PARAM_STR);
     }
     $stmt->execute();
+    $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    
-    $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($imagenes as $imagen) {
-
-        $imagePath = __DIR__ . '/../../path/to/images/' . basename($imagen['Datos_imagen']);
-        if (file_exists($imagePath)) {
-            $imageData = file_get_contents($imagePath);
-            $base64Image = base64_encode($imageData);
+    foreach ($images as $image) {
+        $relativePath = '../../path/to/images/' . $image['nombre'];
+        if (file_exists($relativePath)) {
+            $img = Image::make($relativePath);
+            $base64 = (string) $img->encode('data-url');
             $response[] = array(
-                'Imagen_id' => $imagen['Imagen_id'],
-                'Nombre' => $imagen['Nombre'],
-                'Ruta' => $imagePath,
-                'Datos_imagen' => $base64Image
+                'imagenId' => $image['imagenId'],
+                'nombre' => $image['nombre'],
+                'datosImagen' => $base64
             );
         } else {
             $response[] = array(
-                'Imagen_id' => $imagen['Imagen_id'],
-                'Nombre' => $imagen['Nombre'],
-                'Ruta' => $imagePath,
-                'Datos_imagen' => null,
-                'error' => 'Archivo no encontrado'
+                'imagenId' => $image['imagenId'],
+                'nombre' => $image['nombre'],
+                'datosImagen' => null,
+                'error' => 'Image not found at ' . $relativePath
             );
         }
     }
-} else {
-    $response['status'] = 'error';
-    $response['message'] = 'No se proporcionaron IDs de imágenes válidos.';
 }
-
-
-$conn = null;
-
 
 header('Content-Type: application/json');
 echo json_encode($response);

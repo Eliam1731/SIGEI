@@ -128,8 +128,11 @@
 Nombre: Eliam Jiménez Santiago
 
 Rol: Desarrollador Backend
+
 Proyecto desarrollado durante la estancia profesional 2025
+
 Ubicación: Coatzacoalcos, Veracruz, México
+
 En colaboracion con Jesus Perez Hidalgo tenienedo el rol de Frontend
 
 📧 eliam1731@hotmail.com

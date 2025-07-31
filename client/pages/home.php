@@ -38,9 +38,9 @@
         </section>
 
         <!-- Contenedor principal -->
-        <div class="home-grid">
+      <!--  <div class="home-grid">
 
-            <!-- Izquierda: tarjetas de acceso rápido -->
+             Izquierda: tarjetas de acceso rápido 
             <div class="quick-actions">
              <a href="records.php"            class="action-card">
              <img src="../images/icons/clipboard.svg" alt="Registros">
@@ -64,11 +64,11 @@
             </a>
         </div>
 
-        <!-- Derecha: paneles -->
+         Derecha: paneles 
         <div class="panels">
             <div class="panel stats">
             <h2>Estadísticas</h2>
-            <!-- Aquí irá tu gráfica (canvas, SVG, etc.) -->
+             Aquí irá tu gráfica (canvas, SVG, etc.) 
             <canvas id="statsChart"></canvas>
         </div>
         <div class="panel notifications">
@@ -81,7 +81,7 @@
         </div>
         </div>
 
-        </div>
+        </div>-->
     </main>
 
     <script type="module" src="../js/home/index.js"></script>

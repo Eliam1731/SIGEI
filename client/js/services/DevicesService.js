@@ -4,7 +4,10 @@ export class DevicesService {
     static URL = '../../server/data/equipment/visualization.php';
 
     static async getDevicesByIndexes( index, amountDevices ) {
-        const request = await sendDataServer( DevicesService.URL, { index, amountDevices } );
+        const request = await sendDataServer(DevicesService.URL, {
+            Index: index,            // ✅ "Index" con I mayúscula
+            amountDevices: amountDevices
+        });       
 
         console.log( 'DevicesService: ', request );
     }

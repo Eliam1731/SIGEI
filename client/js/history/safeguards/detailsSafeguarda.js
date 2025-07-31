@@ -255,7 +255,7 @@ const detailsSafeguard = ( safeguard, root ) => {
                             return `<li>
                             <span>${ equipo.miId }</span> 
                             ${ equipo.Nom_subcategoria } ${ equipo.Nom_marca } ${ equipo.Modelo } 
-                            <button class='details-devices-safeguards' id='${equipo.Devolucion_id}'}'>Mas detalles</button>
+                            <button class='details-devices-safeguards' id='${equipo.Devolucion_id}'>Mas detalles</button>
                             </li>`;
                         }).join('')}
                     </ul>
@@ -271,7 +271,10 @@ const detailsSafeguard = ( safeguard, root ) => {
     detailsDevicesBtn.forEach( button => {
         button.addEventListener('click', () => {
             const id = button.id;
-            const device = safeguard.Equipos.find( equipo => equipo.Devolucion_id === parseInt(id) );
+            //const device = safeguard.Equipos.find( equipo => equipo.Devolucion_id === parseInt(id) );
+            const device = safeguard.Equipos.find(equipo =>
+                    Number(equipo.Devolucion_id) === parseInt(id, 10)
+                   );
 
             windowDetailsDevice( device );
         });

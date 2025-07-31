@@ -59,13 +59,13 @@ while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
 
     $equipment['images'] = $images;
 
-    $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
+    $sql_invoices = $conn->prepare("SELECT Factura_path FROM facturas WHERE Equipo_id = ?");
     $sql_invoices->execute([$row['Equipo_id']]);
     $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($invoices as $key => $invoice) {
-        $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
-    }
+    //foreach ($invoices as $key => $invoice) {
+    //    $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
+    //}
 
     $equipment['invoices'] = $invoices;
 

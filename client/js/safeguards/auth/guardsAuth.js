@@ -1,15 +1,43 @@
+// js/safeguards/guardsAuth.js
 import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { windowDeviceInformation } from "./allDataDevice.js";
 import { generateReportSafeguards } from "./generateReport.js";
 
-const bodyTable = document.getElementById('bodyTableAuthSafeguards');
-const cancelButton = document.getElementById('cancel__button');
-const selectCompanyClean = document.getElementById('companyBelongsEmployee')
-const selectWorkClean = document.getElementById('workBelongsEmployee');
-const selectForeheadClean = document.getElementById('forehead_belongs');
-const selectEmployeeClean = document.getElementById('protectiveEmployee');
-const textareaAuthObservation = document.getElementById('observation__auth-textarea');
-const buttonAuth = document.getElementById('auth__button');
+// ——————————————————————————————
+// 1) Exportamos la función de renderizado AL NIVEL SUPERIOR
+// ——————————————————————————————
+export function renderingEquipmentInTable(equipment) {
+  const bodyTable = document.getElementById('bodyTableAuthSafeguards');
+  const { codeOpc: code, idEquipo: id, marca, modelo, numSerie, subcategoria } = equipment;
+
+  // Creamos y anexamos la fila
+  const tr = document.createElement("tr");
+  tr.id = id;
+
+  const tdCode = document.createElement("td");
+  tdCode.textContent = code;
+
+  const tdDesc = document.createElement("td");
+  tdDesc.textContent = `${subcategoria} ${marca} ${modelo} ${numSerie}`;
+
+  const tdActions = document.createElement("td");
+  const btnAct    = document.createElement("button");
+  btnAct.textContent = "Acciones";
+  btnAct.addEventListener('click', () => modalActions(equipment, btnAct));
+
+  tdActions.append(btnAct);
+  tr.append(tdCode, tdDesc, tdActions);
+  bodyTable.appendChild(tr);
+
+  // Añadimos al estado interno
+  safeguardsData.equipments.push(id);
+  safeguardsData.codeOpc.push(code);
+  safeguardsData.description.push(`${subcategoria} ${marca} ${modelo} ${numSerie}`);
+}
+
+// ——————————————————————————————
+// 2) Estado interno compartido y helpers (no export)
+// ——————————————————————————————
 const safeguardsData = {
   equipments: [],
   description: [],
@@ -21,200 +49,119 @@ const safeguardsData = {
   observation: undefined,
 };
 
-const cleanSectionAuth = () => {
-    safeguardsData.equipments = [];
-    safeguardsData.description = [];
-    safeguardsData.employee = undefined;
-    safeguardsData.work = undefined;
-    safeguardsData.dateAuth = undefined;
-    safeguardsData.userAuth = undefined;
-    safeguardsData.observation = undefined;
-    safeguardsData.codeOpc = [];
-
-    bodyTable.innerHTML = '';
-    textareaAuthObservation.value = '';
-
-    selectCompanyClean.selectedIndex = 0;
-    selectWorkClean.selectedIndex = 0;
-    selectForeheadClean.selectedIndex = 0;
-    selectEmployeeClean.selectedIndex = 0;
-
-    selectWorkClean.setAttribute('disabled', 'disabled')
-    selectForeheadClean.setAttribute('disabled', 'disabled')
-    selectEmployeeClean.setAttribute('disabled', 'disabled')
-
-    console.log(safeguardsData, '-------- Data clean ------------');
+function modalActions(equipment, buttonActions) {
+  // ... tu código actual de modalActions …
 }
 
-cancelButton.addEventListener('click', () => cleanSectionAuth());
+function cleanSectionAuth() {
+  const bodyTable = document.getElementById('bodyTableAuthSafeguards');
+  const textarea  = document.getElementById('observation__auth-textarea');
+  const selectCompany  = document.getElementById('companyBelongsEmployee');
+  const selectWork     = document.getElementById('workBelongsEmployee');
+  const selectForehead = document.getElementById('forehead_belongs');
+  const selectEmployee = document.getElementById('protectiveEmployee');
 
-const renderTableAllData = (equipment) => {
-  const {
-    codeOpc: code,
-    comentarios,
-    direccionMacEthernet: ethernet,
-    direccionMacWifi: wifi,
-    especificacion,
-    fechaCompra,
-    fechaGarantia,
-    idEquipo: id,
-    images,
-    importe,
-    invoices,
-    marca,
-    modelo,
-    numSerie,
-    referenciaCompaq: referenciaCompra,
-    serviceTag,
-    status,
-    subcategoria,
-  } = equipment;
-};
+  safeguardsData.equipments = [];
+  safeguardsData.description = [];
+  safeguardsData.codeOpc = [];
+  safeguardsData.employee = undefined;
+  safeguardsData.work = undefined;
+  safeguardsData.dateAuth = undefined;
+  safeguardsData.userAuth = undefined;
+  safeguardsData.observation = undefined;
 
-const deleteItemTable = ( elementHTMl, parentDiv ) => {
-    const itemDeleteID = elementHTMl.getAttribute('class');
-    const itemDeleteHTML = document.getElementById(itemDeleteID);
-    let positionDeleteDescription;
+  bodyTable.innerHTML = '';
+  textarea.value = '';
 
-    safeguardsData.description = safeguardsData.description.filter( item => {
-      positionDeleteDescription = safeguardsData.equipments.indexOf(parseInt(itemDeleteID));
-      return item !== safeguardsData.description[positionDeleteDescription];
-    });
+  selectCompany.selectedIndex = 0;
+  selectWork.selectedIndex = 0;
+  selectForehead.selectedIndex = 0;
+  selectEmployee.selectedIndex = 0;
 
-    safeguardsData.codeOpc = safeguardsData.codeOpc.filter( item => {
-      positionDeleteDescription = safeguardsData.equipments.indexOf(parseInt(itemDeleteID));
-      return item !== safeguardsData.codeOpc[positionDeleteDescription];
-    });
-
-    safeguardsData.equipments = safeguardsData.equipments.filter( item => {
-      return item !== parseInt(itemDeleteID)
-    });
-
-    itemDeleteHTML.remove();
-    parentDiv.remove();
+  selectWork.setAttribute('disabled', 'disabled');
+  selectForehead.setAttribute('disabled', 'disabled');
+  selectEmployee.setAttribute('disabled', 'disabled');
 }
 
-const modalActions = ( equipment, buttonActions) => {
-    const parentDiv = document.createElement('div');
-    const containerItemsModal = document.createElement('div');
-    const containerTitle = document.createElement('div');
-    const title = document.createElement('p');
-    const containerButtons = document.createElement('div');
-    const buttonDetails = document.createElement('button');
-    const buttonDelete = document.createElement('button');
+// ——————————————————————————————
+// 3) Listener de DOMContentLoaded para atar eventos
+// ——————————————————————————————
+document.addEventListener("DOMContentLoaded", () => {
+  const cancelButton = document.getElementById('cancel__button');
+  const buttonAuth   = document.getElementById('auth__button');
+  const selectWork   = document.getElementById('workBelongsEmployee');
+  const selectEmp    = document.getElementById('protectiveEmployee');
+  const textareaObs  = document.getElementById('observation__auth-textarea');
 
-    parentDiv.setAttribute('class', 'divParent__modal');
-    containerItemsModal.setAttribute('class', 'containerItems__modal')
-    containerTitle.setAttribute('class', 'containerTitle__modal')
-    title.textContent = 'Elija la acción que desea realizar';
-    buttonDetails.textContent = 'Más detalles del equipo.';
-    buttonDelete.textContent = 'Eliminar de esta tabla.';
+  console.log('buttonAuth →', buttonAuth); // Debe mostrar tu botón
 
-    parentDiv.addEventListener('click', () => parentDiv.remove());
-    containerItemsModal.addEventListener('click', (event) => event.stopPropagation());
-    buttonDelete.addEventListener('click', () => deleteItemTable(buttonActions, parentDiv));
-    buttonDetails.addEventListener('click', () => windowDeviceInformation(equipment, parentDiv));
+  // Cancelar limpia todo
+  cancelButton.addEventListener('click', cleanSectionAuth);
 
-    containerTitle.append(title);
-    containerButtons.append(buttonDelete, buttonDetails)
-    containerItemsModal.append(containerTitle, containerButtons);
-    parentDiv.append(containerItemsModal);
-    document.body.appendChild(parentDiv);
-}
+  // Autorizar resguardo
+  buttonAuth.addEventListener('click', async (e) => {
+    e.preventDefault();
+    console.log('🔥 Click en Autorizar resguardo detectado');
 
-export const renderingEquipmentInTable = (equipment) => {
-  const {
-    codeOpc: code,
-    idEquipo: id,
-    marca,
-    modelo,
-    numSerie,
-    subcategoria,
-  } = equipment;
-
-  if (safeguardsData.equipments.includes(id)) {
-    alert(`El equipo con el codigo ${code} ya esta en la tabla.`);
-    return;
-  }
-
-  safeguardsData.equipments.push(id);
-  safeguardsData.codeOpc.push(code);
-  safeguardsData.description.push(`${subcategoria} ${marca} ${modelo} ${numSerie}`);
-
-  const tr = document.createElement("tr");
-  const columnCodeOpc = document.createElement("td");
-  const columnEquipment = document.createElement("td");
-  const columnActions = document.createElement("td");
-  const buttonActions = document.createElement("button");
-
-  tr.setAttribute("id", id);
-  buttonActions.setAttribute("class", id);
-  columnCodeOpc.textContent = code;
-  columnEquipment.textContent = `${subcategoria} ${marca} ${modelo} ${numSerie}`;
-  buttonActions.textContent = "Acciones";
-
-  buttonActions.addEventListener('click', () => modalActions(equipment, buttonActions));
-
-  columnActions.append(buttonActions);
-  tr.append(columnCodeOpc, columnEquipment, columnActions);
-  bodyTable.appendChild(tr);
-};
-
-buttonAuth.addEventListener('click', async() => {
-  if(safeguardsData.equipments.length === 0) {
-    alert('No hay equipos en la tabla.');
-
-    return;
-  }
-
-  if(!selectEmployeeClean.value) {
-    alert('Seleccione un empleado.');
-
-    return;
-  }
-
-  try {
-    const response = await sendDataServer('../../server/data/numberwork.php', {
-      obra_id: selectWorkClean.value,
-    });
-
-    safeguardsData.work = response.Num_obra;
-  } catch(error) {
-    console.log(error);
-  }
-
-  const now = new Date();
-  const date = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
-  safeguardsData.observation = textareaAuthObservation.value;
-  safeguardsData.userAuth = sessionStorage.getItem('email');
-  safeguardsData.employee = selectEmployeeClean.value;
-  safeguardsData.dateAuth = date;
-  const nameComplete = selectEmployeeClean.options[selectEmployeeClean.selectedIndex].text;
-
-  try {
-    const response = await sendDataServer('../../server/insert/resguard.php', {
-      equipments: safeguardsData.equipments,
-      employee: safeguardsData.employee,
-      user: safeguardsData.userAuth,
-      observation: safeguardsData.observation,
-      date_auth: safeguardsData.dateAuth,
-    });
-
-    if(response.message === 'Su resguardo fue exitoso' ) {
-      alert(response.message);
-
-      generateReportSafeguards(
-        safeguardsData.work,
-        '1 Pza',
-        safeguardsData.codeOpc,
-        safeguardsData.description,
-        nameComplete,
-        response.employeeEmail,
-      );
-
-      cleanSectionAuth();
+    if (safeguardsData.equipments.length === 0) {
+      return alert('No hay equipos en la tabla.');
     }
-  } catch(error) {
-    console.log(error);
-  }
+    if (!selectEmp.value) {
+      return alert('Seleccione un empleado.');
+    }
+
+    // Obtener número de obra
+    try {
+      const respWork = await sendDataServer(
+        '../../server/data/numberwork.php',
+        { obra_id: selectWork.value }
+      );
+      safeguardsData.work = respWork.Num_obra;
+    } catch (err) {
+      console.error(err);
+      return alert('Error al obtener número de obra');
+    }
+
+    // Rellenar datos
+    const now = new Date();
+    // <-- Aquí corregimos a DD/MM/YYYY -->
+    safeguardsData.dateAuth    = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+    safeguardsData.observation = textareaObs.value.trim();
+    safeguardsData.userAuth    = sessionStorage.getItem('email');
+    safeguardsData.employee    = selectEmp.value;
+    const nameComplete = selectEmp.options[selectEmp.selectedIndex].text; 
+
+    // Enviar al backend
+    try {
+      const response = await sendDataServer(
+        '../../server/insert/resguard.php',
+        {
+          equipments:  safeguardsData.equipments,
+          employee:    safeguardsData.employee,
+          user:        safeguardsData.userAuth,
+          observation: safeguardsData.observation,
+          date_auth:   safeguardsData.dateAuth
+        }
+      );
+      console.log('📬 respuesta resguard.php →', response);
+
+      if (response.message === 'Su resguardo fue exitoso') {
+        alert(response.message);
+        generateReportSafeguards(
+          safeguardsData.work,
+          '1 Pza',
+          safeguardsData.codeOpc,
+          safeguardsData.description,
+          nameComplete,
+          response.employeeEmail
+        );
+        cleanSectionAuth();
+      } else {
+        alert('Error: ' + (response.message || 'Respuesta inesperada'));
+      }
+    } catch (err) {
+      console.error('💥 fallo autorizando:', err);
+      alert('Error al autorizar resguardo');
+    }
+  });
 });

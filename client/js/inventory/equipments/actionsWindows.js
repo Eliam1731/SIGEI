@@ -22,16 +22,36 @@ const devicesWithAddresses = [
   'Fortinet',
 ];
 
-const firstSectionActions = (dataOriginal) => {
-  const rootActions = document.getElementById("root-actions");
-  const data = dataOriginal[0];
-  console.log(data, 'data');
+const BASE_IMG_PATH     = '/information-system_opc/path/to/images/';
+const BASE_INVOICE_PATH = '/information-system_opc/path/to/invoices/';
 
-  const html = `
+
+//const firstSectionActions = (dataOriginal) => {
+  //console.log("Contenido recibido en firstSectionActions:", dataOriginal);
+
+  //const data = Array.isArray(dataOriginal) ? dataOriginal[0] : dataOriginal;
+  //console.log("Dato procesado:", data);
+
+  //if (!data) {
+  //  console.error("No se pudo obtener información del equipo.");
+  //  return;
+  //}
+
+  //const rootActions = document.getElementById("root-actions");
+
+  //const html = `
+
+  const firstSectionActions = (dataOriginal) => {
+    const data = Array.isArray(dataOriginal) ? dataOriginal[0] : dataOriginal;
+    if (!data) return;
+  
+    const rootActions = document.getElementById("root-actions");
+  
+    // 1) Generamos el HTML (incluye el botón “view-invoice”)
+    const html = `
       <h2>Información detallada del equipo</h2>
-
       <div class='container-info__device'>
-          <dl>
+        <dl>
               <div class='row-info__device'>
                   <dt>Subcategoría del equipo</dt>
                   <dd>${data.subcategoria}</dd>
@@ -97,30 +117,44 @@ const firstSectionActions = (dataOriginal) => {
                   <dd>${ (!data.direccionMacWifi) ? 'El equipo no cuenta con una dirección MAC WI-FI.' : data.direccionMacWifi }</dd>
               </div>
 
-              <div class='row-info__device'>
-                  <dt>Factura del equipo</dt>
-                  <dd>
-                      <button id='download-invoice'>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
-                          <span>Descargar factura</span>
-                      </button>
-                  </dd>
+                  <!-- FILA DE FACTURA -->
+        <div class='row-info__device'>
+          <dt>Factura del equipo</dt>
+          <dd>
+            ${
+              data.invoices && data.invoices.length
+              ? `<button id="view-invoice" class="btn-view-invoice">Ver factura</button>`
+              : `<span>No hay factura disponible</span>`
+            }
+          </dd>
+        </div>
+
+
+
+            <!-- FILA DE IMÁGENES -->
+            <div class='row-info__device'>
+              <dt>Imágenes del equipo</dt>
+              <dd>
+                <div class="thumbnails">
+                  ${
+                    data.images.map(image => {
+                      const name = image.Nombre;
+                        // image.Datos_imagen ya contiene el nombre de archivo en tu DB
+                        return `
+                          <figure class="thumbnail">
+                            <a href="${BASE_IMG_PATH}${name}" download="${name}">
+                              <img src="${BASE_IMG_PATH}${name}" alt="${name}">
+                            </a>
+                         
+                            </figure>
+                        `;
+                      }).join('')
+                    }
+                  </div>
+                </dd>
               </div>
 
-              <div class='row-info__device'>
-                  <dt>Imagenes del equipo</dt>
-                  <dd>
-                      <ul class='list-image-device'>
-                          ${data.images.map((image) => {
-                            return `<li data-image-blob='${image.Datos_imagen}' data-type-image='${image.Tipo_mime}' data-name-image='${image.Nombre}' data-imagen-id='${image.Imagen_id}' class='listItemImageDevice'>
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#E0E0E0"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
-                                <span>${image.Nombre}</span>
-                                <button>Descargar</button>
-                            </li>`;
-                          }).join('')}
-                      </ul>
-                  </dd>
-              </div>
+
 
               <div class='row-info__device'>
                   <dt>Número de teléfono</dt>
@@ -144,14 +178,73 @@ const firstSectionActions = (dataOriginal) => {
       </div>
   `;
 
+   // 2) **Inyectamos el HTML UNA SOLA VEZ**:
+   rootActions.innerHTML = html;
 
-  rootActions.innerHTML = html;
-  const downloadInvoice = document.getElementById("download-invoice");
-  const buttonsDownloadImage = document.querySelectorAll('.listItemImageDevice button');
-  const spansViewImage = document.querySelectorAll('.listItemImageDevice span');
+   // 3) Creamos (solo una vez) el overlay para ver el PDF
+   let overlay = document.getElementById("invoice-overlay");
+   if (!overlay) {
+     overlay = document.createElement("div");
+     overlay.id = "invoice-overlay";
+     overlay.style.cssText = `
+       position: fixed; top: 0; left: 0;
+       width: 100%; height: 100%;
+       background: rgba(0,0,0,0.8);
+       display: none; justify-content: center; align-items: center;
+       z-index: 1000;
+     `;
+     overlay.innerHTML = `
+       <div style="position: relative; width: 80%; height: 80%;">
+         <iframe id="invoice-frame" style="width:100%; height:100%; border:none;" src=""></iframe>
+         <button id="close-invoice" style="
+           position:absolute; top:10px; right:10px;
+           background:#fff; border:none;
+           font-size:1.5rem; cursor:pointer;
+         ">&times;</button>
+       </div>
+     `;
+     document.body.appendChild(overlay);
+ 
+     // Listener para cerrar con la X
+     overlay.querySelector("#close-invoice").addEventListener("click", () => {
+       overlay.style.display = "none";
+       document.getElementById("invoice-frame").src = "";
+     });
+     // Cerrar clicando fuera del iframe
+     overlay.addEventListener("click", e => {
+       if (e.target === overlay) {
+         overlay.style.display = "none";
+         document.getElementById("invoice-frame").src = "";
+       }
+     });
+   }
+ 
+   // 4) **Ahora** sí, buscamos el botón y le enganchamos el evento
+   const btn = document.getElementById("view-invoice");
+   if (btn) {
+     btn.addEventListener("click", () => {
+       // Obtenemos solo el nombre de archivo
+       const pdfFile = data.invoices[0].Factura_file.split("/").pop();
+       const url     = BASE_INVOICE_PATH + pdfFile;
+       // Inyectamos la URL en el iframe y mostramos el overlay
+       document.getElementById("invoice-frame").src = url;
+       overlay.style.display = "flex";
+     });
+   }
+
+
+
+  //const downloadInvoice = document.getElementById("download-invoice");
+  //const buttonsDownloadImage = document.querySelectorAll('.listItemImageDevice button');
+  //const spansViewImage = document.querySelectorAll('.listItemImageDevice span');
   const changeStatusDevice = document.getElementById('change-status__device');
   const detailsDevice = document.querySelector('.container-info__device');
   const rootFormLow = document.createElement('div');
+  // ======== CONFIGURACIÓN DE RUTAS =========
+  // Ajusta sólo este bloque si cambias de carpeta
+  //const BASE_IMG_PATH     = '/information-system_opc/path/to/images/';
+  //const BASE_INVOICE_PATH = '/information-system_opc/path/to/invoices/';
+  // =========================================
 
   changeStatusDevice.addEventListener('click', () => {
     const existenceFormLow = document.getElementById('form-device-low');
@@ -215,80 +308,70 @@ const firstSectionActions = (dataOriginal) => {
     });
   });
 
-  spansViewImage.forEach( span => {
-    span.addEventListener('click', () => {
-      const closeWindow = document.createElement('div');
-      const rootImage = document.createElement('div');
-      const image = document.createElement('img');
-      const imageBlob = span.parentElement.getAttribute('data-image-blob');
-      const type = span.parentElement.getAttribute('data-type-image');
-      const imagedata = `data:${type};base64,${imageBlob}`;
-      const deleteImage = document.createElement('div');
-      const iconDelete = `
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9E9E9E"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-      `;
+  //spansViewImage.forEach( span => {
+    //span.addEventListener('click', () => {
+      //const closeWindow = document.createElement('div');
+      //const rootImage = document.createElement('div');
+      //const image = document.createElement('img');
+      //const imageBlob = span.parentElement.getAttribute('data-image-blob');
+      //const type = span.parentElement.getAttribute('data-type-image');
+      //const imagedata = `data:${type};base64,${imageBlob}`;
+      //const deleteImage = document.createElement('div');
+      //const iconDelete = `
+          //<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9E9E9E"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+      //`;
 
-      closeWindow.setAttribute('class', 'close-window-image');
-      rootImage.setAttribute('class', 'root-image');
-      deleteImage.setAttribute('class', 'delete-image__device');
-      image.src = imagedata;
-      deleteImage.innerHTML = iconDelete;
+      //closeWindow.setAttribute('class', 'close-window-image');
+      //rootImage.setAttribute('class', 'root-image');
+      //deleteImage.setAttribute('class', 'delete-image__device');
+      //image.src = imagedata;
+      //deleteImage.innerHTML = iconDelete;
 
-      closeWindow.appendChild(rootImage);
-      rootImage.appendChild(image);
-      rootImage.appendChild(deleteImage);
-      document.body.appendChild(closeWindow);
+      //closeWindow.appendChild(rootImage);
+      //rootImage.appendChild(image);
+      //rootImage.appendChild(deleteImage);
+      //document.body.appendChild(closeWindow);
 
-      closeWindow.addEventListener('click', event => { if(event.target === closeWindow) closeWindow.remove() });
-      deleteImage.addEventListener('click', async() => {
-        const confirmDelete = confirm('¿Estás seguro de eliminar la imagen?');
-        const imageId = span.parentElement.getAttribute('data-imagen-id');
-        const device = data.idEquipo;
+      //closeWindow.addEventListener('click', event => { if(event.target === closeWindow) closeWindow.remove() });
+      //deleteImage.addEventListener('click', async() => {
+        //const confirmDelete = confirm('¿Estás seguro de eliminar la imagen?');
+        //const imageId = span.parentElement.getAttribute('data-imagen-id');
+        //const device = data.idEquipo;
 
-        if(confirmDelete) {
-          const response = await sendDataServer('../../server/insert/delete_img.php', { Imagen_id: imageId, Equipo_id: device });
+        //if(confirmDelete) {
+         // const response = await sendDataServer('../../server/insert/delete_img.php', { Imagen_id: imageId, Equipo_id: device });
       
-          if(response.message === 'No puede dejar sin imágenes el equipo') return alert('No puede dejar sin imágenes el equipo');
+          //if(response.message === 'No puede dejar sin imágenes el equipo') return alert('No puede dejar sin imágenes el equipo');
 
-          alert(response.message);
-          closeWindow.remove();
-          span.parentElement.remove();
+         // alert(response.message);
+         // closeWindow.remove();
+         // span.parentElement.remove();
 
-          const imagesUpdate = data.images.filter( image => image.Imagen_id !== parseInt(imageId));
-          data.images = imagesUpdate;
-        }
-      });
-    });
-  });
+         // const imagesUpdate = data.images.filter( image => image.Imagen_id !== parseInt(imageId));
+         // data.images = imagesUpdate;
+       // }
+      //});
+    //}//);
+  };
 
-  buttonsDownloadImage.forEach( button => {
-    button.addEventListener('click', () => {
-      const image = button.parentElement.getAttribute('data-image-blob');
-      const type = button.parentElement.getAttribute('data-type-image');
-      const name = button.parentElement.getAttribute('data-name-image');
-      const imagedata = `data:${type};base64,${image}`;
-      const link = document.createElement('a');
+ // buttonsDownloadImage.forEach( button => {
+    //button.addEventListener('click', () => {
+      //const image = button.parentElement.getAttribute('data-image-blob');
+      //const type = button.parentElement.getAttribute('data-type-image');
+      //const name = button.parentElement.getAttribute('data-name-image');
+      //const imagedata = `data:${type};base64,${image}`;
+      //const link = document.createElement('a');
 
-      link.href = imagedata;
-      link.download = name;
+      //link.href = imagedata;
+      //link.download = name;
 
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    })
-  });
+      //document.body.appendChild(link);
+      //link.click();
+      //document.body.removeChild(link);
+    //})
+  //});
 
-  downloadInvoice.addEventListener("click", async () => {
-    if( data.invoices.length === 0) return alert('El equipo no tiene factura');
-
-    const invoice = data.invoices[0].Factura_file;
-    const pdfBytes = decodeBase64ToBytes(invoice);
-    const blob = createBlobFromBytes(pdfBytes);
-    const url = URL.createObjectURL(blob);
-
-    configureDownloadLink(url);
-  });
-};
+//};
 
 const secondSectionActions = (data) => { 
   const rootActions = document.getElementById('root-actions');
@@ -523,14 +606,14 @@ const thirdSectionActions = () => {
   rootActions.innerHTML = html;
   const downloadExpensesBill = document.querySelectorAll('.download-expenses__bill');
 
-  const decodeBase64ToBytes = (base64) => {
-    const bytes = atob(base64);
-    const byteNumbers = new Array(bytes.length);
+  //const decodeBase64ToBytes = (base64) => {
+    //const bytes = atob(base64);
+    //const byteNumbers = new Array(bytes.length);
   
-    for (let i = 0; i < bytes.length; i++) { byteNumbers[i] = bytes.charCodeAt(i) }
+    //for (let i = 0; i < bytes.length; i++) { byteNumbers[i] = bytes.charCodeAt(i) }
   
-    return byteNumbers;
-  }
+    //return byteNumbers;
+  //}
 
   const createBlobFromBytes = (bytes) => new Blob([new Uint8Array(bytes)], {type: 'application/pdf'});
   const configureDownloadLink = (url) =>  window.open(url, '_blank');
@@ -846,7 +929,8 @@ const sixSectionActions = async( dataOriginal ) => {
         <div class='containerInput__flex hiden-inputs'>
             <label for="addressMacWifi">Dirección MAC WI-FI</label>
 
-            <input name='MAC_WIFI' id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" required value='${ data.direccionMacWifi }'>
+            <input name='MAC_WIFI' id="addressMacWifi" type="text" placeholder="Ejemplo: f4:d6:20:ca:4f:d0" value='${ data.direccionMacWifi ?? '' }'>
+
         </div>
 
         <div class='containerInput__flex'>

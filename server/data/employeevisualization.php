@@ -2,7 +2,12 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido, e.Num_seguro_social, emp.Nom_empresa, emp.Nom_corto as Nom_corto_empresa, ob.Nombre_obra, ob.Num_obra as Num_obra, fr.Nom_frente, e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion, st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca, eq.num_telefono
+    $sql = "SELECT e.Empleado_id, e.Nombre, e.Primer_apellido, e.Segundo_apellido,
+               emp.Nom_empresa, emp.Nom_corto as Nom_corto_empresa,
+               ob.Nombre_obra, ob.Num_obra as Num_obra,
+               fr.Nom_frente, fr.Frente_id AS Num_frente, -- <--- AÑADIDO AQUÍ
+               e.Correo_electronico, r.Resguardo_id, eq.*, r.Fecha_autorizacion,
+               st.Nom_Status, sc.Nom_subcategoria, m.Nom_marca, eq.num_telefono
         FROM empleados_resguardantes e 
         LEFT JOIN resguardos_de_equipos r ON e.Empleado_id = r.Empleado_id AND r.status = 'resguardado'
         LEFT JOIN equipos_informaticos eq ON r.Equipo_id = eq.Equipo_id
@@ -26,12 +31,12 @@ try {
                 'Nombre' => $row['Nombre'],
                 'Primer_apellido' => $row['Primer_apellido'],
                 'Segundo_apellido' => $row['Segundo_apellido'],
-                'Num_seguro_social' => $row['Num_seguro_social'],
                 'Empresa' => $row['Nom_empresa'],
                 'Nom_corto_empresa' => $row['Nom_corto_empresa'],
                 'Obra' => $row['Nombre_obra'],
                 'Num_obra' => $row['Num_obra'],
                 'Frente' => $row['Nom_frente'],
+                'Num_frente' => $row['Num_frente'],
                 'Correo_electronico' => $row['Correo_electronico'],
                 'Equipos' => []
             ];

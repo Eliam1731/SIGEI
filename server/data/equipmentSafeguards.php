@@ -1,6 +1,13 @@
 <?php
 include '../config/connection_db.php';
 
+// Para ver errores de PDO en detalle
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Nos aseguramos de devolver siempre JSON
+header('Content-Type: application/json; charset=utf-8');
+
+
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
@@ -33,7 +40,7 @@ $sql = $conn->prepare("SELECT
             equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
             equipos_informaticos.Service_tag AS serviceTag,
             equipos_informaticos.Comentarios AS comentarios,
-            equipos_informaticos.num_telefono AS telefoono,
+            equipos_informaticos.num_telefono AS telefono,
             status.Nom_Status AS status,
             equipos_informaticos.miId AS codeOpc
         FROM 
@@ -82,15 +89,14 @@ foreach ($rows as $row) {
 
     $equipment_data['images'] = $images;
 
-    // Obtener las facturas
-    $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
+    // 1) Selecciona Factura_path en lugar de Factura_file
+    $sql_invoices = $conn->prepare("
+     SELECT Factura_path 
+     FROM facturas 
+     WHERE Equipo_id = ?
+    ");
     $sql_invoices->execute([$row['idEquipo']]);
     $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
-
-    // Codificar los datos de la factura en base64
-    foreach ($invoices as $key => $invoice) {
-        $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
-    }
 
     $equipment_data['invoices'] = $invoices;
 }

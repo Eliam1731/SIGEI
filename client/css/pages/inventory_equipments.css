@@ -1787,3 +1787,62 @@ main {
     font-weight: 700;
     font-style: normal;
 }
+
+/* ─── Galería de miniaturas ───────────────────────────────── */
+.thumbnails {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .thumbnail {
+    text-align: center;
+    font-size: 12px;
+  }
+  .thumbnail img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+  }
+  .download-image {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  /* ─────────────────────────────────────────────────────────── */
+  
+  /* Estilo coherente para botón de factura */
+  .btn-download-invoice {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .btn-download-invoice svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .btn-view-invoice {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .btn-view-invoice svg {
+    width: 16px;
+    height: 16px;
+  }
+  

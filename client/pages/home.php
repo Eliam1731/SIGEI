@@ -31,10 +31,57 @@
     </header>
 
     <main>
+        <!-- Bienvenida -->
         <section class="section-welcomeUser">
-            <h1><span id="span-nameUser"></span> ¿Que desea hacer hoy?</h1>
-            <p>Una vez seleccionado la opción, aparecerán en la sección correspondiente.</p>
+            <h1>¡Hola <span id="span-nameUser"></span>! ¿Qué deseas hacer hoy?</h1>
+            <p>Una vez seleccionada la opción, aparecerán en la sección correspondiente.</p>
         </section>
+
+        <!-- Contenedor principal -->
+        <div class="home-grid">
+
+            <!-- Izquierda: tarjetas de acceso rápido -->
+            <div class="quick-actions">
+             <a href="records.php"            class="action-card">
+             <img src="../images/icons/clipboard.svg" alt="Registros">
+                <span>Registros</span>
+            </a>
+            <a href="safeguards.php"         class="action-card">
+                <img src="../images/icons/shield-check.svg" alt="Resguardos">
+                <span>Resguardos</span>
+            </a>
+            <a href="inventory.php"          class="action-card">
+                <img src="../images/icons/users.svg" alt="Equipos y Empleados">
+                <span>Equipos y Empleados</span>
+            </a>
+            <a href="reports.php"            class="action-card">
+                <img src="../images/icons/chart-bar.svg" alt="Reporte">
+                <span>Reporte</span>
+            </a>
+            <a href="notifications.php"      class="action-card">
+                <img src="../images/icons/bell.svg" alt="Notificaciones">
+                <span>Notificaciones</span>
+            </a>
+        </div>
+
+        <!-- Derecha: paneles -->
+        <div class="panels">
+            <div class="panel stats">
+            <h2>Estadísticas</h2>
+            <!-- Aquí irá tu gráfica (canvas, SVG, etc.) -->
+            <canvas id="statsChart"></canvas>
+        </div>
+        <div class="panel notifications">
+            <h2>Notificaciones</h2>
+            <ul>
+                <li>✔️ Revisión de equipo pendiente</li>
+                <li>🔔 Nuevo resguardo generado</li>
+                <li>⚠️ 2 reportes sin aprobar</li>
+            </ul>
+        </div>
+        </div>
+
+        </div>
     </main>
 
     <script type="module" src="../js/home/index.js"></script>

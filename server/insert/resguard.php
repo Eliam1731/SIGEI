@@ -1,52 +1,85 @@
 <?php
 include '../config/connection_db.php';
+header('Content-Type: application/json; charset=utf-8');
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$data = json_decode(file_get_contents('php://input'), true);
-
+// 1) Leer datos
+$data       = json_decode(file_get_contents('php://input'), true);
 $equipments = $data['equipments'];
-$employee = intval($data['employee']); 
-$userEmail = $data['user']; 
-$observation = $data['observation'];
-$date_auth = DateTime::createFromFormat('d/m/Y', $data['date_auth'])->format('Y-m-d H:i:s');
+$employee   = intval($data['employee']); 
+$userEmail  = $data['user']; 
+$observation= $data['observation'];
+$rawDate    = $data['date_auth'];
 
-$sqlEmployee = "SELECT Correo_electronico FROM empleados_resguardantes WHERE Empleado_id = :employee_id";
-$stmtEmployee = $conn->prepare($sqlEmployee);
-$stmtEmployee->execute([':employee_id' => $employee]);
-
-if ($stmtEmployee->rowCount() == 0) {
-    echo json_encode(["message" => "El empleado no existe en la base de datos"]);
+// 2) Parseo robusto de fecha
+$ts = strtotime(str_replace('/', '-', $rawDate));
+if ($ts === false) {
+    echo json_encode(["message" => "Formato de fecha inválido: $rawDate"]);
     exit();
 }
+$dateAuth = date('Y-m-d H:i:s', $ts);
 
-$employeeEmail = $stmtEmployee->fetch(PDO::FETCH_ASSOC)['Correo_electronico'];
-
-$sqlCheck = "SELECT * FROM usuarios WHERE correo_electronico = :email";
-$stmtCheck = $conn->prepare($sqlCheck);
-$stmtCheck->execute([':email' => $userEmail]);
-
-if ($stmtCheck->rowCount() == 0) {
-    echo json_encode(["message" => "El correo electrónico no existe en la base de datos"]);
-    exit();
+// 3a) Obtener correo del empleado
+$stmtEmp = $conn->prepare(
+  "SELECT Correo_electronico 
+     FROM empleados_resguardantes 
+    WHERE Empleado_id = :employee"
+);
+$stmtEmp->execute([':employee' => $employee]);
+if (!$stmtEmp->rowCount()) {
+    echo json_encode(["message" => "Empleado no encontrado"]);
+    exit;
 }
+$employeeEmail = $stmtEmp->fetch(PDO::FETCH_ASSOC)['Correo_electronico'];
 
-$userData = $stmtCheck->fetch(PDO::FETCH_ASSOC);
-$userId = $userData['User_id'];
-
-$sql = "INSERT INTO resguardos_de_equipos (Equipo_id, Empleado_id, Fecha_autorizacion, User_id, Comentario, Identificador_resguardo) VALUES (:equipment, :employee, :date_auth, :user, :observation, :resguardo_id)";
-$stmt = $conn->prepare($sql);
-
-$sqlUpdate = "UPDATE equipos_informaticos SET Status_id = 2 WHERE Equipo_id = :equipment";
-$stmtUpdate = $conn->prepare($sqlUpdate);
-
-$messages = [];
-
-foreach ($equipments as $equipment) {
-    $resguardo_id = uniqid();
-
-    $stmt->execute([':equipment' => intval($equipment), ':employee' => $employee, ':date_auth' => $date_auth, ':user' => $userId, ':observation' => $observation, ':resguardo_id' => $resguardo_id]);
-
-    $stmtUpdate->execute([':equipment' => intval($equipment)]);
+// 3b) Obtener User_id del usuario
+$stmtUser = $conn->prepare(
+  "SELECT User_id 
+     FROM usuarios 
+    WHERE correo_electronico = :email"
+);
+$stmtUser->execute([':email' => $userEmail]);
+if (!$stmtUser->rowCount()) {
+    echo json_encode(["message" => "Usuario no encontrado"]);
+    exit;
 }
+$userId = $stmtUser->fetch(PDO::FETCH_ASSOC)['User_id'];
 
-echo json_encode(["message" => "Su resguardo fue exitoso", "employeeEmail" => $employeeEmail]);
-?>
+// 4) Preparar INSERT y UPDATE
+$sql = "INSERT INTO resguardos_de_equipos 
+    (Equipo_id, Empleado_id, Fecha_autorizacion, User_id, Comentario, Identificador_resguardo) 
+  VALUES 
+    (:equipment, :employee, :date_auth, :user, :observation, :resguardo_id)";
+$stmt       = $conn->prepare($sql);
+$stmtUpdate = $conn->prepare(
+  "UPDATE equipos_informaticos SET Status_id = 2 WHERE Equipo_id = :equipment"
+);
+
+// 5) Ejecutar dentro de transacción
+try {
+    $conn->beginTransaction();
+    foreach ($equipments as $equipment) {
+        $resguardoId = uniqid();
+        $stmt->execute([
+            ':equipment'   => intval($equipment),
+            ':employee'    => $employee,
+            ':date_auth'   => $dateAuth,
+            ':user'        => $userId,
+            ':observation' => $observation,
+            ':resguardo_id'=> $resguardoId
+        ]);
+        $stmtUpdate->execute([
+            ':equipment' => intval($equipment)
+        ]);
+    }
+    $conn->commit();
+    echo json_encode([
+      "message"       => "Su resguardo fue exitoso",
+      "employeeEmail" => $employeeEmail
+    ]);
+} catch (Exception $e) {
+    $conn->rollBack();
+    echo json_encode([
+      "message" => "Error al procesar resguardo: " . $e->getMessage()
+    ]);
+}

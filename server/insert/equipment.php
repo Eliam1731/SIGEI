@@ -183,37 +183,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $stmt = $conn->prepare("UPDATE equipos_informaticos SET miId = ? WHERE Equipo_id = ?");
                             $stmt->execute([$data['codigo'], $equipment_id]);
 
-                            // Crear carpetas para imágenes y facturas si no existen
-                            $imageDir = '../../path/to/images/';
-                            $invoiceDir = '../../path/to/invoices/';
+                            // ---------------------------------------------
+                            // 1) Crear carpetas en disco si no existen
+                            // ---------------------------------------------
+                            $imageDir   = __DIR__ . '/../../path/to/images/';    // ajusta ../ hasta htdocs
+                            $invoiceDir = __DIR__ . '/../path/to/invoices/';
+
                             if (!is_dir($imageDir)) {
                                 mkdir($imageDir, 0777, true);
                             }
                             if (!is_dir($invoiceDir)) {
-                                mkdir($invoiceDir, 0777, true);
+                             mkdir($invoiceDir, 0777, true);
                             }
 
-                            // Insertar imágenes
-                            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-                                $imageName = $_FILES['images']['name'][$i];
-                                $imagePath = $imageDir . $imageName;
-                                move_uploaded_file($_FILES['images']['tmp_name'][$i], $imagePath);
+                            // ---------------------------------------------
+                            // 2) Subir y registrar imágenes
+                            // ---------------------------------------------
+                            if (isset($_FILES['images']['name']) && is_array($_FILES['images']['name'])) {
+                                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                                    $imageName = $_FILES['images']['name'][$i];
+                                    $tmpName   = $_FILES['images']['tmp_name'][$i];
+                                    $dest      = $imageDir . $imageName;
 
-                                $stmt = $conn->prepare("INSERT INTO imagenes (Nombre, Tipo_mime, Datos_imagen, Equipo_id) VALUES (?, ?, ?, ?)");
-                                $stmt->execute([$imageName, $_FILES['images']['type'][$i], $imagePath, $equipment_id]);
+                                    move_uploaded_file($tmpName, $dest);
+
+                                    // Ruta pública que usará el navegador
+                                    $publicImgPath = "path/to/images/{$imageName}";  
+
+                                    $stmt = $conn->prepare("
+                                     INSERT INTO imagenes (Nombre, Tipo_mime, Datos_imagen, Equipo_id)
+                                     VALUES (?, ?, ?, ?)
+                                 ");
+                                    $stmt->execute([
+                                        $imageName,
+                                        $_FILES['images']['type'][$i],
+                                        $publicImgPath,
+                                        $equipment_id
+                                    ]);
+                            }
                             }
 
-                            // Insertar facturas
-                            if (isset($_FILES['invoices']) && is_array($_FILES['invoices']['name'])) {
-                                for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
-                                    $invoiceName = $_FILES['invoices']['name'][$i];
-                                    $invoicePath = $invoiceDir . $invoiceName;
-                                    move_uploaded_file($_FILES['invoices']['tmp_name'][$i], $invoicePath);
+                            // en lugar de BLOB, mueve el archivo y guarda la ruta
+                            $invoiceDir = '../../path/to/invoices/';
+                            if (!is_dir($invoiceDir)) mkdir($invoiceDir, 0777, true);
 
-                                    $stmt = $conn->prepare("INSERT INTO facturas (Factura_file, Equipo_id) VALUES (?, ?)");
-                                    $stmt->execute([$invoicePath, $equipment_id]);
+                            for ($i = 0; $i < count($_FILES['invoices']['name']); $i++) {
+                                $invoiceName = uniqid() . '-' . basename($_FILES['invoices']['name'][$i]);
+                                $invoicePath = $invoiceDir . $invoiceName;
+                                if (move_uploaded_file($_FILES['invoices']['tmp_name'][$i], $invoicePath)) {
+                                    $relativePath = 'path/to/invoices/' . $invoiceName;
+                                    $stmt = $conn->prepare("
+                                        INSERT INTO facturas (Factura_path, Equipo_id)
+                                        VALUES (:path, :eid)
+                                     ");
+                                    $stmt->execute([
+                                        ':path' => $relativePath,
+                                        ':eid'  => $equipment_id
+                                    ]);
                                 }
                             }
+
 
                             $conn->commit();
 

@@ -10,31 +10,21 @@ let data = [];
 
 const dateInFormatText = ( dateString ) => {
     const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-    let [ year, day, month ] = dateString.split('-'); 
-    let date = new Date(year, month - 1, day);
-
-    day = date.getDate();
-    month = months[date.getMonth()];
-    year = date.getFullYear();
-
-    return `${day} de ${month} del ${year}`;
+    if (!dateString) return '';
+    let [ year, month, day ] = dateString.split('-'); 
+    const d = new Date(year, month - 1, day);
+    return `${d.getDate()} de ${months[d.getMonth()]} del ${d.getFullYear()}`;
 }
 
 buttonNext.addEventListener('click', () => {
-    if (indexTable < data.length) {
+    if (indexTable + 20 < data.length) {
         indexTable += 20;
         indexMaxTable += 20;
-        
-        if(indexTable > data.length) return;
-        if( data.length < 20 ) return;
-
         renderTableOfSafeguardsFinished(data, root);
     }
 });
 
 buttonPrevious.addEventListener('click', () => {
-    if( data.length < 20 ) return;
-
     if (indexTable > 0) {
         indexTable -= 20;
         indexMaxTable -= 20;
@@ -42,36 +32,45 @@ buttonPrevious.addEventListener('click', () => {
     }
 });
 
-export const renderTableOfSafeguardsFinished = ( safeguards, root ) => {
+export const renderTableOfSafeguardsFinished = ( safeguardsObj, root ) => {
+    // Convierte el objeto en array de [key, valor], luego ordena
+    const entries = Object.entries(safeguardsObj)
+        .sort(([, a], [, b]) =>
+            new Date(b.Equipos[0].Fecha_terminacion) - new Date(a.Equipos[0].Fecha_terminacion)
+        );
+
+    // Paginación
+    const page = entries.slice(indexTable, indexMaxTable);
+    // Reinicia la tabla y el array interno
     root.innerHTML = '';
+    data = [];
 
-    Object.keys( safeguards ).forEach( key => {
-        const { Nombre, Primer_apellido, Segundo_apellido } = safeguards[key].DatosEmpleado;
-        const { Nom_corto, Num_obra, Nom_frente, Fecha_inicio, Fecha_terminacion, NombreUsuarioResguardo, ApellidoUsuarioResguardo, SegundoApellidoUsuarioResguardo } = safeguards[key].Equipos[0];
+    page.forEach(([ key, item ]) => {
+        const { Nombre, Primer_apellido, Segundo_apellido } = item.DatosEmpleado;
+        const eq = item.Equipos[0];
+        const { Nom_corto, Num_obra, Nom_frente, Fecha_inicio, Fecha_terminacion,
+                NombreUsuarioResguardo, ApellidoUsuarioResguardo, SegundoApellidoUsuarioResguardo } = eq;
 
-        const row = `
-            <tr>
-                <td>${ dateInFormatText( Fecha_inicio ) }</td>
-                <td>
-                    <p>${ Nombre } ${ Primer_apellido } ${ Segundo_apellido }</p>
-                    <span>${ Nom_corto } |</span>
-                    <span>${ Num_obra }</span>
-                    <span>${ Nom_frente }</span>
-                </td>
-                <td>${ dateInFormatText( Fecha_terminacion ) }</td>
-                <td>${ NombreUsuarioResguardo } ${ ApellidoUsuarioResguardo } ${ SegundoApellidoUsuarioResguardo }</td>
-                <td>
-                    <button class='viewDetailsSafeguardBtn'>Editar</button>
-                </td>
-            </tr>
-         `;
+        // Construye la fila
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${ dateInFormatText( Fecha_inicio ) }</td>
+            <td>
+                <p>${ Nombre } ${ Primer_apellido } ${ Segundo_apellido }</p>
+                <span>${ Nom_corto } |</span>
+                <span>${ Num_obra }</span>
+                <span>${ Nom_frente }</span>
+            </td>
+            <td>${ dateInFormatText( Fecha_terminacion ) }</td>
+            <td>${ NombreUsuarioResguardo } ${ ApellidoUsuarioResguardo } ${ SegundoApellidoUsuarioResguardo }</td>
+            <td><button class='viewDetailsSafeguardBtn'>Editar</button></td>
+        `;
+        root.appendChild(tr);
 
-         root.innerHTML += row;
-         data.push( safeguards[key] );
-         const buttonsDetails= document.getElementsByClassName('viewDetailsSafeguardBtn');
-
-         for(let i = 0; i < buttonsDetails.length; i++) {
-            buttonsDetails[i].addEventListener('click', () => detailsSafeguardHistory( data[i] ) );
-        }
+        data.push(item);
     });
-}
+
+    // Atacha eventos a botones de detalle
+    Array.from(document.getElementsByClassName('viewDetailsSafeguardBtn'))
+         .forEach((btn, i) => btn.addEventListener('click', () => detailsSafeguardHistory(data[i])));
+};

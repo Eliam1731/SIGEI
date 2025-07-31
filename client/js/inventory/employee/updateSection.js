@@ -3,7 +3,16 @@ import { getDataServer } from "../../utilities/getDataServer.js";
 export const updateInformationEmployee = async( data, root ) => {
     let business;
     const {
-        Correo_electronico, Empleado_id, Empresa, Nombre, Obra, Primer_apellido, Segundo_apellido, Frente
+        Correo_electronico,
+        Empleado_id,
+        Empresa,
+        Nombre,
+        Obra,
+        Primer_apellido,
+        Segundo_apellido,
+        Frente,
+        Num_obra,
+        Num_frente 
     } = (data[0] !== undefined) ? data[0] : data;
 
     try {
@@ -25,7 +34,7 @@ export const updateInformationEmployee = async( data, root ) => {
             <label for='second_lastname'>Segundo apellido</label>
             <input id='second_lastname' value='${Segundo_apellido}' name='Segundo_apellido' type='text' required>
 
-            <label for='emailEmployee'>Número de seguro social</label>
+            <label for='emailEmployee'>Correo Electronico</label>
             <input id='emailEmployee' value='${Correo_electronico}' name='Correo_electronico' type='email' required>
 
             <label for='company__belongs'>Empresa a la que pertenece</label>
@@ -45,7 +54,7 @@ export const updateInformationEmployee = async( data, root ) => {
                     business.work.map( works => {
                         console.log( works );
                         console.log( Obra )
-                        return `<option value='${works[0]}' ${(works[1] === Obra) ? 'selected' : ''}>${works[1]}</option>`
+                        return `<option value='${works[0]}' ${works[1].includes(`(${Num_obra})`) ? 'selected' : ''}>${works[1]}</option>`
                     }).join(' ')
                 }
             </select>
@@ -54,12 +63,11 @@ export const updateInformationEmployee = async( data, root ) => {
             <select name='id_frente' id='front__belongs' required>
                 <option value=''>No se ha seleccionado ningún frente</option>
                 ${
-                    business.forehead.map( fronts => {
-                        return `<option value='${fronts[0]}' ${(fronts[1] === Frente) ? 'selected' : ''}>${fronts[1]}</option>`
-                    }).join(' ')
+                    business.forehead.map(fronts => {
+                        return `<option value='${fronts[0]}' ${fronts[0] == Num_frente ? 'selected' : ''}>${fronts[1]}</option>`
+                    }).join(' ')                    
                 }
             </select>
-
             <button type='submit'>Actualizar</button>
         </form>
     `;

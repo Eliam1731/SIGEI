@@ -3,154 +3,123 @@ include '../config/connection_db.php';
 
 $sql = $conn->prepare("
     SELECT 
-        equipos_informaticos.Equipo_id AS idEquipo,
-        subcategoria.Nom_subcategoria AS subcategoria,
-        marca_del_equipo.Nom_marca AS marca,
-        equipos_informaticos.Modelo AS modelo,
-        equipos_informaticos.Num_serie AS numSerie,
-        equipos_informaticos.Especificacion AS especificacion,
-        equipos_informaticos.Fecha_compra AS fechaCompra,
-        equipos_informaticos.Fecha_garantia AS fechaGarantia,
-        equipos_informaticos.Importe AS importe,
-        equipos_informaticos.Direccion_mac_wifi AS direccionMacWifi,
-        equipos_informaticos.Direccion_mac_ethernet AS direccionMacEthernet,
-        equipos_informaticos.Num_ref_compaq AS referenciaCompaq,
-        equipos_informaticos.Service_tag AS serviceTag,
-        equipos_informaticos.Comentarios AS comentarios,
-        equipos_informaticos.num_telefono AS telefono,
-        status.Nom_Status AS status,
-        equipos_informaticos.miId AS codeOpc,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Nombre
-        END AS nombreEmpleado,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Primer_apellido
-        END AS primerApellidoEmpleado,
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Segundo_apellido
-        END AS segundoApellidoEmpleado,
-        /* CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Num_seguro_social
-        END AS numSeguroSocialEmpleado, */
-        CASE 
-            WHEN status.Nom_Status = 'Disponible' THEN NULL
-            ELSE empleados_resguardantes.Correo_electronico
-        END AS correoElectronicoEmpleado,
-        empresas.Nom_empresa AS nombreEmpresa,
-        obras.Nombre_obra AS nombreObra,
-        frente.Nom_frente AS nombreFrente
-    FROM 
-        equipos_informaticos
-    LEFT JOIN subcategoria ON equipos_informaticos.Id_subcategoria = subcategoria.Subcategoria_id
-    LEFT JOIN marca_del_equipo ON equipos_informaticos.Id_marca = marca_del_equipo.Id_Marca
-    LEFT JOIN status ON equipos_informaticos.Status_id = status.Status_id
+        e.Equipo_id              AS idEquipo,
+        sub.Nom_subcategoria     AS subcategoria,
+        m.Nom_marca              AS marca,
+        e.Modelo                 AS modelo,
+        e.Num_serie              AS numSerie,
+        e.Especificacion         AS especificacion,
+        e.Fecha_compra           AS fechaCompra,
+        e.Fecha_garantia         AS fechaGarantia,
+        e.Importe                AS importe,
+        e.Direccion_mac_wifi     AS direccionMacWifi,
+        e.Direccion_mac_ethernet AS direccionMacEthernet,
+        e.Num_ref_compaq         AS referenciaCompaq,
+        e.Service_tag            AS serviceTag,
+        e.Comentarios            AS comentarios,
+        e.num_telefono           AS telefono,
+        e.Status_id              AS Status_id,
+        s.Nom_Status             AS status,
+        e.miId                   AS codeOpc,
+        CASE WHEN s.Nom_Status = 'Disponible' THEN NULL ELSE r.Nombre END             AS nombreEmpleado,
+        CASE WHEN s.Nom_Status = 'Disponible' THEN NULL ELSE r.Primer_apellido END     AS primerApellidoEmpleado,
+        CASE WHEN s.Nom_Status = 'Disponible' THEN NULL ELSE r.Segundo_apellido END    AS segundoApellidoEmpleado,
+        CASE WHEN s.Nom_Status = 'Disponible' THEN NULL ELSE r.Correo_electronico END  AS correoElectronicoEmpleado,
+        emp.Nom_empresa            AS nombreEmpresa,
+        o.Nombre_obra              AS nombreObra,
+        f.Nom_frente               AS nombreFrente
+    FROM equipos_informaticos e
+    LEFT JOIN subcategoria           sub ON e.Id_subcategoria = sub.Subcategoria_id
+    LEFT JOIN marca_del_equipo       m   ON e.Id_marca       = m.Id_Marca
+    LEFT JOIN status                 s   ON e.Status_id      = s.Status_id
     LEFT JOIN (
-        SELECT 
-            resguardos_de_equipos.Equipo_id, 
-            resguardos_de_equipos.Empleado_id
-        FROM 
-            resguardos_de_equipos
+        SELECT re.Equipo_id, re.Empleado_id
+        FROM resguardos_de_equipos re
         INNER JOIN (
-            SELECT 
-                Equipo_id, 
-                MAX(Resguardo_id) AS ultimoResguardo
-            FROM 
-                resguardos_de_equipos
-            GROUP BY 
-                Equipo_id
-        ) AS resguardos_max ON resguardos_de_equipos.Equipo_id = resguardos_max.Equipo_id AND resguardos_de_equipos.Resguardo_id = resguardos_max.ultimoResguardo
-    ) AS ultimo_resguardo ON equipos_informaticos.Equipo_id = ultimo_resguardo.Equipo_id
-    LEFT JOIN empleados_resguardantes ON ultimo_resguardo.Empleado_id = empleados_resguardantes.Empleado_id
-    LEFT JOIN empresas ON empleados_resguardantes.Empresa_id = empresas.Empresa_id
-    LEFT JOIN obras ON empleados_resguardantes.Obra_id = obras.Obra_id
-    LEFT JOIN frente ON empleados_resguardantes.id_frente = frente.Frente_id
-    WHERE status.Nom_Status != 'Baja' AND status.Status_id != 4 
-    GROUP BY equipos_informaticos.Equipo_id
-    ORDER BY equipos_informaticos.Equipo_id DESC
+            SELECT Equipo_id, MAX(Resguardo_id) AS ultimoResguardo
+            FROM resguardos_de_equipos
+            GROUP BY Equipo_id
+        ) rm ON re.Equipo_id = rm.Equipo_id
+           AND re.Resguardo_id = rm.ultimoResguardo
+    ) ur ON e.Equipo_id = ur.Equipo_id
+    LEFT JOIN empleados_resguardantes r ON ur.Empleado_id = r.Empleado_id
+    LEFT JOIN empresas                emp ON r.Empresa_id = emp.Empresa_id
+    LEFT JOIN obras                   o   ON r.Obra_id    = o.Obra_id
+    LEFT JOIN frente                  f   ON r.id_frente  = f.Frente_id
+    WHERE s.Nom_Status != 'Baja' AND s.Status_id != 4
+    GROUP BY e.Equipo_id
+    ORDER BY e.Equipo_id DESC
 ");
-
 $sql->execute();
-
-$rows = $sql->fetchAll();
+$rows = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 $equipment_data = [];
-
 foreach ($rows as $row) {
-    $especificacion = str_replace(["\r\n", "\r", "\n"], ' ', $row['especificacion']);
+    // limpiar saltos de línea en la descripción
+    $row['especificacion'] = str_replace(["\r\n","\r","\n"], " ", $row['especificacion']);
 
+    // armar el array de salida
     $equipment = [
-        'idEquipo' => $row['idEquipo'],
-        'subcategoria' => $row['subcategoria'],
-        'marca' => $row['marca'],
-        'modelo' => $row['modelo'],
-        'numSerie' => $row['numSerie'],
-        'especificacion' => $especificacion,
-        'fechaCompra' => $row['fechaCompra'],
-        'fechaGarantia' => $row['fechaGarantia'],
-        'importe' => $row['importe'],
-        'direccionMacWifi' => $row['direccionMacWifi'],
-        'direccionMacEthernet' => $row['direccionMacEthernet'],
-        'referenciaCompaq' => $row['referenciaCompaq'],
-        'serviceTag' => $row['serviceTag'],
-        'comentarios' => $row['comentarios'],
-        'status' => $row['status'],
-        'codeOpc' => $row['codeOpc'],
-        'nombreEmpleado' => $row['nombreEmpleado'],
-        'primerApellidoEmpleado' => $row['primerApellidoEmpleado'],
-        'segundoApellidoEmpleado' => $row['segundoApellidoEmpleado'],
-        // 'numSeguroSocialEmpleado' => $row['numSeguroSocialEmpleado'],
-        'correoElectronicoEmpleado' => $row['correoElectronicoEmpleado'],
-        'nombreEmpresa' => $row['nombreEmpresa'],
-        'nombreObra' => $row['nombreObra'],
-        'nombreFrente' => $row['nombreFrente'],
-        'telefono' => $row['telefono'],
-        'estaAResguardo' => $row['status'] !== 'Disponible'
+        'idEquipo'                 => (int)$row['idEquipo'],
+        'subcategoria'             => $row['subcategoria'],
+        'marca'                    => $row['marca'],
+        'modelo'                   => $row['modelo'],
+        'numSerie'                 => $row['numSerie'],
+        'especificacion'           => $row['especificacion'],
+        'fechaCompra'              => $row['fechaCompra'],
+        'fechaGarantia'            => $row['fechaGarantia'],
+        'importe'                  => $row['importe'],
+        'direccionMacWifi'         => $row['direccionMacWifi'],
+        'direccionMacEthernet'     => $row['direccionMacEthernet'],
+        'referenciaCompaq'         => $row['referenciaCompaq'],
+        'serviceTag'               => $row['serviceTag'],
+        'comentarios'              => $row['comentarios'],
+        'telefono'                 => $row['telefono'],
+        'Status_id'                => (int)$row['Status_id'],
+        'status'                   => $row['status'],
+        'codeOpc'                  => $row['codeOpc'],
+        'nombreEmpleado'           => $row['nombreEmpleado'],
+        'primerApellidoEmpleado'   => $row['primerApellidoEmpleado'],
+        'segundoApellidoEmpleado'  => $row['segundoApellidoEmpleado'],
+        'correoElectronicoEmpleado'=> $row['correoElectronicoEmpleado'],
+        'nombreEmpresa'            => $row['nombreEmpresa'],
+        'nombreObra'               => $row['nombreObra'],
+        'nombreFrente'             => $row['nombreFrente'],
+        'estaAResguardo'           => $row['status'] !== 'Disponible'
     ];
 
-    $sql_images = $conn->prepare("SELECT Imagen_id, Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
-    $sql_images->execute([$row['idEquipo']]);
-    $images = $sql_images->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($images as $key => $image) {
-        $images[$key]['Datos_imagen'] = base64_encode($image['Datos_imagen']);
+    // traer imágenes
+    $stmImg = $conn->prepare("SELECT Nombre, Tipo_mime, Datos_imagen FROM imagenes WHERE Equipo_id = ?");
+    $stmImg->execute([$row['idEquipo']]);
+    $imgs = $stmImg->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($imgs as &$img) {
+        $img['Datos_imagen'] = base64_encode($img['Datos_imagen']);
     }
+    $equipment['images'] = $imgs;
 
-    $equipment['images'] = $images;
+    // traer facturas (ruta)
+    $stmInv = $conn->prepare("SELECT Factura_path AS Factura_file FROM facturas WHERE Equipo_id = ?");
+    $stmInv->execute([$row['idEquipo']]);
+    $equipment['invoices'] = $stmInv->fetchAll(PDO::FETCH_ASSOC);
 
-    $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
-    $sql_invoices->execute([$row['idEquipo']]);
-    $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($invoices as $key => $invoice) {
-        $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
-    }
-
-    $equipment['invoices'] = $invoices;
-
-    $sql_expenses = $conn->prepare("SELECT orden_compra, Piezas, Importe, Fecha, Recibo_pdf FROM gastos_de_los_equipos WHERE Equipo_id = ?");
-    $sql_expenses->execute([$row['idEquipo']]);
-    $expenses = $sql_expenses->fetchAll(PDO::FETCH_ASSOC);
-    
-    if (empty($expenses)) {
-        $expenses = ['message' => 'Este equipo aún no tiene gastos extra'];
+    // traer gastos
+    $stmExp = $conn->prepare("SELECT orden_compra, Piezas, Importe, Fecha, Recibo_pdf FROM gastos_de_los_equipos WHERE Equipo_id = ?");
+    $stmExp->execute([$row['idEquipo']]);
+    $exps = $stmExp->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($exps)) {
+        $equipment['expenses'] = ['message' => 'Este equipo aún no tiene gastos extra'];
     } else {
-        foreach ($expenses as $key => $expense) {
-            $expenses[$key]['Recibo_pdf'] = base64_encode($expense['Recibo_pdf']);
+        foreach ($exps as &$exp) {
+            $exp['Recibo_pdf'] = base64_encode($exp['Recibo_pdf']);
         }
+        $equipment['expenses'] = $exps;
     }
-    
-    $equipment['expenses'] = $expenses;
 
-    $statusKey = lcfirst(str_replace(' ', '', $row['status']));
-    $equipment_data[$statusKey][] = $equipment;
+    // agrupar por clave de estado
+    $key = lcfirst(str_replace(' ', '', $row['status']));
+    $equipment_data[$key][] = $equipment;
 }
 
-$json_response = json_encode($equipment_data, JSON_PRETTY_PRINT);
 header('Content-Type: application/json');
-print $json_response;
-exit();
-?>
+echo json_encode($equipment_data, JSON_PRETTY_PRINT);
+exit;

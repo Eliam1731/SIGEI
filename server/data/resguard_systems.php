@@ -27,15 +27,29 @@ foreach ($result as $key => $equipo) {
 
     $equipo['images'] = $images;
 
-    $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
+    // 1) Selecciono FACTURA_PATH pero la renombro a Factura_file
+    $sql_invoices = $conn->prepare("
+    SELECT Factura_path AS Factura_file
+    FROM facturas
+    WHERE Equipo_id = ?
+    ");
     $sql_invoices->execute([$equipo_id]);
     $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($invoices as $key => $invoice) {
-        $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
-    }
-
+    // 2) No conviertas a base64 un path de texto, lo dejas tal cual
+    //    Así en el front-end invoice.Factura_file será la ruta: '/ruta/a/mi.pdf'
     $equipo['invoices'] = $invoices;
+
+
+    //$sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
+    //$sql_invoices->execute([$equipo_id]);
+    //$invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
+
+    //foreach ($invoices as $key => $invoice) {
+       // $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
+    //}
+
+    //$equipo['invoices'] = $invoices;
 
     $sql_expenses = $conn->prepare("SELECT orden_compra, Piezas, Importe, Fecha, Recibo_pdf FROM gastos_de_los_equipos WHERE Equipo_id = ?");
     $sql_expenses->execute([$equipo_id]);

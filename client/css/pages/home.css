@@ -16,3 +16,111 @@
 .section-welcomeUser p {    
     font-size: 1.1em;
 }
+
+/* === home.css === */
+
+/* 1. Base bienvenida */
+.section-welcomeUser {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  .section-welcomeUser h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .section-welcomeUser h1 span {
+    color: #833F0E;
+  }
+  .section-welcomeUser p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  /* 2. Grid principal */
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr;  /* mobile: todo en 1 columna */
+    gap: 1.5rem;
+    padding: 0 1rem 2rem;
+  }
+  
+  /* 3. Quick‑actions (tarjetas) */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+  .action-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .action-card img {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+    filter: brightness(0) saturate(100%) invert(22%) sepia(52%) saturate(415%) hue-rotate(330deg) brightness(94%) contrast(95%);
+  }
+  .action-card span {
+    font-weight: 600;
+    color: #333;
+  }
+  .action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  /* 4. Panels laterales */
+  .panels {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .panel {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 1rem;
+  }
+  .panel h2 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: #212121;
+  }
+  .panel.stats {
+    /* altura fija para tu gráfica */
+    min-height: 200px;
+  }
+  .panel.notifications ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .panel.notifications li {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+  .panel.notifications li:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* 5. Media query: desktop (≥ 768px) */
+  @media (min-width: 768px) {
+    .home-grid {
+      grid-template-columns: 2fr 1fr;  /* dos columnas: cards + panels */
+      align-items: start;
+    }
+    .section-welcomeUser {
+      padding: 3rem 2rem 2rem;
+    }
+  }
+  

@@ -22,7 +22,7 @@ $sql = $conn->prepare("SELECT
         empleados_resguardantes.Nombre AS nombreEmpleado,
         empleados_resguardantes.Primer_apellido AS primerApellidoEmpleado,
         empleados_resguardantes.Segundo_apellido AS segundoApellidoEmpleado,
-        /*empleados_resguardantes.Num_seguro_social AS numSeguroSocialEmpleado,*/
+
         empleados_resguardantes.Correo_electronico AS correoElectronicoEmpleado,
         empresas.Nom_empresa AS nombreEmpresa,
         obras.Nombre_obra AS nombreObra,

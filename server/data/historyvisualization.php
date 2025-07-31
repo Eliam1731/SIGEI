@@ -3,7 +3,7 @@
 include '../config/connection_db.php';
 
 try {
-    $sql = "SELECT de.*, de.Comentario AS ComentariosDevolucion, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Num_seguro_social, er.Correo_electronico, 
+    $sql = "SELECT de.*, de.Comentario AS ComentariosDevolucion, er.Nombre, er.Primer_apellido, er.Segundo_apellido, er.Correo_electronico, 
     er.Empresa_id, er.Obra_id, er.id_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, 
     ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios AS ComentariosEquipo, 
     st.Nom_Status AS Status, ei.miId, ei.num_telefono, re.Fecha_autorizacion AS Fecha_inicio, re.User_id AS UsuarioResguardo, 
@@ -42,7 +42,6 @@ try {
                     'Nombre' => $resultado['Nombre'],
                     'Primer_apellido' => $resultado['Primer_apellido'],
                     'Segundo_apellido' => $resultado['Segundo_apellido'],
-                    'Num_seguro_social' => $resultado['Num_seguro_social'],
                     'Correo_electronico' => $resultado['Correo_electronico'],
                     'Empresa_id' => $resultado['Empresa_id'],
                     'Obra_id' => $resultado['Obra_id'],
@@ -66,13 +65,14 @@ try {
         $resultado['images'] = $images;
 
         // Consulta para obtener las facturas
-        $sql_invoices = $conn->prepare("SELECT Factura_file FROM facturas WHERE Equipo_id = ?");
+        $sql_invoices = $conn->prepare("SELECT Factura_path AS Factura_file FROM facturas WHERE Equipo_id = ?");
         $sql_invoices->execute([$idEquipo]);
         $invoices = $sql_invoices->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($invoices as $key => $invoice) {
-            $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
-        }
+        //foreach ($invoices as $key => $invoice) {
+           // $invoices[$key]['Factura_file'] = base64_encode($invoice['Factura_file']);
+        //}
+        
 
         $resultado['invoices'] = $invoices;
 

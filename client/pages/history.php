@@ -10,13 +10,23 @@
     <link rel="stylesheet" href="../css/components/navegation.css">
     <link rel="stylesheet" href="../css/components/button.css">
     <link rel="stylesheet" href="../css/pages/history.css">
+    <link rel="stylesheet" href="../css/navigation.mobile.css">
+    <link rel="stylesheet" href="../css/history.mobile.css">
+
     <title>Historial</title>
 </head>
 
 <body>
     <header>
-        <img class="opc-logo" src="../images/opc-logo.png" alt="Logo de OPC Ingeniería y Costrucción">
-        <nav>
+        <img class="opc-logo" src="../images/opc-logo.png" alt="Logo de OPC Ingeniería y Construcción">
+
+        <!-- botón hamburguesa para móvil -->
+        <button id="mobile-toggle" class="mobile-toggle" aria-label="Mostrar menú">
+            ☰
+        </button>
+
+        <!-- nav principal con clase para ocultar/mostrar -->
+        <nav class="main-nav">
             <ul>
                 <li><a href="home.php">Inicio</a></li>
                 <li><a href="records.php">Registros</a></li>
@@ -47,13 +57,9 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-
-                            <tbody id="table-safeguards__finished">
-
-                            </tbody>
+                            <tbody id="table-safeguards__finished"></tbody>
                         </table>
                     </div>
-
                     <div class="control-buttons__safeguards">
                         <button id="prevSafeguards">-</button>
                         <p id="indexTextTable">1</p>
@@ -63,7 +69,7 @@
             </article>
 
             <article id="table-devices__low">
-            <div class="containerRoot__tableSafeguards">
+                <div class="containerRoot__tableSafeguards">
                     <div class="overflow__tableSafeguards">
                         <table>
                             <thead>
@@ -75,13 +81,9 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-
-                            <tbody id="table-lowDevices">
-
-                            </tbody>
+                            <tbody id="table-lowDevices"></tbody>
                         </table>
                     </div>
-
                     <div class="control-buttons__safeguards">
                         <button id="prevLowDevices">-</button>
                         <p id="indexTextTableLowDevices">1</p>
@@ -101,6 +103,7 @@
 
     <script type="module" src="../js/utilities/profileUser.js"></script>
     <script type="module" src="../js/history/main.js"></script>
+    
 </body>
 
 </html>

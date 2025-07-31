@@ -2,7 +2,34 @@
 include '../config/connection_db.php';
 
 $sql = "
-SELECT ei.Equipo_id, e.Nom_empresa, e.Nom_corto, o.Nombre_obra, o.Num_obra, f.Nom_frente, f.numero_frente, ei.Modelo, ei.Num_serie, ei.Especificacion, ei.Fecha_compra, ei.Fecha_garantia, ei.Importe, ei.Direccion_mac_wifi, ei.Direccion_mac_ethernet, ei.Num_ref_compaq, ei.Service_tag, ei.Comentarios, ei.miId, ei.num_telefono, er.Nombre, er.Primer_apellido, er.Segundo_apellido, /* er.Num_seguro_social, */ er.Correo_electronico, er.Empleado_id, sc.Nom_subcategoria, mc.Nom_marca, cc.Nom_categoria
+SELECT     ei.Equipo_id,
+    e.Nom_empresa,
+    e.Nom_corto,
+    o.Nombre_obra,
+    o.Num_obra,
+    f.Nom_frente,
+    f.numero_frente,
+    ei.Modelo,
+    ei.Num_serie,
+    ei.Especificacion,
+    ei.Fecha_compra,
+    ei.Fecha_garantia,
+    ei.Importe,
+    ei.Direccion_mac_wifi,
+    ei.Direccion_mac_ethernet,
+    ei.Num_ref_compaq,
+    ei.Service_tag,
+    ei.Comentarios,
+    ei.miId,
+    ei.num_telefono,
+    er.Nombre,
+    er.Primer_apellido,
+    er.Segundo_apellido,
+    er.Correo_electronico,
+    er.Empleado_id,
+    sc.Nom_subcategoria,
+    mc.Nom_marca,
+    cc.Nom_categoria
 FROM resguardos_de_equipos r
 JOIN empleados_resguardantes er ON r.Empleado_id = er.Empleado_id
 JOIN equipos_informaticos ei ON r.Equipo_id = ei.Equipo_id

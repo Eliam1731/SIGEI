@@ -14,4 +14,6 @@ export const deleteImageDevice = (device, images) => {
         .then( data => console.log(data))
         .catch( error => console.error('Error:', error));
     });
+
+    export { applyAndRender as updateDevicesFilter };
 }

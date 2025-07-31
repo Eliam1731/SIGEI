@@ -1,14 +1,14 @@
 <?php
-// Include the database connection file
 include '../../config/connection_db.php';
 
-// Get the JSON input
+// Obtener JSON y proteger valores por defecto
 $data = json_decode(file_get_contents('php://input'), true);
-$index = $data['Index'];
-$amountDevices = $data['amountDevices'];
 
-// Calculate the offset for the SQL query
-$offset = ($index - 1) * $amountDevices;
+$index = isset($data['Index']) ? (int)$data['Index'] : 1;
+$amountDevices = isset($data['amountDevices']) ? (int)$data['amountDevices'] : 20;
+
+// Evitar valores negativos
+$offset = max(0, ($index - 1) * $amountDevices);
 
 // Prepare the SQL query to exclude equipos with Status_id 4
 $sql = "

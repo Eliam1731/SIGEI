@@ -1,205 +1,171 @@
+// client/js/equipos/renderDevices.js
+
 import { getDataServer } from "../../utilities/getDataServer.js";
 import { sendDataServer } from "../../utilities/sendDataServer.js";
 import { windowActionsDevices } from "./actionsWindows.js";
 import { checkboxStates } from "./main.js";
 import { messageTableDevice } from "./messageTable.js";
 
-let data;
-let indexTable = 1;
-const buttonSearch = document.getElementById('buttonSearchEquipment');
-const deleteFiltersTable = document.getElementById('deleteFiltrosDevices');
-const tableDevices = document.getElementById('renderDataEquipments');
-let devicesArray;
-let devicesFilter = []; 
-const filters = {
-    disponible: 'Disponible',
-    enResguardo: 'En Resguardo',
-    enMantenimiento: 'En Mantenimiento',
-    deBaja: 'De Baja',
-}
-const codeOpc = 'OPCIC-COM-';
-const inputSearch = document.getElementById('inputSearchEquipment');
-const spanCodeOpc = document.getElementById('spanCodeOpc');
-const checkboxSearchPhone = document.getElementById('searchNumberReturn');
-const numberValid = /^\d{10}$/;
-const formatCode = /^\d{5}$/;
+let devicesArray     = [];
+let filteredDevices  = [];
+let pageIndex        = 1;
+const PAGE_SIZE      = 10;
 
-checkboxSearchPhone.addEventListener('change', () => {
-    if (checkboxSearchPhone.checked) {
-        spanCodeOpc.textContent = '+52';
-        inputSearch.placeholder = 'Ejemplo: 9212039080';
+// Mapea tus Status_id de la base
+const FILTER_IDS = {
+  disponible:      1,
+  enResguardo:     2,
+  enMantenimiento: 3,
+  deBaja:          4
+};
 
-        return;
-    }
+const codeOpcPrefix  = "OPCIC-COM-";
+const numberValid    = /^\d{10}$/;
+const formatCode     = /^\d{5}$/;
 
-    spanCodeOpc.textContent = codeOpc;
-    inputSearch.placeholder = 'Ejemplo: 00090';
+const btnSearch      = document.getElementById("buttonSearchEquipment");
+const btnClear       = document.getElementById("deleteFiltrosDevices");
+const tblBody        = document.getElementById("renderDataEquipments");
+const inputSearch    = document.getElementById("inputSearchEquipment");
+const spanCodePrefix = document.getElementById("spanCodeOpc");
+const chkPhone       = document.getElementById("searchNumberReturn");
+
+// Alterna placeholder para búsqueda por teléfono
+chkPhone.addEventListener("change", () => {
+  if (chkPhone.checked) {
+    spanCodePrefix.textContent = "+52";
+    inputSearch.placeholder = "Ejemplo: 9212039080";
+  } else {
+    spanCodePrefix.textContent = codeOpcPrefix;
+    inputSearch.placeholder = "Ejemplo: 00090";
+  }
 });
 
-deleteFiltersTable.addEventListener('click', () => {
-    devicesFilter = [];
-
-    checkboxStates.available = false;
-    checkboxStates.inResguardo = false;
-    checkboxStates.inMaintenance = false;
-
-    const checkboxAvailable = document.getElementById('disponible');
-    const checkboxInResguardo = document.getElementById('enResguardo');
-    const checkboxInMaintenance = document.getElementById('enMantenimiento');
-
-    if (checkboxAvailable) checkboxAvailable.checked = false;
-    if (checkboxInResguardo) checkboxInResguardo.checked = false;
-    if (checkboxInMaintenance) checkboxInMaintenance.checked = false;
-
-    indexTable = 1;
-    renderDevices(devicesArray);
+// Limpiar filtros
+btnClear.addEventListener("click", () => {
+  checkboxStates.available     = false;
+  checkboxStates.inResguardo   = false;
+  checkboxStates.inMaintenance = false;
+  pageIndex = 1;
+  document.getElementById("disponible").checked      = false;
+  document.getElementById("enResguardo").checked     = false;
+  document.getElementById("enMantenimiento").checked = false;
+  applyAndRender(devicesArray);
 });
 
-export const checkboxAvailableEvent = (checkboxAvailable) => {
-    checkboxStates.available = checkboxAvailable.checked;
-    
-    updateDevicesFilter();
-    messageTableDevice( tableDevices, devicesFilter, checkboxStates );
+// 1) Filtrar según checkboxStates
+function applyFiltersTo(list) {
+  const { available, inResguardo, inMaintenance } = checkboxStates;
+  if (!available && !inResguardo && !inMaintenance) return list;
+  return list.filter(d => {
+    if (available     && d.Status_id === FILTER_IDS.disponible)      return true;
+    if (inResguardo   && d.Status_id === FILTER_IDS.enResguardo)     return true;
+    if (inMaintenance && d.Status_id === FILTER_IDS.enMantenimiento) return true;
+    return false;
+  });
 }
 
-export const checkboxInResguardoEvent = (checkboxInResguardo) => {
-    checkboxStates.inResguardo = checkboxInResguardo.checked;
-
-    updateDevicesFilter();
-    messageTableDevice( tableDevices, devicesFilter, checkboxStates );
+// 2) Aplica filtros + paginación + render
+function applyAndRender(source) {
+  filteredDevices = applyFiltersTo(source);
+  const start = (pageIndex - 1) * PAGE_SIZE;
+  const page  = filteredDevices.slice(start, start + PAGE_SIZE);
+  renderPage(page);
 }
 
-export const checkboxInMaintenanceEvent = (checkboxInMaintenance) => {
-    checkboxStates.inMaintenance = checkboxInMaintenance.checked;
-
-    updateDevicesFilter();
-    messageTableDevice( tableDevices, devicesFilter, checkboxStates );
+// 3) Exports para main.js
+export function checkboxAvailableEvent(cb) {
+  checkboxStates.available = cb.checked;
+  pageIndex = 1;
+  applyAndRender(devicesArray);
+}
+export function checkboxInResguardoEvent(cb) {
+  checkboxStates.inResguardo = cb.checked;
+  pageIndex = 1;
+  applyAndRender(devicesArray);
+}
+export function checkboxInMaintenanceEvent(cb) {
+  checkboxStates.inMaintenance = cb.checked;
+  pageIndex = 1;
+  applyAndRender(devicesArray);
 }
 
-export const updateDevicesFilter = () => {
-    if (!checkboxStates.available && !checkboxStates.inResguardo && !checkboxStates.inMaintenance) {
-        devicesFilter = [];
-    } else {
-        devicesFilter = devicesArray.filter(device => {
-            if (checkboxStates.available && device.status.toLowerCase() === filters.disponible.toLowerCase()) {
-                return true;
-            }
-            if (checkboxStates.inResguardo && device.status.toLowerCase() === filters.enResguardo.toLowerCase()) {
-                return true;
-            }
-            if (checkboxStates.inMaintenance && device.status.toLowerCase() === filters.enMantenimiento.toLowerCase()) {
-                return true;
-            }
-            return false;
-        });
-    }
-
-    indexTable = 1;
-    renderDevices(devicesFilter.length > 0 ? devicesFilter : devicesArray);
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        data = await getDataServer('../../server/data/equipmentvisualization.php');
-        devicesArray = Object.values(data).flat();
-
-        console.log(devicesArray);
-        renderDevices(data);
-    } catch (error) {
-        console.error('Error:', error);
-    }
+// 4) Carga inicial
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const data = await getDataServer("../../server/data/equipmentvisualization.php");
+    devicesArray = Object.values(data).flat();
+    applyAndRender(devicesArray);
+  } catch (err) {
+    console.error("Error cargando equipos:", err);
+  }
 });
 
-buttonSearch.addEventListener('click', async() => {
-    const search = inputSearch.value;
-
-    if(checkboxSearchPhone.checked) {
-        if (!numberValid.test(search))  return alert('Ingrese un número de teléfono valido');
-
-        try {
-            const response = await sendDataServer('../../server/data/seacher_equipment_num.php', { num_telefono: search });
-
-            if(response.length === 0) return alert('No se encontro el equipo.');
-
-            inputSearch.value = '';
-            windowActionsDevices(response);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-
-        return;
-    }
-
-    if (!formatCode.test(search)) return alert('El código que usted esta colocando solo debe contener números, no debe tener espacios y exactamente 5 números.');
-    
-    try {
-        const response = await sendDataServer('../../server/data/searcher_equipment.php', { opcicCode: `${codeOpc}${search}` });
-
-        if (response.length === 0) return alert('No se encontro el equipo');
-
-        inputSearch.value = '';
-        windowActionsDevices(response);
-    } catch (error) {
-        console.error('Error:', error);
-    }
+// 5) Búsqueda
+btnSearch.addEventListener("click", async () => {
+  const term = inputSearch.value.trim();
+  if (chkPhone.checked) {
+    if (!numberValid.test(term)) return alert("Número inválido");
+    const resp = await sendDataServer("../../server/data/seacher_equipment_num.php", { num_telefono: term });
+    if (!resp?.length) return alert("No encontrado");
+    windowActionsDevices(resp);
+    inputSearch.value = "";
+    return;
+  }
+  if (!formatCode.test(term)) return alert("Código inválido");
+  const resp = await sendDataServer("../../server/data/searcher_equipment.php", { opcicCode: `${codeOpcPrefix}${term}` });
+  if (!resp?.length) return alert("No encontrado");
+  windowActionsDevices(resp);
+  inputSearch.value = "";
 });
 
-export const renderDevices = (devices) => {
-    tableDevices.innerHTML = '';
-
-    const devicesArray = Object.values(devices).flat();
-    const start = (indexTable - 1) * 8;
-    const end = indexTable * 8;
-    const slicedDevices = devicesArray.slice(start, end);
-
-    slicedDevices.forEach(device => {
-        const { codeOpc, subcategoria, marca, modelo, numSerie, status, idEquipo } = device;
-        let className = status === 'Disponible' ? 'active-devices' : 'not-available__devices';
-        const tr = document.createElement('tr');
-        const buttonActions = document.createElement('button');
-        const paragraphButton = document.createElement('p');
-        paragraphButton.textContent = 'Editar';
-
-        tr.setAttribute('id', idEquipo);
-        tr.setAttribute('class', 'table-row');
-        buttonActions.append(paragraphButton);
-        buttonActions.setAttribute('data-id', idEquipo);
-
-        tr.innerHTML = `
-        <td>${codeOpc}</td>
-        <td>${subcategoria} ${marca} ${modelo} ${numSerie}</td>
-        <td>
-            <div class="background-paragraph ${className}">${status}</div>
-        </td>
-        <td id='columnActionsDevices'></td>
+// 6) Render de una página
+function renderPage(list) {
+  tblBody.innerHTML = "";
+  list.forEach(d => {
+    const { codeOpc, subcategoria, marca, modelo, numSerie, Status_id, idEquipo } = d;
+    let statusText, cls;
+    switch (Status_id) {
+      case FILTER_IDS.disponible:
+        statusText = "Disponible";    cls = "active-devices";      break;
+      case FILTER_IDS.enResguardo:
+        statusText = "En Resguardo";  cls = "not-available__devices"; break;
+      case FILTER_IDS.enMantenimiento:
+        statusText = "En Mantenimiento"; cls = "not-available__devices"; break;
+      default:
+        statusText = "De Baja";       cls = "not-available__devices";
+    }
+    const tr = document.createElement("tr");
+    tr.id = idEquipo;
+    tr.innerHTML = `
+      <td>${codeOpc}</td>
+      <td>${subcategoria} ${marca} ${modelo} ${numSerie}</td>
+      <td><div class="background-paragraph ${cls}">${statusText}</div></td>
+      <td id="columnActionsDevices"></td>
     `;
-
-        tr.querySelector('#columnActionsDevices').appendChild(buttonActions);
-        tableDevices.appendChild(tr);
-
-        buttonActions.addEventListener('click', () => {
-            const devicesID = buttonActions.getAttribute('data-id');
-            const filterDevice = devicesArray.filter(device => device.idEquipo === parseInt(devicesID));
-
-            windowActionsDevices(filterDevice);
-        })
-    });
+    const btn = document.createElement("button");
+    btn.textContent = "Editar";
+    btn.dataset.id = idEquipo;
+    tr.querySelector("#columnActionsDevices").appendChild(btn);
+    btn.addEventListener("click", () => windowActionsDevices([d]));
+    tblBody.appendChild(tr);
+  });
+  // Mensaje “no hay datos” y paginación en messageTableDevice
+  messageTableDevice(tblBody, filteredDevices, checkboxStates, PAGE_SIZE, pageIndex);
 }
 
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowRight') {
-        const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
-        if (indexTable === Math.ceil(devicesToRender.length / 8)) return;
-
-        indexTable++;
-        renderDevices(devicesToRender);
+// 7) Navegación con flechas
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") {
+    const maxPage = Math.ceil(filteredDevices.length / PAGE_SIZE);
+    if (pageIndex < maxPage) {
+      pageIndex++;
+      applyAndRender(devicesArray);
     }
-
-    if (event.key === 'ArrowLeft') {
-        if (indexTable === 1) return;
-
-        indexTable--;
-        const devicesToRender = devicesFilter.length > 0 ? devicesFilter : devicesArray;
-        renderDevices(devicesToRender);
-    }
+  }
+  if (e.key === "ArrowLeft" && pageIndex > 1) {
+    pageIndex--;
+    applyAndRender(devicesArray);
+  }
 });
+export { applyAndRender as updateDevicesFilter };

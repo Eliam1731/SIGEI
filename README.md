@@ -128,12 +128,12 @@
 Nombre: Eliam Jiménez Santiago
 
 Rol: Desarrollador Backend
-
 Proyecto desarrollado durante la estancia profesional 2025
-
 Ubicación: Coatzacoalcos, Veracruz, México
-
 En colaboracion con Jesus Perez Hidalgo tenienedo el rol de Frontend
+
+📧 eliam1731@hotmail.com
+🌐 LinkedIn: linkedin.com/in/eliam-jiménez-santiago-1a3244324
 
 📜 Licencia
 Este proyecto es de uso interno exclusivo para OPC Ingeniería y Construcción. No está autorizado su uso comercial ni distribución sin permiso.
